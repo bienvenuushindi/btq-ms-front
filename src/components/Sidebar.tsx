@@ -25,6 +25,7 @@ const Sidebar = () => {
         <Image src={logo} alt="Able logo" priority className="w-14"/>
       </div>
       {links.map((link) => (
+        // eslint-disable-next-line react/jsx-key
         <SidebarLink link={link}/>
       ))}
     </Card>
