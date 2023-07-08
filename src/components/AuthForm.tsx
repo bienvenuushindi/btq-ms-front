@@ -1,53 +1,54 @@
 'use client';
 import {register, signin} from '@/lib/api';
-import {useRouter} from "next/navigation"
+import {useRouter} from 'next/navigation';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 import Input from '@/components/Input';
 import {useCallback, useState} from 'react';
 import Link from 'next/link';
-
+import clsx from 'clsx';
 
 
 const registerContent = {
-  linkUrl: "/signin",
-  linkText: "Already have an account?",
-  header: "Create an Account",
-  subheader: "Just a few things to get started",
-  buttonText: "Register",
+  linkUrl: '/signin',
+  linkText: 'Already have an account?',
+  header: 'Create an Account',
+  subheader: 'Just a few things to get started',
+  buttonText: 'Register',
 };
 
 const signinContent = {
-  linkUrl: "/register",
-  linkText: "Don't have an account?",
-  header: "Welcome Back",
-  subheader: "Enter your credentials to access your account",
-  buttonText: "Sign In",
+  linkUrl: '/register',
+  linkText: 'Don\'t have an account?',
+  header: 'Welcome Back',
+  subheader: 'Enter your credentials to access your account',
+  buttonText: 'Sign In',
 };
 
-const initial = { email: "", password: "", firstName: "", lastName: "" };
+const initial = {email: '', password: '', firstName: '', lastName: ''};
 
-export default function AuthForm({ mode }: { mode: "register" | "signin" }) {
-  const [formState, setFormState] = useState({ ...initial });
-  const [error, setError] = useState("");
+export default function AuthForm({mode}: { mode: 'register' | 'signin' }) {
+  const [formState, setFormState] = useState({...initial});
+  const [error, setError] = useState('');
 
   const router = useRouter();
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
-
+      const data = {
+        user: formState
+      };
       try {
-        if (mode === "register") {
-          await register(formState);
+        if (mode === 'register') {
+          await register(data);
         } else {
-          await signin(formState);
+          await signin(data);
         }
-
-        router.replace("/home");
+        router.replace('/home');
       } catch (e) {
         setError(`Could not ${mode}`);
       } finally {
-        setFormState({ ...initial });
+        setFormState({...initial});
       }
     },
     [
@@ -58,7 +59,7 @@ export default function AuthForm({ mode }: { mode: "register" | "signin" }) {
     ]
   );
 
-  const content = mode === "register" ? registerContent : signinContent;
+  const content = mode === 'register' ? registerContent : signinContent;
 
   return (
     <Card>
@@ -68,7 +69,7 @@ export default function AuthForm({ mode }: { mode: "register" | "signin" }) {
           <p className="tex-lg text-black/25">{content.subheader}</p>
         </div>
         <form onSubmit={handleSubmit} className="py-10 w-full">
-          {mode === "register" && (
+          {mode === 'register' && (
             <div className="flex mb-8 justify-between">
               <div className="pr-2">
                 <div className="text-lg mb-4 ml-2 text-black/50">
@@ -80,7 +81,7 @@ export default function AuthForm({ mode }: { mode: "register" | "signin" }) {
                   value={formState.firstName}
                   className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
                   onChange={(e) =>
-                    setFormState((s) => ({ ...s, firstName: e.target.value }))
+                    setFormState((s) => ({...s, firstName: e.target.value}))
                   }
                 />
               </div>
@@ -92,7 +93,7 @@ export default function AuthForm({ mode }: { mode: "register" | "signin" }) {
                   value={formState.lastName}
                   className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
                   onChange={(e) =>
-                    setFormState((s) => ({ ...s, lastName: e.target.value }))
+                    setFormState((s) => ({...s, lastName: e.target.value}))
                   }
                 />
               </div>
@@ -107,7 +108,7 @@ export default function AuthForm({ mode }: { mode: "register" | "signin" }) {
               value={formState.email}
               className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
               onChange={(e) =>
-                setFormState((s) => ({ ...s, email: e.target.value }))
+                setFormState((s) => ({...s, email: e.target.value}))
               }
             />
           </div>
@@ -120,7 +121,7 @@ export default function AuthForm({ mode }: { mode: "register" | "signin" }) {
               placeholder="Password"
               className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
               onChange={(e) =>
-                setFormState((s) => ({ ...s, password: e.target.value }))
+                setFormState((s) => ({...s, password: e.target.value}))
               }
             />
           </div>
