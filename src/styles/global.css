@@ -6,9 +6,16 @@
         display: contents;
     }
 }
+html {
+    @apply text-gray-800
+}
 
 * {
     box-sizing: border-box;
+}
+
+input{
+    @apply text-gray-800
 }
 
 .rainbow-mesh {
