@@ -6,15 +6,15 @@
         display: contents;
     }
 }
-html {
-    @apply text-gray-800
+*, html {
+    @apply text-black
 }
 
 * {
     box-sizing: border-box;
 }
 
-input{
+form, input, textarea{
     @apply text-gray-800
 }
 
