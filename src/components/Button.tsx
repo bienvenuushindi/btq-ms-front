@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {cva, VariantProps} from 'class-variance-authority';
 
 
-const buttonClasses = cva(
+export const buttonClasses = cva(
   [
     'rounded-3xl',
     'font-bold',
