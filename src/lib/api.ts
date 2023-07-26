@@ -18,51 +18,21 @@ const fetcher = async ({url, method, body}) => {
     console.log('Error thrown .....................');
     throw new Error('API Error');
   }
-  console.log('ok');
-  console.log(res.headers);
   localStorage.setItem('token', res.headers.get('Authorization'));
 
-  const data = await res.json();
-  console.log('data found .....................' + data);
-  return data;
-  // }
+  return await res.json();
 };
-
-const autFetcher = async ({url, method, body = null}) => {
-  // console.log(clsx(url, 'is the api url'));
-
-  const {data} = await fetch(url, {
-    method,
-    ...(body && {body: JSON.stringify(body)}),
-    headers: {
-      Accept: 'application/json',
-      Authorization: typeof window !== 'undefined' ? window.localStorage.getItem('token') : '',
-      'Content-Type': 'application/json',
-    },
-  }).then(res => res.json()).then(data => {
-    return data;
-  }).catch(e => console.log(e));
-
-  // if (!res.ok) {
-  //   console.log('Error thrown .....................');
-  console.log(data)
-  //   throw new Error('API Error');
-  // }
-  ;
-  console.log('data found .....................' + data);
-  return data;
-};
-export const register = async (user) => {
+export const signin = async (user) => {
   return fetcher({
-    url: clsx(BASE_URL, '/signup'),
+    url: BASE_URL + '/login',
     method: 'POST',
     body: user,
   });
 };
 
-export const signin = async (user) => {
+export const register = async (user) => {
   return fetcher({
-    url: BASE_URL + '/login',
+    url: BASE_URL + '/signup',
     method: 'POST',
     body: user,
   });
@@ -75,14 +45,20 @@ export function authFetcher(url) {
       Authorization: typeof window !== 'undefined' ? window.localStorage.getItem('token') : '',
       'Content-Type': 'application/json',
     },
-  }).then(response => response.json()).then(result => result.data);
+  }).then(response => response.json()).then(result =>{
+    return result
+  });
+
 }
 
-// export const getUsers = async () => {
-//   console.log('loading users .........');
-//   return authFetcher({
-//       url: API_URL + '/users',
-//       method: 'GET',
-//     }
-//   );
-// };
+export function sendPost(path, body) {
+  return fetch(API_URL + path, {
+    method: 'POST',
+    body: body,
+    headers: {
+      Authorization: typeof window !== 'undefined' ? window.localStorage.getItem('token') : '',
+    },
+  }).then(response => response.json()).then(result => {
+    return result.data;
+  });
+}
