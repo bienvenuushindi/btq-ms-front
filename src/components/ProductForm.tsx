@@ -1,43 +1,59 @@
 'use client';
 import Card from '@/components/Card';
 import Input from '@/components/Input';
-import {useCallback, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import Textarea from '@/components/Textarea';
 import SelectInput from '@/components/SelectInput';
 import Button from '@/components/Button';
 import {countries} from '@/data/countries';
 import {sendPost} from '@/lib/api';
 import {useRouter} from 'next/navigation';
+import Image from 'next/image';
+import clsx from 'clsx';
 
-export const ProductForm=() => {
+export const ProductForm = () => {
+  const MAX_AMOUNT = 5;
   const countriesList = countries;
-  const router = useRouter()
+  const router = useRouter();
   const initial = {name: '', short_description: '', description: '', active: false, country_origin: ''};
   const [formState, setFormState] = useState({...initial});
   const [error, setError] = useState('');
-  const handleSubmit = useCallback(async (e) => {
-      e.preventDefault();
-      const data = {
-        product: formState
-      };
-      console.log(data);
-      try {
-        //submit promise
-        await sendPost('/products', data)
-        router.replace('/products');
-      } catch (e) {
-        setError(`Could not create product`);
-      } finally {
-        setFormState({...initial});
-      }
-    },
-    [
-      formState.name,
-      formState.short_description,
-      formState.description,
-      formState.active,
-      formState.country_origin,
-    ]);
+  const [photos, setPhotos] = useState([]);
+
+  const handlePhotosArray = files => {
+    const photosToUpload = [...photos];
+    files.some((file) => {
+      photosToUpload.push(file);
+    });
+    setPhotos(photosToUpload);
+  };
+
+  const handlePhotoEvent = (e) => {
+    const uploadedPhotos = Array.prototype.slice.call(e.target.files);
+    handlePhotosArray(uploadedPhotos);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // {name: '', short_description: '', description: '', active: false, country_origin: ''};
+    const formData = new FormData();
+    Object.keys(formState).forEach((key) => {
+      formData.append(`product[${key}]`, formState[key]);
+    });
+    for (let i = 0; i < photos.length; i++) {
+      console.log(photos[i]);
+      formData.append('product[images][]', photos[i]);
+    }
+    try {
+      //submit promise
+      await sendPost('/products', formData);
+      router.replace('/products');
+    } catch (e) {
+      setError(`Could not create product`);
+    } finally {
+      setFormState({...initial});
+    }
+  };
 
   const content = {
     header: 'Create a product',
@@ -95,6 +111,38 @@ export const ProductForm=() => {
             </SelectInput>
           </div>
           <div className="mb-8">
+            <input
+              id="photosUpload"
+              type="file"
+              className="hidden"
+              accept=".jpg, .jpeg, .png, .webp"
+              onChange={handlePhotoEvent}
+              disabled={photos.length === MAX_AMOUNT}
+            />
+            <label htmlFor="photosUpload">
+              <a type="button"
+                 className={clsx('bg-violet-500',
+                   'text-white',
+                   'border-transparent',
+                   'hover:bg-violet-600', photos.length === MAX_AMOUNT && 'bg-black')}>{photos.length === MAX_AMOUNT ? 'Limit Reached!' : 'Add Photos'}
+              </a>
+            </label>
+
+            <div className="add_spot_photos_div">
+              {photos && photos.map((photo, index) => {
+                return <div key={index}>
+                  <button type="button" className="filter_photo" onClick={() =>
+                    setPhotos((photos) => {
+                      return photos.filter((photo, i) => i !== index);
+                    })}>x
+                  </button>
+                  <Image width={60} height={60} src={URL.createObjectURL(photo)} alt="Upload file"/>
+                </div>;
+              })}
+            </div>
+          </div>
+          <div className="mb-8">
+            Public
             <Input
               placeholder="Product Bio"
               checked={formState.active}
@@ -113,4 +161,4 @@ export const ProductForm=() => {
       </div>
     </Card>
   );
-}
+};
