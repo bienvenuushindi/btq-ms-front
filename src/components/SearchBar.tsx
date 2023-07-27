@@ -7,11 +7,7 @@ export function SearchBar({updateList, submitTo}) {
   const [query, setQuery] = useState('');
   const debouncedSearchTerm = useDebounce(query, 1000);
   useEffect(() => {
-    // Your search logic here using debouncedSearchTerm instead of searchTerm
-    console.log(submitTo+'?q='+query)
-    // update()
-    updateList(submitTo+'?q='+query)
-    // axios.get(`https://demo.dataverse.org/api/search?q=${debouncedSearchTerm}`);
+    updateList(submitTo + '?q=' + query);
   }, [debouncedSearchTerm]);
   return (
     <>
