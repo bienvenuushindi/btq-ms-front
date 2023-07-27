@@ -1,5 +1,6 @@
 'use client';
 import clsx from 'clsx';
+import {delay} from '@/lib/async';
 
 export const BASE_URL = 'http://127.0.0.1:3001';
 export const API_URL = BASE_URL + '/api/v1';
@@ -38,14 +39,15 @@ export const register = async (user) => {
   });
 };
 
-export function authFetcher(url) {
+export async function authFetcher(url) {
+  await delay()
   return fetch(url, {
     headers: {
       Accept: 'application/json',
       Authorization: typeof window !== 'undefined' ? window.localStorage.getItem('token') : '',
       'Content-Type': 'application/json',
     },
-  }).then(response => response.json()).then(result =>{
+  }).then(response => response.json()).then(result => {
     return result
   });
 
