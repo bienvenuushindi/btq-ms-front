@@ -17,7 +17,7 @@ export default function DashboardRootLayout({children}) {
           <div className="w-full">
             <AppBar />
           </div>
-          <div className="grow w-auto bg-white text-black m-2   overflow-y-scroll">
+          <div className="grow w-full bg-white text-black m-2    overflow-y-scroll">
             {children}
           </div>
         </div>
