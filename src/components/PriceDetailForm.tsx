@@ -1,33 +1,28 @@
 'use client';
-import {useCallback, useState} from 'react';
+import {useState} from 'react';
 import Card from '@/components/Card';
 import Input from '@/components/Input';
 import Button from '@/components/Button';
-import {useRouter, useParams} from 'next/navigation';
-import {sendPost} from '@/lib/api';
+import {useRouter} from 'next/navigation';
+import {send} from '@/lib/api';
 import SelectInput from '@/components/SelectInput';
 import {useCountries} from '@/app/hooks/useCountries';
 import {useSuppliers} from '@/app/hooks/useSuppliers';
-import clsx from 'clsx';
 
-
-export const PriceDetailForm = () => {
+export const PriceDetailForm = ({productDetailID}) => {
   const router = useRouter();
-  const path = useParams();
+
   const [s_country, setCountry] = useState(null);
-  console.log(path.id);
   const initial = {
     dozen: 0.0,
     box: 0.0,
     supplier_id: null,
-    product_detail_id: path.id,
+    product_detail_id: productDetailID,
     currency: 'usd'
   };
 
   const {countries, error: countryError, isLoading: isCountryLoading} = useCountries();
   const {suppliers, error: supplierError, isLoading: isSupplierLoading} = useSuppliers(s_country);
-  console.log(countries);
-  console.log(suppliers);
   const [formState, setFormState] = useState({...initial});
   const [error, setError] = useState('');
   const handleSubmit = async (e) => {
@@ -35,21 +30,15 @@ export const PriceDetailForm = () => {
       const data = {
         price_detail: formState
       };
-      console.log(data);
       try {
-        await sendPost('/product_details/' + path.id + '/price_details', data);
-        router.replace('/products/details/' + path.id);
+        await send('/product_details/' + productDetailID + '/price_details', data);
+        router.replace('/products/details/' + productDetailID);
       } catch (e) {
         setError(`Could not create product`);
       } finally {
         setFormState({...initial});
       }
     }
-    // [
-    //   formState.dozen,
-    //   formState.box,
-    // ]
-// )
 
   const content = {
     header: 'Add price',
@@ -120,9 +109,6 @@ export const PriceDetailForm = () => {
                            className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
                            onChange={(e) =>
                              setFormState((s) =>{
-                               // console.log(clsx('changed from = ', s.supplier_id, ' to= ' ,e.target.value))
-                               // const newState = {...s, supplier_id: e.target.value}
-                               // console.log(newState)
                                return ({...s, supplier_id: e.target.value})
                              })}>
                 <option value="">Select supplier shop</option>
