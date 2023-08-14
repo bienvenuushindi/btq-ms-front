@@ -12,5 +12,4 @@ export default function PageContainer({children}){
       </SidebarContext.Provider>
     </>
   )
-
 }
