@@ -6,7 +6,7 @@ import Card from '@/components/Card';
 import Input from '@/components/Input';
 import {useCallback, useState} from 'react';
 import Link from 'next/link';
-import clsx from 'clsx';
+
 
 
 const registerContent = {
