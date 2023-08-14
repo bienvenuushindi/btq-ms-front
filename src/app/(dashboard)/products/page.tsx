@@ -12,7 +12,6 @@ export default function Products() {
   const [url, setUrl] = useState(null);
   const {data: products = [], meta, links, error, isLoading} = useProducts(url);
   const callMe = (text) => {
-    console.log('New Search submit', text);
     setUrl(text)
   }
   const content = {
