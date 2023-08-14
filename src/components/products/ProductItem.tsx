@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import {BASE_URL} from '@/lib/api';
 import Card from '@/components/Card';
+import Link from 'next/link';
+import {model_path} from '@/lib/routes';
 
 export default function ProductItem({product}){
   return(
@@ -20,6 +22,8 @@ export default function ProductItem({product}){
         )}
 
         Description: {product.attributes.short_description}
+        <br/>
+        <Link href={model_path('products', product.id)}>view</Link>
       </div>
     </Card>
   )
