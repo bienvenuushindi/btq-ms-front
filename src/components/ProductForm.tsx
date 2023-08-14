@@ -2,7 +2,7 @@
 import Card from '@/components/Card';
 import React, {useState} from 'react';
 import {countries} from '@/data/countries';
-import {sendPost} from '@/lib/api';
+import {send} from '@/lib/api';
 import {useRouter} from 'next/navigation';
 import Form from '@/components/Form';
 
