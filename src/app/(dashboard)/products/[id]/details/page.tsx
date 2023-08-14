@@ -5,7 +5,6 @@ import {useProductDetails} from '@/app/hooks/useProductDetails';
 export default function Products(){
   const path = useParams()
   const {data: productDetails, error, isLoading} = useProductDetails(path.id)
-  console.log(productDetails);
   if (error) return <div>Failed to load</div>;
   if (isLoading) return <div>Loading...</div>;
   return <div>
