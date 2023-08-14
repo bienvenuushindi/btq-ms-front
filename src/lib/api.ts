@@ -16,7 +16,6 @@ const fetcher = async ({url, method, body}) => {
   });
 
   if (!res.ok) {
-    console.log('Error thrown .....................');
     throw new Error('API Error');
   }
   localStorage.setItem('token', res.headers.get('Authorization'));
@@ -53,9 +52,9 @@ export async function authFetcher(url) {
 
 }
 
-export function sendPost(path, body) {
+export function send(path, body, method='POST') {
   return fetch(API_URL + path, {
-    method: 'POST',
+    method: method,
     body: body,
     headers: {
       Authorization: typeof window !== 'undefined' ? window.localStorage.getItem('token') : '',
@@ -63,4 +62,13 @@ export function sendPost(path, body) {
   }).then(response => response.json()).then(result => {
     return result.data;
   });
+}
+
+export function deleteItem(path){
+  return fetch(API_URL + path, {
+    method: 'DELETE',
+    headers: {
+      Authorization: typeof window !== 'undefined' ? window.localStorage.getItem('token') : '',
+    },
+  })
 }
