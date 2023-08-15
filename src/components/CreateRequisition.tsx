@@ -11,12 +11,15 @@ export default function CreateRequisition() {
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   const router = useRouter();
-  const currentDate = () => {
-    const date = new Date();
-    return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-  };
 
-  const [date, setDate] = useState(currentDate());
+
+  const getNextDays = (currentDate = new Date(), daysToAdd = 1) => {
+    const nextDate = new Date(currentDate)
+    nextDate.setDate(currentDate.getDate() + daysToAdd)
+    return `${nextDate.getDate()}-${nextDate.getMonth() + 1}-${nextDate.getFullYear()}`;
+  }
+
+  const [date, setDate] = useState(getNextDays());
   const createRequisition = async () => {
     const formData = new FormData();
     formData.append('requisition[date]', date);
@@ -39,7 +42,7 @@ export default function CreateRequisition() {
         className="w-3/4 bg-white rounded-xl p-8"
         ariaHideApp={false}
       >
-        <apn>This requisition will be process on : {date}</apn>
+        <apn>This requisition is programmed on : {date}</apn>
         <Input type={'date'} value={date} onChange={(e) => setDate(e.target.value)}/>
 
         <Button onClick={() => createRequisition()}>Create</Button>
