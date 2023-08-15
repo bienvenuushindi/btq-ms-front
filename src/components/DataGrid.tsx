@@ -41,8 +41,12 @@ const renderCell = (column, value: any) => {
   if (column.type === 'custom') {
     return column.customComponent;
   }
-  const transformedValue = value.attributes && (column.dataTransformation?.(value.attributes[column.key]) || value.attributes[column.key]) || value[column.key];
-
+  let transformedValue;
+  if( value.attributes){
+    transformedValue = column.dataTransformation?.(value.attributes[column.key]) || value.attributes[column.key]
+  }else {
+    transformedValue = value[column.key]
+  }
   switch (column.type) {
     case 'text':
       return <span>{transformedValue}</span>;
