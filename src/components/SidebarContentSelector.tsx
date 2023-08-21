@@ -3,7 +3,7 @@ import PriceDetailsSidebar from '@/components/sidebar/PriceDetailsSidebar';
 import {PriceDetailForm} from '@/components/PriceDetailForm';
 import {useContext} from 'react';
 import {SidebarContext} from '@/components/sidebar/SidebarContainer';
-import RequisitionDetails from '@/components/requisitions/RequisitionDetails';
+import RequisitionDetails from '@/components/sidebar/RequisitionDetails';
 
 export default function SidebarContentSelector({target}) {
   const {sidebarData} = useContext(SidebarContext);

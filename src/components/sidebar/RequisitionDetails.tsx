@@ -4,8 +4,6 @@ import ShowImages from '@/components/ShowImages';
 
 export default function RequisitionDetails(){
   const { sidebarData} = useContext(SidebarContext);
-  console.log("sidebar========================")
-  console.log(sidebarData)
   return(
     <>
       <div>
