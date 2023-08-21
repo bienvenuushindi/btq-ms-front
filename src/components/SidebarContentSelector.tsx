@@ -3,6 +3,7 @@ import PriceDetailsSidebar from '@/components/sidebar/PriceDetailsSidebar';
 import {PriceDetailForm} from '@/components/PriceDetailForm';
 import {useContext} from 'react';
 import {SidebarContext} from '@/components/sidebar/SidebarContainer';
+import RequisitionDetails from '@/components/requisitions/RequisitionDetails';
 
 export default function SidebarContentSelector({target}) {
   const {sidebarData} = useContext(SidebarContext);
@@ -14,6 +15,8 @@ export default function SidebarContentSelector({target}) {
         return <ProductDetailsSidebar/>;
       case 'add_price':
         return <PriceDetailForm productDetailID={sidebarData.id}/>;
+      case 'requisition_details':
+        return <RequisitionDetails />
       default:
         return 'no content';
     }
