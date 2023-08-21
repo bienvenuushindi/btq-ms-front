@@ -5,7 +5,9 @@ import {useFetcher} from '@/app/hooks/useFetcher';
 import RequisitionItemsTable from '@/components/RequisitionItemsTable';
 import SidebarContentSelector from '@/components/SidebarContentSelector';
 import {SidebarContainer, SidebarContext} from '@/components/sidebar/SidebarContainer';
-import {useContext} from 'react';
+import {useContext, useEffect, useState} from 'react';
+import Card from '@/components/Card';
+import RequisitionItem from '@/components/requisitions/RequisitionItem';
 
 export default function Requisition() {
   const {openBar} = useContext(SidebarContext)
@@ -18,7 +20,13 @@ export default function Requisition() {
       {error && <div>Failed to load</div>}
       {requisition_items && (
         <div className="relative h-full flex-col">
-            <RequisitionForm revalidate={mutate} requisitionID={requisitionId}/>
+          <Card>
+            <div className="flex">
+              <RequisitionItem requisition={requisition_items.attributes} />
+              <RequisitionForm revalidate={mutate} requisitionID={requisitionId}/>
+            </div>
+          </Card>
+
            <div>
              <RequisitionItemsTable requisitionId={requisitionId} details={requisition_items.attributes.product_items}/>
            </div>
