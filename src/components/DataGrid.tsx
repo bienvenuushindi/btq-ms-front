@@ -10,7 +10,7 @@ const DataGrid = <T, >({data, columns, tHeadProps}) => {
       <tr>
         {columns.map((column) => (
           <th scope="col" className="pr-6 py-3" {...tHeadProps}
-              key={`thead-${column.key as React.Key}`}>{column.label}</th>
+              key={`thead-${column.key as React.Key}-${Math.random()}`}>{column.label}</th>
         ))}
       </tr>
       </thead>
@@ -25,7 +25,7 @@ const DataGrid = <T, >({data, columns, tHeadProps}) => {
 
           <tr className="bg-white border-b  border-gray-700" key={`row-${index}`}>
             {columns.map((column) => (
-              <td key={`tbody-row-${column.key as React.Key}`}
+              <td key={`tbody-row-${column.key as React.Key}-${Math.random()}`}
                   className={column.key ? 'table-cell' : 'd-flex justify-content-end'}>
                 {column.key ? renderCell(column, row) : renderCell(column, column.customKey)}
               </td>
