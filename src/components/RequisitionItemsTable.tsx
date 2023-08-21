@@ -25,20 +25,11 @@ export default function RequisitionItemsTable({details, requisitionId}) {
       // dataTransformation: (value: any) => value.toUpperCase(),
     },
     {
-      key: 'image_urls',
-      type: 'details',
-      label: 'Photos',
-      action: (data) => {
-        setOpenBar({state: true, target: 'product_details'});
-        setSidebarData(data);
-      }
-    },
-    {
       key: 'button',
       type: 'details',
-      label: 'Prices',
+      label: 'Details',
       action: (data) => {
-        setOpenBar({state: true, target: 'price_details'});
+        setOpenBar({state: true, target: 'requisition_details'});
         setSidebarData(data);
       }
     },
