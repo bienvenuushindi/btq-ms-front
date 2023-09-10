@@ -3,28 +3,28 @@ import GlassPane from '@/components/GlassPane';
 import Sidebar from '@/components/Sidebar';
 import AppBar from '@/components/AppBar';
 import PageContainer from '@/components/PageContainer';
+import {createContext, useContext} from 'react';
+// export const ThemeContext = createContext(null);
 
 export default function DashboardRootLayout({children}) {
-
+  // const {color,setColor} = useContext(ThemeContext)
   return (
     <html lang="en">
     <head/>
-    <body>
-    <div className="h-screen w-screen rainbow-mesh p-6 overflow-x-hidden">
-      <div>
-      </div>
-      <GlassPane className="w-full h-full flex items-center justify-center">
-        <Sidebar/>
-        <div className="grow flex flex-col h-full items-center justify-center">
-          <div className="w-full">
-            <AppBar/>
-          </div>
-          <div className="grow w-full bg-white text-black m-2 overflow-y-scroll overflow-x-hidden">
-            <PageContainer>
+    <body suppressHydrationWarning={true}>
+
+    <div className="h-screen w-screen bg-neutral-50  overflow-x-hidden">
+      <GlassPane className="w-full h-full flex">
+        <PageContainer>
+          <AppBar/>
+          <Sidebar/>
+          {/*w-[calc(100%-288px)]*/}
+          <div className="lg:pl-72 pt-12 flex-grow flex-1 flex-col ">
+            <div className="py-4">
               {children}
-            </PageContainer>
+            </div>
           </div>
-        </div>
+        </PageContainer>
       </GlassPane>
     </div>
     </body>
