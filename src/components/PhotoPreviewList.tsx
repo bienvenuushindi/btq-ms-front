@@ -3,10 +3,10 @@ import PhotoPreviewItem from '@/components/PhotoPreviewItem';
 
 export default function PhotoPreviewList({photos}) {
   return (
-    <div className="add_spot_photos_div">
+    <ul className="flex gap-2">
       {photos && photos.map((photo, index) => {
         return (<PhotoPreviewItem key={index} photo={photo} index={index}/>);
       })}
-    </div>
+    </ul>
   );
 }
