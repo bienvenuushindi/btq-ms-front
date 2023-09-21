@@ -2,36 +2,41 @@ import React from 'react';
 import clsx from 'clsx';
 import Input from '@/components/Input';
 import Button from '@/components/Button';
+import Image from 'next/image';
+import TableLoader from '@/components/banners/TableLoader';
 
-const DataGrid = <T, >({data, columns, tHeadProps}) => {
+const DataGrid = <T, >({data, columns, tHeadProps, isLoading, loader}) => {
   return (
-    <table className="w-full text-sm text-left text-gray-500 text-gray-400">
-      <thead className="text-xs text-gray-700 uppercase   text-gray-400">
+    <table className="w-full text-sm text-left text-gray-500 -dark:text-gray-40">
+      <thead className="text-xs text-gray-700 uppercase bg-gray-50 -dark:bg-gray-700 -dark:text-gray-400">
       <tr>
         {columns.map((column) => (
-          <th scope="col" className="pr-6 py-3" {...tHeadProps}
+          <th scope="col" className="px-6 py-3" {...tHeadProps}
               key={`thead-${column.key as React.Key}-${Math.random()}`}>{column.label}</th>
         ))}
       </tr>
       </thead>
       <tbody>
-
-      {data.length === 0 ?
-        <tr>
+      {isLoading && (<tr className="bg-white border-b -dark:bg-gray-800 -dark:border-gray-700 hover:bg-gray-50 -dark:hover:bg-gray-600">
+        <td colSpan={columns.length} className="text-center">{loader || <TableLoader columnLength={columns.length} />}
+        </td>
+      </tr>)}
+      {isLoading || (data.length === 0 ?
+        <tr className="bg-white border-b -dark:bg-gray-800 -dark:border-gray-700 hover:bg-gray-50 -dark:hover:bg-gray-600">
           <td colSpan={columns.length} className="text-center">No Data Found</td>
         </tr>
         :
         data.map((row, index) => (
 
-          <tr className="bg-white border-b  border-gray-700" key={`row-${index}`}>
+          <tr className="bg-white border-b -dark:bg-gray-800 -dark:border-gray-700 hover:bg-gray-50 -dark:hover:bg-gray-600" key={`row-${index}`}>
             {columns.map((column) => (
               <td key={`tbody-row-${column.key as React.Key}-${Math.random()}`}
-                  className={column.key ? 'table-cell' : 'd-flex justify-content-end'}>
+                  className={clsx("px-6 py-4",column.key ? 'table-cell' : 'd-flex justify-content-end')}>
                 {column.key ? renderCell(column, row) : renderCell(column, column.customKey)}
               </td>
             ))}
           </tr>
-        ))}
+        )))}
       </tbody>
     </table>
   );
@@ -73,11 +78,20 @@ const renderCell = (column, value: any) => {
         }
         onChange={column.action}/>;
     case 'button':
-      return <Button size="sm" variant="outline" onClick={()=>column.action(value)}>{column.label}</Button>;
+      return <Button size="small" intent="primary" onClick={()=>column.action(value)}>{column.label}</Button>;
     case 'details':
-      return <Button size="sm" variant="outline" onClick={() => {
+      return <Button size="small" intent="secondary" onClick={() => {
         column.action(value);
       }}>{column.label}</Button>;
+    case 'picture':
+      return <Image
+        src={transformedValue}
+        alt="Image"
+        className="rounded-md border border-gray-100"
+        width={48}
+        height={48}
+        priority
+      />
     default:
       return null;
   }
