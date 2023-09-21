@@ -1,20 +1,17 @@
-'use client'
-import DataGrid from '@/components/DataGrid';
-import {API_URL, BASE_URL} from '@/lib/api';
+'use client';
+import {BASE_URL} from '@/lib/api';
 import Badge from '@/components/Badge';
 import {useRouter} from 'next/navigation';
-import {SearchBar} from '@/components/SearchBar';
 import {useState} from 'react';
 import {useProducts} from '@/app/hooks/useProducts';
-import Paginate from '@/components/Paginate';
-import TableMetaData from '@/components/TableMetaData';
 import ProductsTableLoader from '@/components/banners/ProductsTableLoader';
 import EntityTable from '@/components/EntityTable';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 export default function ProductsTable() {
   const [url, setUrl] = useState(null);
   const {data: products = [], meta, links, error, isLoading} = useProducts(url);
-  const router = useRouter()
+  const router = useRouter();
   const columns = [
     {
       key: 'image_urls',
@@ -30,35 +27,33 @@ export default function ProductsTable() {
       key: 'name',
       type: 'text',
       label: 'Product Name',
-      // dataTransformation: (value: any) => value.toUpperCase(),
+
     }, {
       key: 'short_description',
       type: 'text',
       label: 'Description',
-      // dataTransformation: (value: any) => value.toUpperCase(),
     }, {
       key: 'active',
       type: 'text',
       label: ' Status',
-      dataTransformation: (value: any) => value ? <Badge variant="success">Active</Badge> : <Badge variant="danger">Inactive</Badge>,
+      dataTransformation: (value: any) => value ? <Badge variant="success">Active</Badge> :
+        <Badge variant="danger">Inactive</Badge>,
     }, {
       key: 'created_at',
       type: 'text',
       label: 'Created At',
-      // dataTransformation: (value: any) => value.toUpperCase(),
     }, {
       key: 'View',
       type: 'button',
       label: 'Details',
       action: async (data) => {
-        await router.replace('/products/' + data.id)
+        await router.replace('/products/' + data.id);
       }
-      // dataTransformation: (value: any) => value.toUpperCase(),
     },
   ];
 
   return (
-    <>
+    <ErrorBoundary error={error}>
       <EntityTable
         isLoading={isLoading}
         loader={<ProductsTableLoader/>}
@@ -68,6 +63,6 @@ export default function ProductsTable() {
         links={links}
         updateList={setUrl}
         entities={'products'}/>
-    </>
+    </ErrorBoundary>
   );
 }
