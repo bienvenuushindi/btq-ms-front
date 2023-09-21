@@ -9,6 +9,7 @@ import {useProducts} from '@/app/hooks/useProducts';
 import Paginate from '@/components/Paginate';
 import TableMetaData from '@/components/TableMetaData';
 import ProductsTableLoader from '@/components/banners/ProductsTableLoader';
+import EntityTable from '@/components/EntityTable';
 
 export default function ProductsTable() {
   const [url, setUrl] = useState(null);
@@ -58,20 +59,15 @@ export default function ProductsTable() {
 
   return (
     <>
-      <SearchBar updateList={setUrl} submitTo={API_URL + '/products'}/>
-      <TableMetaData meta={meta} />
-      <DataGrid
-        columns={columns}
-        data={products}
-        tHeadProps={{color: 'primary'}}
+      <EntityTable
         isLoading={isLoading}
         loader={<ProductsTableLoader/>}
-      />
-      <div className='flex justify-between w-full my-2'>
-        <TableMetaData meta={meta} />
-        <Paginate meta={meta} links={links} setUrl={setUrl}/>
-      </div>
-
+        columns={columns}
+        data={products}
+        meta={meta}
+        links={links}
+        updateList={setUrl}
+        entities={'products'}/>
     </>
   );
 }
