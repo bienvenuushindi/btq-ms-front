@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @layer base {
     [data-nextjs-scroll-focus-boundary] {
         display: contents;
@@ -16,6 +18,10 @@
 
 form, input, textarea{
     @apply text-gray-800
+}
+
+#carousel > div {
+    @apply bg-white p-1;
 }
 
 .rainbow-mesh {
