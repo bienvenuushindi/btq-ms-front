@@ -39,7 +39,7 @@ export const register = async (user) => {
 };
 
 export async function authFetcher(url) {
-  await delay()
+  await delay();
   return fetch(url, {
     headers: {
       Accept: 'application/json',
@@ -47,12 +47,12 @@ export async function authFetcher(url) {
       'Content-Type': 'application/json',
     },
   }).then(response => response.json()).then(result => {
-    return result
+    return result;
   });
 
 }
 
-export function send(path, body, method='POST') {
+export function send(path, body, method = 'POST') {
   return fetch(API_URL + path, {
     method: method,
     body: body,
@@ -64,11 +64,12 @@ export function send(path, body, method='POST') {
   });
 }
 
-export function deleteItem(path){
+
+export function deleteItem(path) {
   return fetch(API_URL + path, {
     method: 'DELETE',
     headers: {
       Authorization: typeof window !== 'undefined' ? window.localStorage.getItem('token') : '',
     },
-  })
+  });
 }
