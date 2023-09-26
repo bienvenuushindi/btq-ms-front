@@ -7,6 +7,7 @@ import {useState} from 'react';
 import EntityTable from '@/components/EntityTable';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Badge from '@/components/Badge';
+import {Edit, Trash2} from 'react-feather';
 
 export default function Categories() {
   const [url, setUrl] = useState(null);
@@ -36,6 +37,26 @@ export default function Categories() {
       label: 'Numb of Products',
     },
   ];
+  const actions = [
+    {
+      label: 'Edit',
+      icon: (
+        <Edit size={20}/>
+      ),
+      onClick: (rowIndex) => {
+        console.log(`Edit clicked for row ${rowIndex}`);
+      },
+    },
+    {
+      label: 'Delete',
+      icon: (
+        <Trash2 size={20}/>
+      ),
+      onClick: (rowIndex) => {
+        console.log(`Delete clicked for row ${rowIndex}`);
+      },
+    },
+  ];
   return (
     <Container>
       <CategoriesHeader revalidate={mutate}/>
@@ -49,6 +70,7 @@ export default function Categories() {
             updateList={setUrl}
             columns={categoryColumns}
             entities={'categories'}
+            actions={actions}
           />
         </ErrorBoundary>
       </ContainerOne>
