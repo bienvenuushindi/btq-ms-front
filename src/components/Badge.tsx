@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
-import { cva, VariantProps } from 'class-variance-authority';
+import React, {FC} from 'react';
+import {cva, VariantProps} from 'class-variance-authority';
+
 
 export const badgeClasses = cva(
   [
@@ -9,7 +10,6 @@ export const badgeClasses = cva(
     'rounded-full',
     'font-semibold',
     'px-2',
-    'text-sm',
   ],
   {
     variants: {
@@ -19,20 +19,28 @@ export const badgeClasses = cva(
         success: ['bg-green-100 text-green-800'],
         danger: ['bg-red-100 text-red-800'],
       },
+      size: {
+        small: 'text-xs',   // Add small size class
+        medium: 'text-sm',  // Add medium size class
+        large: 'text-lg',   // Add large size class
+      },
     },
     defaultVariants: {
-      variant: 'primary',
+      intent: 'default',
+      size: 'medium',
     },
   }
 );
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof badgeClasses> {}
+    VariantProps<typeof badgeClasses> {
+  size?: 'small' | 'medium' | 'large'; // Define size prop
+}
 
-const Badge: FC<BadgeProps> = ({ children, className, variant, ...props }) => {
+const Badge: FC<BadgeProps> = ({ children, className, variant, size, ...props }) => {
   return (
-    <span className={badgeClasses({ variant, className })} {...props}>
+    <span className={badgeClasses({ variant, size, className })} {...props}>
       {children}
     </span>
   );
