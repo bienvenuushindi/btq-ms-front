@@ -2,52 +2,40 @@
 import {useParams} from 'next/navigation';
 import {useProduct} from '@/app/hooks/useProduct';
 import ProductItem from '@/components/products/ProductItem';
-import ButtonLink from '@/components/ButtonLink';
 import Card from '@/components/Card';
 import {ProductDetailsTable} from '@/components/products/ProductDetailsTable';
-import {SidebarContainer, SidebarContext} from '@/components/sidebar/SidebarContainer';
+import {SidebarContext} from '@/components/sidebar/SidebarContainer';
 import SidebarContentSelector from '@/components/SidebarContentSelector';
-import {useContext} from 'react';
+import {useContext, useEffect} from 'react';
+import Container from '@/components/Container';
+import ContainerOne from '@/components/ContainerOne';
+import ProductDetailsHeader from '@/components/products/ProductDetailsHeader';
+import ProductItemLoader from '@/components/banners/ProductItemLoader';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 
 export default function Product() {
-  const {openBar} = useContext(SidebarContext)
+  const {openBar} = useContext(SidebarContext);
   const params = useParams();
   const productId = params.id;
   const {data: product, included: details, error, isLoading} = useProduct(productId);
-  const content = {
-    linkUrl: '/products/' + productId + '/details/create',
-    linkText: 'Add Details'
-  };
-  return <div className="relative h-full flex-col">
-    <ButtonLink
-      href={content.linkUrl}
-      size="small"
-      intent="primary"
-    >
-      {content.linkText}
-    </ButtonLink>
-    <div>
-      {isLoading && <div>Loading...</div>}
-      {error && <div>Failed to load</div>}
-      {product && (
-        <ul>
-          <li key={product.id}>
-            <ProductItem product={product}/>
-          </li>
-        </ul>
-      )}
+  return <Container>
+    <ProductDetailsHeader details={details}/>
+    <ContainerOne>
+      {isLoading && <Card className="w-full"><ProductItemLoader/></Card>}
+      <ErrorBoundary error={error}>
+        {product && (
+          <ProductItem key={product.id} product={product}/>
+        )}
+      </ErrorBoundary>
 
-    </div>
-    <div className="grow flex-1">
-      <Card>
-        <ProductDetailsTable details={details}/>
+    </ContainerOne>
+    <ContainerOne>
+      <Card className="w-full">
+        <ProductDetailsTable details={details} isLoading={isLoading}/>
       </Card>
-    </div>
-
-
-    <SidebarContainer>
       <SidebarContentSelector target={openBar.target}/>
-    </SidebarContainer>
-  </div>;
+    </ContainerOne>
+
+  </Container>;
 }
