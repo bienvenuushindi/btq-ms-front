@@ -6,7 +6,6 @@ import {renderCell} from '@/components/DataGrid';
 import {MoreVertical} from 'react-feather';
 import {createPortal} from 'react-dom';
 import Button from '@/components/Button';
-import Card from '@/components/Card';
 
 const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, actions}) => {
   const [isOpen, setIsOpen] = useState(false);
