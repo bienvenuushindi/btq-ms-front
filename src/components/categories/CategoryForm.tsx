@@ -28,7 +28,6 @@ export default function CategoryForm() {
   };
 
    function updateCategory(id){
-    console.log("id "+id)
     setFormState((s) => ({...s, parent_category_id: id}));
   }
 

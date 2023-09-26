@@ -7,6 +7,7 @@ import {useProducts} from '@/app/hooks/useProducts';
 import ProductsTableLoader from '@/components/banners/ProductsTableLoader';
 import EntityTable from '@/components/EntityTable';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import {Edit, Trash2} from 'react-feather';
 
 export default function ProductsTable() {
   const [url, setUrl] = useState(null);
@@ -51,6 +52,26 @@ export default function ProductsTable() {
       }
     },
   ];
+  const actions = [
+    {
+      label: 'Edit',
+      icon: (
+        <Edit size={20}/>
+      ),
+      onClick: (rowIndex) => {
+        console.log(`Edit clicked for row ${rowIndex}`);
+      },
+    },
+    {
+      label: 'Delete',
+      icon: (
+       <Trash2 size={20}/>
+      ),
+      onClick: (rowIndex) => {
+        console.log(`Delete clicked for row ${rowIndex}`);
+      },
+    },
+  ];
 
   return (
     <ErrorBoundary error={error}>
@@ -62,7 +83,9 @@ export default function ProductsTable() {
         meta={meta}
         links={links}
         updateList={setUrl}
-        entities={'products'}/>
+        entities={'products'}
+        actions={actions}
+      />
     </ErrorBoundary>
   );
 }

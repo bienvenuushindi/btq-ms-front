@@ -1,8 +1,9 @@
 import DataGrid from '@/components/DataGrid';
 import {useContext} from 'react';
 import {SidebarContext} from '@/components/sidebar/SidebarContainer';
+import TableLoader from '@/components/banners/TableLoader';
 
-export const ProductDetailsTable = ({details}) => {
+export const ProductDetailsTable = ({details, isLoading}) => {
   const {setOpenBar, setSidebarData} = useContext(SidebarContext);
   const columns = [
     {
@@ -56,11 +57,11 @@ export const ProductDetailsTable = ({details}) => {
       key: 'button',
       type: 'details',
       label: "Prices",
-      action: (data, id) => {
+      action: (data) => {
         setOpenBar({state: true, target: 'price_details'});
         setSidebarData(data);
       }
-    }
+    },
   ];
 
   return (
@@ -69,6 +70,7 @@ export const ProductDetailsTable = ({details}) => {
         data={details}
         columns={columns}
         tHeadProps={{color: 'primary'}}
+        isLoading={isLoading}
       />
     </>
   );

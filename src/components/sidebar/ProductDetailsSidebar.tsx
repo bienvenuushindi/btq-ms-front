@@ -1,4 +1,3 @@
-
 import {useContext} from 'react';
 import {SidebarContext} from '@/components/sidebar/SidebarContainer';
 import 'react-gallery-carousel/dist/index.css';

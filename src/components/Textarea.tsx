@@ -4,7 +4,7 @@ const Textarea = ({ className, ...props }) => {
   return (
     <textarea
       className={clsx(
-        "border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full",
+        "border rounded p-2",
         className
       )}
       {...props}

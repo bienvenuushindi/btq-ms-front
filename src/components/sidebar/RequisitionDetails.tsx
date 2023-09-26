@@ -46,8 +46,6 @@ export default function RequisitionDetails(){
         {/*image_urls: ["/images/no-img.png"]*/}
         {/*updated_at: "2023-08-14T17:04:37.278Z"*/}
       </div>
-
-
     </>
   )
 }

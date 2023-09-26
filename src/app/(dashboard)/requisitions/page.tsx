@@ -1,6 +1,5 @@
 'use client';
 import {useRequisitions} from '@/app/hooks/useRequisitions';
-import RequisitionsList from '@/components/requisitions/RequisitionsList';
 import ContainerOne from '@/components/ContainerOne';
 import Container from '@/components/Container';
 import RequisitionsHeader from '@/components/requisitions/RequisitionsHeader';
@@ -8,9 +7,11 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import EntityTable from '@/components/EntityTable';
 import {useRouter} from 'next/navigation';
 import Badge from '@/components/Badge';
+import {useState} from 'react';
 
 export default function Requisitions() {
-  const {requisitions, meta, links, error, isLoading} = useRequisitions();
+  const [url, setUrl] = useState(null);
+  const {requisitions, meta, links, error, isLoading} = useRequisitions(url);
   const router = useRouter()
   const columns = [
     {
@@ -62,9 +63,11 @@ export default function Requisitions() {
         <ErrorBoundary error={error}>
           <EntityTable
             isLoading={isLoading}
+            searchable={false}
             meta={meta}
             links={links}
             data={requisitions}
+            updateList={setUrl}
             columns={columns}
             entities={'requisitions'}/>
         </ErrorBoundary>
