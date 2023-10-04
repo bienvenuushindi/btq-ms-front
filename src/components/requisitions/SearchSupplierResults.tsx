@@ -9,9 +9,7 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 export default function SearchSupplierResults({url, action, supplierId}) {
   const {suppliers, error, isLoading} = useSuppliers(url);
   const [selected, setSelected] = useState(supplierId);
-  console.log('supplier id e ', supplierId);
   const updateSelected = (id) => {
-    console.log('id', id);
     setSelected(id);
     action({id: id, price: 0, quantity_type: ''});
   };
