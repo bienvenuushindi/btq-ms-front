@@ -34,7 +34,7 @@ export default function ReqItemProductList({details, requisitionId}) {
   return (
     <ContainerOne>
       <Card className='w-full'>
-        <h1 className="text-xl py-1 font-normal text-gray-900 pb-3 border-b ">Requisition Products</h1>
+        <h1 className="text-xl py-1 font-normal text-gray-900 pb-3 border-b ">Items</h1>
         <ul className=" mx-auto py-2">
           {data.map((row) => {
             row.isOpen = false;
