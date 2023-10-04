@@ -135,7 +135,7 @@ const renderField = (field) => {
       );
     case 'button':
       return (
-        <Button type={field.type} size={20} intent="primary" className={
+        <Button type={field.type} size={20} intent="primary" disabled={field.disabled || false} className={
           clsx(' px-2 py-2 text-sm', field.className)
         }>
           {field.placeholder}

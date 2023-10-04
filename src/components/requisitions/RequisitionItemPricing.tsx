@@ -10,6 +10,7 @@ import PreviousSuppliers from '@/components/requisitions/PreviousSuppliers';
 import SuppliersSection from '@/components/requisitions/SuppliersSection';
 import Badge from '@/components/Badge';
 import Card from '@/components/Card';
+import {delay} from '@/lib/async';
 
 export default function RequisitionItemPricing({requisitionId, productDetails}) {
   const {data: quantityType = {}} = useQuantityTypes();
@@ -24,7 +25,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
     note: productDetails.note || '',
     expired_date: productDetails.expired_date || null,
   };
-
+  const [loading, setLoading] = useState(false);
   const [formState, setFormState] = useState({...initial});
   const [supplierId, setSupplierId] = useState(productDetails.supplier_id);
   const [error, setError] = useState('');
@@ -34,6 +35,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       setError('Please select a supplier');
       return;
     }
+    setLoading(true)
     const formData = new FormData();
     Object.keys(formState).forEach((key) => {
       formData.append(`requisition_product[${key}]`, formState[key]);
@@ -45,6 +47,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
     try {
       await send('/requisitions/' + requisitionId + '/update_products/' + productDetails.product_detail_id, formData, 'PUT');
       console.log('success');
+      setLoading(false)
     } catch (e) {
       setError(`Could not create product`);
     }
@@ -153,7 +156,8 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       input_type: 'button',
       className: '',
       type: 'submit',
-      placeholder: 'Update'
+      placeholder:  loading ? 'Loading...' : 'Update',
+      disabled: loading
     }
   ];
 
