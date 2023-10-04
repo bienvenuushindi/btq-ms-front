@@ -6,6 +6,7 @@ import SelectInput from '@/components/SelectInput';
 import InputFileImage from '@/components/InputFileImage';
 import Button from '@/components/Button';
 import TagInput from '@/components/forms/TagInput';
+import Toggle from '@/components/forms/Toggle';
 
 export const InputImageContext = createContext(null);
 
@@ -66,7 +67,6 @@ const renderField = (field) => {
     case 'select':
       return (
         <SelectInput
-          // required={field.required}
           name={field.name}
           value={field.value}
           className={
@@ -121,6 +121,12 @@ const renderField = (field) => {
           <span>{field.label}</span>
         </div>
       );
+      case 'toggle':
+        return (
+          <div className="flex items-center">
+            <Toggle enabled={field.checked} setEnabled={field.action} label={field.label}/>
+          </div>
+        )
     case 'tag':
       return (
         <TagInput action={field.action}>
