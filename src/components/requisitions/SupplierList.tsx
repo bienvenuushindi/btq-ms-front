@@ -75,25 +75,27 @@ function SupplierList({isLoading, suppliers, selected, onUpdateSelected, title})
                                   </ul>
                                 </div>
 
-                                <div className='flex flex-col'>
+                                <div className='flex '>
                                   <h6 className={`${
                                     checked ? 'text-sky-100' : 'text-gray-700'
                                   }`}>Tel:</h6>
-                                  <ul className="">
-                                    <li className='list-item ml-2'> <span className={`${
-                                      checked ? 'text-sky-100' : 'text-gray-700'
-                                    }`}>{isNestedAttributes ? (supplier.attributes.tel1 || null)
-                                      : (supplier.tel2 || null)}</span>
-                                    </li>
-                                    {
-                                      (isNestedAttributes ? supplier.attributes.tel2 : supplier.tel2) && (
-                                      <li className='list-item ml-2'> <span className={`${
+                                  <div>
+                                    <ul className="">
+                                      <li className="list-item ml-2"> <span className={`${
                                         checked ? 'text-sky-100' : 'text-gray-700'
-                                      }`}>{isNestedAttributes ? (supplier.attributes.tel2 || null)
+                                      }`}>{isNestedAttributes ? (supplier.attributes.tel1 || null)
                                         : (supplier.tel2 || null)}</span>
                                       </li>
-                                    )}
-                                  </ul>
+                                      {
+                                        (isNestedAttributes ? supplier.attributes.tel2 : supplier.tel2) && (
+                                          <li className="list-item ml-2"> <span className={`${
+                                            checked ? 'text-sky-100' : 'text-gray-700'
+                                          }`}>{isNestedAttributes ? (supplier.attributes.tel2 || null)
+                                            : (supplier.tel2 || null)}</span>
+                                          </li>
+                                        )}
+                                    </ul>
+                                  </div>
                                 </div>
                               </RadioGroup.Description>
                             </div>
