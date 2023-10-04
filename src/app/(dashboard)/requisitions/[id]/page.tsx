@@ -18,7 +18,6 @@ export default function Requisition() {
   const params = useParams();
   const requisitionId = params.id;
   const {data: requisition_items, mutate, error, isLoading} = useFetcher('/requisitions/' + requisitionId);
-  console.log(requisition_items);
   return (
     <Container>
       <RequisitionDetailsHeader revalidate={mutate}/>

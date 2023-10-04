@@ -32,7 +32,6 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
     e.preventDefault();
     if (!supplierId) {
       setError('Please select a supplier');
-      console.log('no supplier');
       return;
     }
     const formData = new FormData();
@@ -159,7 +158,6 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
   ];
 
   const updateForm = (supplier) => {
-    console.log(supplier);
     setSupplierId(supplier.id);
     if (supplier.id == productDetails.supplier_id) {
       setFormState({...initial});

@@ -76,7 +76,6 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
     setSelectedRowIndex(rowIndex);
   };
   const handleScroll = () => {
-    console.log('scrolling');
     if (isOpen) closePopover();
   };
   return (

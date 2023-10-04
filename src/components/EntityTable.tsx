@@ -19,8 +19,6 @@ const EntityTable = ({
                        actions,
                        searchable = true
                      }) => {
-  console.log(meta)
-  console.log(links)
   return (
    <>{searchable && <SearchBar updateList={updateList} submitTo={`${API_URL}/${entities}`}/>}
      <Card className="w-full relative justify-start my-2">

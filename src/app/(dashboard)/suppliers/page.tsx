@@ -38,7 +38,6 @@ export default function Suppliers() {
       // dataTransformation: (value: any) => value.toUpperCase(),
     },
   ];
-  console.log(suppliers)
   const callMe = (text) => {
     setUrl(text);
   };
