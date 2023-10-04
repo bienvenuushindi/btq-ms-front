@@ -53,9 +53,9 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
   const pricingForm = [
     {
       label: 'Status',
-      input_type: 'checkbox',
+      input_type: 'toggle',
       className: '',
-      labelClassName: 'sr-only',
+      labelClassName: '',
       name: 'found',
       checked: formState.found,
       action: () => {
