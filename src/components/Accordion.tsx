@@ -1,9 +1,9 @@
 import Button from '@/components/Button';
 import clsx from 'clsx';
 
-const Accordion = ({id,title, content, isOpen, toggleAccordion}) => {
+const Accordion = ({id,title, content, isOpen, toggleAccordion, className}) => {
   return (
-    <div className={clsx("pl-1 flex flex-col items-center w-full rounded")}>
+    <div className={clsx("pl-1 flex flex-col items-center w-full rounded", className)}>
       <Button
         size="small"
         intent={'text'}
