@@ -1,16 +1,16 @@
 'use client';
-import {useRouter} from 'next/navigation';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {send} from '@/lib/api';
 import Form from '@/components/Form';
-import SelectSupplier from '@/components/requisitions/SelectSupplier';
 import useQuantityTypes from '@/app/hooks/useQuantityTypes';
 import useCurrencies from '@/app/hooks/useCurrencies';
-import PreviousSuppliers from '@/components/requisitions/PreviousSuppliers';
 import SuppliersSection from '@/components/requisitions/SuppliersSection';
 import Badge from '@/components/Badge';
 import Card from '@/components/Card';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {delay} from '@/lib/async';
+import toastShow from '@/components/toast/toast-selector';
 
 export default function RequisitionItemPricing({requisitionId, productDetails}) {
   const {data: quantityType = {}} = useQuantityTypes();
@@ -29,13 +29,18 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
   const [formState, setFormState] = useState({...initial});
   const [supplierId, setSupplierId] = useState(productDetails.supplier_id);
   const [error, setError] = useState('');
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!supplierId) {
       setError('Please select a supplier');
       return;
     }
-    setLoading(true)
+
+    setLoading(true);
+    await delay(4000);
     const formData = new FormData();
     Object.keys(formState).forEach((key) => {
       formData.append(`requisition_product[${key}]`, formState[key]);
@@ -47,7 +52,8 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
     try {
       await send('/requisitions/' + requisitionId + '/update_products/' + productDetails.product_detail_id, formData, 'PUT');
       console.log('success');
-      setLoading(false)
+      toastShow('success', 'Updated Successfully')
+      setLoading(false);
     } catch (e) {
       setError(`Could not create product`);
     }
@@ -156,7 +162,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       input_type: 'button',
       className: '',
       type: 'submit',
-      placeholder:  loading ? 'Loading...' : 'Update',
+      placeholder: loading ? 'Loading...' : 'Update',
       disabled: loading
     }
   ];
@@ -186,7 +192,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
           fields={pricingForm}
         />
       </div>
-
+      <ToastContainer/>
     </Card>
   );
 }
