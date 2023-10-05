@@ -6,7 +6,7 @@ import Card from '@/components/Card';
 import {ProductDetailsTable} from '@/components/products/ProductDetailsTable';
 import {SidebarContext} from '@/components/sidebar/SidebarContainer';
 import SidebarContentSelector from '@/components/SidebarContentSelector';
-import {useContext, useEffect} from 'react';
+import {useContext} from 'react';
 import Container from '@/components/Container';
 import ContainerOne from '@/components/ContainerOne';
 import ProductDetailsHeader from '@/components/products/ProductDetailsHeader';
