@@ -30,8 +30,6 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
   const [supplierId, setSupplierId] = useState(productDetails.supplier_id);
   const [error, setError] = useState('');
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!supplierId) {
@@ -40,17 +38,15 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
     }
 
     setLoading(true);
-    await delay(4000);
+    await delay(2000);
     const formData = new FormData();
     Object.keys(formState).forEach((key) => {
       formData.append(`requisition_product[${key}]`, formState[key]);
     });
     formData.append('requisition_product[supplier_id]', supplierId);
-    // for (let pair of formData.entries()) {
-    //   console.log(pair[0] + ', ' + pair[1]);
-    // }
     try {
       await send('/requisitions/' + requisitionId + '/update_products/' + productDetails.product_detail_id, formData, 'PUT');
+      if (supplierId != productDetails.supplier_id) productDetails.supplier_id = supplierId;
       console.log('success');
       toastShow('success', 'Updated Successfully')
       setLoading(false);
@@ -68,6 +64,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       checked: formState.found,
       action: () => {
         setFormState((s) => ({...s, found: !formState.found}));
+        productDetails.found = !productDetails.found
       }
     },
     [{
@@ -81,6 +78,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       className: '',
       action: (e) => {
         setFormState((s) => ({...s, price: e.target.value}));
+        productDetails.price = e.target.value
       },
     },
       {
@@ -94,6 +92,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
         options: Object.keys(currencies).map((c) => ({code: c, name: c.toUpperCase()})),
         action: (e) => {
           setFormState((s) => ({...s, currency: e.target.value}));
+          productDetails.currency = e.target.value
         }
       },
       {
@@ -107,6 +106,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
         options: Object.values(quantityType).map((q) => ({code: q, name: q.toUpperCase()})),
         action: (e) => {
           setFormState((s) => ({...s, quantity_type: e.target.value}));
+          productDetails.quantity_type = e.target.value
         }
       }],
     [{
@@ -120,6 +120,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       className: '',
       action: (e) => {
         setFormState((s) => ({...s, quantity: e.target.value}));
+        productDetails.quantity = e.target.value
       },
     },
       {
@@ -134,6 +135,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
         options: Object.values(quantityType).map((q) => ({code: q, name: q.toUpperCase()})),
         action: (e) => {
           setFormState((s) => ({...s, quantity_type: e.target.value}));
+          productDetails.quantity_type = e.target.value
         }
       }], {
       label: 'Expired date',
@@ -145,6 +147,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       className: '',
       action: (e) => {
         setFormState((s) => ({...s, expired_date: e.target.value}));
+        productDetails.expired_date = e.target.value
       },
     },
     {
@@ -156,6 +159,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       className: '',
       action: (e) => {
         setFormState((s) => ({...s, note: e.target.value}));
+        productDetails.note = e.target.value
       },
     },
     {
@@ -185,7 +189,8 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       />
       <div className="flex flex-col grow border-gray-100 border p-2 rounded">
         <div className="flex justify-end">
-          {formState.found ? <Badge variant={'success'}>Found</Badge> : <Badge variant={'danger'}> Not Found</Badge>}
+          {productDetails.found ? <Badge variant={'success'}>Found</Badge> :
+            <Badge variant={'danger'}> Not Found</Badge>}
         </div>
         <Form
           handleSubmit={handleSubmit}
