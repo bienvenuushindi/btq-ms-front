@@ -1,24 +1,20 @@
 'use client';
-import ButtonLink from '@/components/ButtonLink';
+
 import {useContext, useState} from 'react';
 import {useSuppliers} from '@/app/hooks/useSuppliers';
-import {API_URL, BASE_URL} from '@/lib/api';
-import {SearchBar} from '@/components/SearchBar';
-import Card from '@/components/Card';
+import {BASE_URL} from '@/lib/api';
 import {SidebarContext} from '@/components/sidebar/SidebarContainer';
 import SidebarContentSelector from '@/components/SidebarContentSelector';
-import SuppliersTable from '@/components/suppliers/SuppliersTable';
 import SuppliersHeader from '@/components/suppliers/SuppliersHeader';
 import ContainerOne from '@/components/ContainerOne';
 import Container from '@/components/Container';
-import RequisitionsHeader from '@/components/requisitions/RequisitionsHeader';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import EntityTable from '@/components/EntityTable';
 import {Edit, Trash2} from 'react-feather';
 
 export default function Suppliers() {
   const [url, setUrl] = useState(null);
-  const {openBar, setOpenBar, setSidebarData} = useContext(SidebarContext);
+  const {openBar} = useContext(SidebarContext);
   const {suppliers, meta, links, error, isLoading} = useSuppliers(url);
   const columns = [
     {
@@ -78,7 +74,7 @@ export default function Suppliers() {
             updateList={setUrl}
             columns={columns}
             entities={'suppliers'}
-           actions={actions}
+            actions={actions}
           />
           <SidebarContentSelector target={openBar.target}/>
         </ErrorBoundary>
