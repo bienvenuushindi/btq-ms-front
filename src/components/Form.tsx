@@ -65,6 +65,7 @@ const renderField = (field) => {
         onChange={field.action}
       />);
     case 'select':
+      console.log('value', field.value)
       return (
         <SelectInput
           name={field.name}
@@ -129,7 +130,7 @@ const renderField = (field) => {
         )
     case 'tag':
       return (
-        <TagInput action={field.action}>
+        <TagInput defaultTags={field.tags} action={field.action}>
           {field.suggestion}
         </TagInput>
       );

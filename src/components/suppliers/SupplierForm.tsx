@@ -1,30 +1,51 @@
 'use client';
-import Card from '@/components/Card';
 import React, {useState} from 'react';
-import {countries} from '@/data/countries';
-import {send} from '@/lib/api';
+import {BASE_URL, send} from '@/lib/api';
 import {useRouter} from 'next/navigation';
 import Form from '@/components/Form';
-import {useTags} from '@/app/hooks/useTags';
 import SearchTagBox from '@/components/tags/SearchTag';
 import ContainerOne from '@/components/ContainerOne';
+import toastShow from '@/components/toast/toast-selector';
 
-export const SupplierForm = () => {
+export const SupplierForm = ({supplier}) => {
+  const isAddMode = !supplier;
   const router = useRouter();
-  const initial = {
+  let initial = {
     shop_name: '',
-    line1: '',
-    line2: '',
+    address1: '',
+    address2: '',
     city: '',
-    phone_number1: '',
-    phone_number2: '',
+    tel1: '',
+    tel2: '',
     country_id: '',
-    tag_list: '',
+    tags: '',
     country_name: ''
+  };
+
+  if (!isAddMode) {
+    initial = {
+      shop_name: supplier.shop_name,
+      address1: supplier.address1,
+      address2: supplier.address2,
+      city: supplier.city,
+      tel1: supplier.tel1,
+      tel2: supplier.tel2,
+      country_id: supplier.code,
+      tags: supplier.tags.join(','),
+      country_name: supplier.country
+    };
+  }
+
+  const getImageUrls = () => {
+    if (isAddMode) return [];
+    return (supplier.image_urls).map((image_path) => (
+      `${BASE_URL + image_path}`
+    ));
   };
   const [formState, setFormState] = useState({...initial});
   const [error, setError] = useState('');
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState(getImageUrls());
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -32,18 +53,25 @@ export const SupplierForm = () => {
       formData.append(`supplier[${key}]`, formState[key]);
     });
     for (let i = 0; i < photos.length; i++) {
+      if (typeof photos[i] === "string" && photos[i].includes('no-img.png')) {
+        continue
+      }
       formData.append('supplier[images][]', photos[i]);
     }
     try {
-      // for (let pair of formData.entries()) {
-      //   console.log(pair[0] + ', ' + pair[1]);
-      // }
-      await send('/suppliers', formData);
-      router.replace('/suppliers');
+      if(isAddMode){
+        await send('/suppliers', formData);
+        toastShow('Supplier created successfully')
+        router.replace('/suppliers');
+      }else{
+        await send(`/suppliers/${supplier.id}`, formData, 'PUT');
+        toastShow('Supplier updated successfully')
+      }
+
     } catch (e) {
       setError(`Could not create supplier`);
     } finally {
-      setFormState({...initial});
+      // setFormState({...initial});
     }
   };
 
@@ -71,11 +99,12 @@ export const SupplierForm = () => {
       required: true,
       placeholder: 'Select Country',
       name: 'country_id',
+      value: formState.country_name,
       input_type: 'select',
       className: '',
       options: {'CG': 'Congo', 'RW': 'RWANDA', 'UG': 'Uganda', 'KE': 'Kenya', 'QA': 'Qatar',},
       action: (e) => {
-        const countryName = e.target.options[e.target.selectedIndex].text
+        const countryName = e.target.options[e.target.selectedIndex].text;
         setFormState((s) => ({...s, country_id: e.target.value, country_name: countryName}));
       }
     },
@@ -96,64 +125,67 @@ export const SupplierForm = () => {
       label: 'Phone 1',
       required: true,
       placeholder: 'Phone number 1',
-      value: formState.phone_number1,
+      value: formState.tel1,
       name: 'Phone 1',
       type: 'tel',
       input_type: 'text',
       className: '',
       action: (e) => {
-        setFormState((s) => ({...s, phone_number1: e.target.value}));
+        setFormState((s) => ({...s, tel1: e.target.value}));
       },
     },
     {
       label: 'Phone 2',
       required: true,
       placeholder: 'Phone number 2',
-      value: formState.phone_number2,
+      value: formState.tel2,
       name: 'Phone 2',
       type: 'tel',
       input_type: 'text',
       className: '',
       action: (e) => {
-        setFormState((s) => ({...s, phone_number2: e.target.value}));
+        setFormState((s) => ({...s, tel2: e.target.value}));
       },
     },
     {
       label: 'Address 1',
       required: true,
       placeholder: 'Avenue, Building name, Floor Number',
-      value: formState.line1,
-      name: 'line1',
+      value: formState.address1,
+      name: 'address1',
       type: 'text',
       input_type: 'text',
       className: '',
       action: (e) => {
-        setFormState((s) => ({...s, line1: e.target.value}));
+        setFormState((s) => ({...s, address1: e.target.value}));
       },
     },
     {
       label: 'Address 2',
       required: false,
       placeholder: 'Avenue, Building name, Floor Number',
-      value: formState.line2,
-      name: 'line2',
+      value: formState.address2,
+      name: 'address2',
       type: 'text',
       input_type: 'text',
       className: '',
       action: (e) => {
-        setFormState((s) => ({...s, line2: e.target.value}));
+        setFormState((s) => (
+          {...s, address2: e.target.value}
+        ));
       },
     },
     {
       label: 'Enter Some Tags ...',
       required: false,
       placeholder: 'Add tag',
-      tag_list: formState.tag_list,
-      suggestion: <SearchTagBox path='/tags/search'/> ,
+      tags: formState.tags,
+      suggestion: <SearchTagBox path="/tags/search"/>,
       input_type: 'tag',
       className: '',
       action: (tags) => {
-        setFormState((s) => ({...s, tag_list: tags.join(',')}));
+        setFormState((s) => (
+          {...s, tags: tags.join(',')}));
       },
     },
     {
@@ -165,7 +197,7 @@ export const SupplierForm = () => {
       input_type: 'button',
       className: '',
       type: 'submit',
-      placeholder: 'Submit'
+      placeholder: isAddMode ? 'Create' : 'Update'
     }
   ];
 

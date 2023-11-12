@@ -7,7 +7,6 @@ import useCurrencies from '@/app/hooks/useCurrencies';
 import SuppliersSection from '@/components/requisitions/SuppliersSection';
 import Badge from '@/components/Badge';
 import Card from '@/components/Card';
-import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {delay} from '@/lib/async';
 import toastShow from '@/components/toast/toast-selector';
@@ -197,7 +196,6 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
           fields={pricingForm}
         />
       </div>
-      <ToastContainer/>
     </Card>
   );
 }

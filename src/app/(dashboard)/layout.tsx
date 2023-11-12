@@ -3,6 +3,7 @@ import GlassPane from '@/components/GlassPane';
 import Sidebar from '@/components/Sidebar';
 import AppBar from '@/components/AppBar';
 import PageContainer from '@/components/PageContainer';
+import {ToastContainer} from 'react-toastify';
 export default function DashboardRootLayout({children}) {
   return (
     <html lang="en">
@@ -14,6 +15,7 @@ export default function DashboardRootLayout({children}) {
         <PageContainer>
           <AppBar/>
           <Sidebar/>
+          <ToastContainer/>
           <div className="lg:pl-72 pt-12 flex-grow flex-1 flex-col ">
             <div className="py-4">
               {children}

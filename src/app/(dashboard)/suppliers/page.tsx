@@ -1,5 +1,4 @@
 'use client';
-
 import {useContext, useState} from 'react';
 import {useSuppliers} from '@/app/hooks/useSuppliers';
 import {BASE_URL} from '@/lib/api';
@@ -11,11 +10,13 @@ import Container from '@/components/Container';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import EntityTable from '@/components/EntityTable';
 import {Edit, Trash2} from 'react-feather';
+import {useRouter} from 'next/navigation';
 
 export default function Suppliers() {
   const [url, setUrl] = useState(null);
   const {openBar} = useContext(SidebarContext);
   const {suppliers, meta, links, error, isLoading} = useSuppliers(url);
+  const router = useRouter();
   const columns = [
     {
       key: 'image_urls',
@@ -49,6 +50,7 @@ export default function Suppliers() {
       ),
       onClick: (rowIndex) => {
         console.log(`Edit clicked for row ${rowIndex}`);
+        router.push(`/suppliers/update/${rowIndex}`);
       },
     },
     {

@@ -6,6 +6,7 @@ import {X} from 'react-feather';
 
 export default function PhotoPreviewItem({photo, index}) {
   const {setPhotos} = useContext(InputImageContext);
+  const isUrl = typeof photo === 'string';
   return (
     <li className="w-28 h-28 border border-gray-100 shadow rounded-md">
       <div className="mb-2 relative flex items-center justify-center rounded bg-gray-100 w-full h-full">
@@ -17,7 +18,13 @@ export default function PhotoPreviewItem({photo, index}) {
                   })}>
           <X size={20} color="red"/>
         </button>
-        <Image width={100} height={100} className="w-full h-full" src={URL.createObjectURL(photo)} alt="Upload file"/>
+        <Image
+          width={100}
+          height={100}
+          className="w-full h-full"
+          src={isUrl ? photo : URL.createObjectURL(photo)}
+          alt="Upload file"
+        />
       </div>
     </li>
 

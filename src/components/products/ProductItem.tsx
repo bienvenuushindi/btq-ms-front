@@ -7,7 +7,8 @@ import Badge from '@/components/Badge';
 import clsx from 'clsx';
 import Text from '@/components/Text';
 
-export default function ProductItem({product}) {const image_urls = [...product.attributes.image_urls];
+export default function ProductItem({product}){
+  const image_urls = [...product.attributes.image_urls];
   const getImageUrls = () => {
     return (image_urls || []).map((image_path) => ({
       src: `${BASE_URL + image_path}`

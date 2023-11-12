@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import {XCircle} from 'react-feather';
 import Badge from '@/components/Badge';
 
-export default function TagInput({action, children}) {
-  const [tags, setTags] = useState([]);
+export default function TagInput({action, defaultTags, children}) {
+  const [tags, setTags] = useState( defaultTags ? defaultTags.split(',') : []);
   const [input, setInput] = useState('');
   const [showAutoComplete, setShowAutoComplete] = useState(false);
   const [isKeyReleased, setIsKeyReleased] = useState(false);
@@ -13,7 +13,7 @@ export default function TagInput({action, children}) {
 
   const addTag = (input, reset = true) => {
     const trimmedInput = input.trim();
-    if (!tags.includes(trimmedInput) && trimmedInput.length){
+    if (!tags.includes(trimmedInput) && trimmedInput.length) {
       const newTags = [...tags, trimmedInput];
       setTags(newTags);
       action(newTags);
@@ -72,7 +72,7 @@ export default function TagInput({action, children}) {
         clsx('tags-input-container', 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 -dark:bg-gray-700 -dark:border-gray-600 -dark:placeholder-gray-400 -dark:text-white -dark:focus:ring-blue-500 -dark:focus:border-blue-500')
       }
       >  {tags.map((tag, index) => (
-        <Badge variant='success' className=" flex items-center p-1" key={index}>
+        <Badge variant="success" className=" flex items-center p-1" key={index}>
           <span className="text">{tag}</span>
           <span className="close " onClick={() => removeTag(index)}><XCircle size={15}/></span>
         </Badge>
@@ -88,7 +88,7 @@ export default function TagInput({action, children}) {
           onFocus={onFocus}
         />
       </div>
-      <div  tabIndex="1" onBlur={() => setShowAutoComplete(false)}
+      <div tabIndex="1" onBlur={() => setShowAutoComplete(false)}
            className={`absolute bg-white text-start p-2 max-h-40 overflow-x-hidden border w-full z-30 ${showAutoComplete ? '' : 'hidden'}`}>
         {renderChildren()}
       </div>

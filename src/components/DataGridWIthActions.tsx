@@ -119,8 +119,7 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
                 <Button
                   size={'small'}
                   intent={'text'}
-                  // ref={buttonRefs.current[selectedRowIndex]}
-                  onClick={(e) => handleButtonActionsClick(e, index)}
+                  onClick={(e) => handleButtonActionsClick(e, row.id)}
                   className="text-gray-400 hover:text-gray-600 actions-button"
                 >
                   <MoreVertical size={20}/>
