@@ -1,18 +1,38 @@
 'use client';
 import React, {useState} from 'react';
 import {countries} from '@/data/countries';
-import {send} from '@/lib/api';
-import {useRouter} from 'next/navigation';
+import {BASE_URL, send} from '@/lib/api';
+import {useParams, useRouter} from 'next/navigation';
 import Form from '@/components/Form';
 import SearchTagBox from '@/components/tags/SearchTag';
 import ContainerOne from '@/components/ContainerOne';
+import toastShow from '@/components/toast/toast-selector';
 
-export const ProductForm = () => {
+export const ProductForm = ({product}) => {
+  const isAddMode = !product;
+  const params = useParams();
+  console.log(product)
   const router = useRouter();
-  const initial = {name: '', short_description: '', description: '', active: false, country_origin: '', tag_list: ''};
+  let initial = {name: '', short_description: '', description: '', active: false, country_origin: '', tags: ''};
+  if (!isAddMode) {
+    initial = {
+      name: product.name, short_description: product.short_description,
+      description: product.description, active: product.active,
+      country_origin: product.country_origin,
+      tags: product.tags.join(',')
+    };
+  }
+  const getImageUrls = () => {
+    if (isAddMode) return [];
+    return (product.image_urls).map((image_path) => (
+      `${BASE_URL + image_path}`
+    ));
+  };
   const [formState, setFormState] = useState({...initial});
   const [error, setError] = useState('');
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState(getImageUrls());
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,12 +44,21 @@ export const ProductForm = () => {
       formData.append('product[images][]', photos[i]);
     }
     try {
-      await send('/products', formData);
-      router.replace('/products');
+      if(isAddMode){
+        await send('/products', formData);
+        toastShow('success','Supplier created successfully')
+        router.replace('/products');
+      }else{
+
+        const productID = params.id;
+        await send(`/products/${productID}`, formData, 'PUT');
+        toastShow('success','Supplier updated successfully')
+      }
+
     } catch (e) {
       setError(`Could not create product`);
     } finally {
-      setFormState({...initial});
+      // setFormState({...initial});
     }
   };
 
@@ -82,6 +111,7 @@ export const ProductForm = () => {
       placeholder: 'Select Country',
       name: 'country',
       input_type: 'select',
+      value: formState.country_origin,
       className: '',
       options: countries,
       action: (e) => {
@@ -93,12 +123,12 @@ export const ProductForm = () => {
       required: false,
       name: 'tag_list',
       placeholder: 'Add tag',
-      tag_list: formState.tag_list,
+      tags: formState.tags,
       suggestion: <SearchTagBox path='/tags/search'/> ,
       input_type: 'tag',
       className: '',
       action: (tags) => {
-        setFormState((s) => ({...s, tag_list: tags.join(',')}));
+        setFormState((s) => ({...s, tags: tags.join(',')}));
       },
     },
     {

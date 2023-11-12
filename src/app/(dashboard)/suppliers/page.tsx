@@ -49,7 +49,6 @@ export default function Suppliers() {
         <Edit size={20}/>
       ),
       onClick: (rowIndex) => {
-        console.log(`Edit clicked for row ${rowIndex}`);
         router.push(`/suppliers/update/${rowIndex}`);
       },
     },

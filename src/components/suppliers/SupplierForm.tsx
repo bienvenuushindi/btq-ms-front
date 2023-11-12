@@ -9,6 +9,7 @@ import toastShow from '@/components/toast/toast-selector';
 
 export const SupplierForm = ({supplier}) => {
   const isAddMode = !supplier;
+  console.log(supplier)
   const router = useRouter();
   let initial = {
     shop_name: '',

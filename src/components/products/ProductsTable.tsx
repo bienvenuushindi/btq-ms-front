@@ -59,13 +59,13 @@ export default function ProductsTable() {
         <Edit size={20}/>
       ),
       onClick: (rowIndex) => {
-        console.log(`Edit clicked for row ${rowIndex}`);
+        router.push(`/products/update/${rowIndex}`);
       },
     },
     {
       label: 'Delete',
       icon: (
-       <Trash2 size={20}/>
+        <Trash2 size={20}/>
       ),
       onClick: (rowIndex) => {
         console.log(`Delete clicked for row ${rowIndex}`);

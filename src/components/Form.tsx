@@ -65,7 +65,6 @@ const renderField = (field) => {
         onChange={field.action}
       />);
     case 'select':
-      console.log('value', field.value)
       return (
         <SelectInput
           name={field.name}

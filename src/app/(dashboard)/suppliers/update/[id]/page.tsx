@@ -5,7 +5,7 @@ import useSupplier from '@/app/hooks/useSupplier';
 import {useParams} from 'next/navigation';
 
 
-export default function CreateProduct() {
+export default function UpdateSupplier() {
   const params = useParams();
   const supplierID = params.id;
   const {data: result = {}, isLoading} = useSupplier(supplierID);
