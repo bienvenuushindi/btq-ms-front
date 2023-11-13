@@ -11,7 +11,6 @@ import toastShow from '@/components/toast/toast-selector';
 export const ProductForm = ({product}) => {
   const isAddMode = !product;
   const params = useParams();
-  console.log(product)
   const router = useRouter();
   let initial = {name: '', short_description: '', description: '', active: false, country_origin: '', tags: ''};
   if (!isAddMode) {

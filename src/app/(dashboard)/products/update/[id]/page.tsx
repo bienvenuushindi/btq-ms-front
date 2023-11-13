@@ -1,7 +1,5 @@
 'use client';
-import {SupplierForm} from '@/components/suppliers/SupplierForm';
 import Container from '@/components/Container';
-import useSupplier from '@/app/hooks/useSupplier';
 import {useParams} from 'next/navigation';
 import {ProductForm} from '@/components/ProductForm';
 import {useProduct} from '@/app/hooks/useProduct';

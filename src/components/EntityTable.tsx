@@ -23,7 +23,7 @@ const EntityTable = ({
    <>{searchable && <SearchBar updateList={updateList} submitTo={`${API_URL}/${entities}`}/>}
      <Card className="w-full relative justify-start my-2">
        <div className="flex justify-end w-full my-2">
-       <TableMetaData meta={meta}/>
+         { links && meta && <TableMetaData meta={meta}/>}
        </div>
        {actions ?
          <DataGridWithActions
@@ -42,8 +42,12 @@ const EntityTable = ({
            loader={loader}
          />}
        <div className="flex justify-between w-full my-2">
-         <TableMetaData meta={meta}/>
-         <Paginate meta={meta} links={links} setUrl={updateList}/>
+         {links && meta && (
+           <>
+             <TableMetaData meta={meta}/>
+             <Paginate meta={meta} links={links} setUrl={updateList}/>
+           </>
+         )}
        </div>
      </Card></>
 

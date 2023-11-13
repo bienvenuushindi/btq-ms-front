@@ -1,10 +1,35 @@
-import DataGrid from '@/components/DataGrid';
+'use client'
 import {useContext} from 'react';
 import {SidebarContext} from '@/components/sidebar/SidebarContainer';
-import TableLoader from '@/components/banners/TableLoader';
+import {Edit, Trash2} from 'react-feather';
+import {useParams, useRouter} from 'next/navigation';
+import EntityTable from '@/components/EntityTable';
 
 export const ProductDetailsTable = ({details, isLoading}) => {
   const {setOpenBar, setSidebarData} = useContext(SidebarContext);
+  const router = useRouter();
+  const params = useParams();
+  const productID = params.id;
+  const actions = [
+    {
+      label: 'Edit',
+      icon: (
+        <Edit size={20}/>
+      ),
+      onClick: (rowIndex) => {
+        router.push(`/products/${productID}/details/update/${rowIndex}`);
+      },
+    },
+    {
+      label: 'Delete',
+      icon: (
+        <Trash2 size={20}/>
+      ),
+      onClick: (rowIndex) => {
+        console.log(`Delete clicked for row ${rowIndex}`);
+      },
+    },
+  ];
   const columns = [
     {
       key: 'size',
@@ -66,11 +91,12 @@ export const ProductDetailsTable = ({details, isLoading}) => {
 
   return (
     <>
-      <DataGrid
-        data={details}
-        columns={columns}
-        tHeadProps={{color: 'primary'}}
+      <EntityTable
         isLoading={isLoading}
+        columns={columns}
+        data={details}
+        actions={actions}
+        searchable={false}
       />
     </>
   );

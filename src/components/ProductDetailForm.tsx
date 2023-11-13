@@ -2,15 +2,18 @@
 import React, {useState} from 'react';
 import Card from '@/components/Card';
 import {useRouter, useParams} from 'next/navigation';
-import {send} from '@/lib/api';
+import {BASE_URL, send} from '@/lib/api';
 import Form from '@/components/Form';
 import SearchTagBox from '@/components/tags/SearchTag';
 import ContainerOne from '@/components/ContainerOne';
+import toastShow from '@/components/toast/toast-selector';
 
-export const ProductDetailForm = () => {
+export const ProductDetailForm = ({variant}) => {
   const router = useRouter();
   const path = useParams();
-  const initial = {
+  const isAddMode = !variant
+  console.log(path)
+  let initial = {
     size: '',
     expired_date: '',
     unit_price: 0.0,
@@ -20,12 +23,34 @@ export const ProductDetailForm = () => {
     box_units: 1,
     currency: '',
     active: '',
-    tag_list: '',
+    tags: '',
     supplier_id: null,
+  };
+  if (!isAddMode) {
+    initial = {
+      size: variant.size,
+      expired_date: variant.expired_date,
+      unit_price: variant.unit_price,
+      dozen_price: variant.dozen_price,
+      box_price: variant.box_price,
+      dozen_units: variant.dozen_units,
+      box_units: variant.box_units,
+      // currency: variant.,
+      // active: '',
+      tags: variant.tags.join(','),
+      // supplier_id: null,
+    };
+  }
+
+  const getImageUrls = () => {
+    if (isAddMode) return [];
+    return (variant.image_urls).map((image_path) => (
+      `${BASE_URL + image_path}`
+    ));
   };
   const [formState, setFormState] = useState({...initial});
   const [error, setError] = useState('');
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState(getImageUrls());
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -36,13 +61,20 @@ export const ProductDetailForm = () => {
       formData.append('product_detail[images][]', photos[i]);
     }
     try {
-      //submit promise
-      await send('/products/' + path.id + '/product_details', formData);
-      router.replace('/products/' + path.id);
+
+      if(isAddMode){
+        //submit promise
+        await send('/products/' + path.id + '/product_details', formData);
+        toastShow('success','Supplier created successfully')
+        router.replace('/products/' + path.id);
+      }else{
+        await send('/products/' + path.id + '/product_details/'+path.variant, formData, "PUT");
+        toastShow('success','Supplier updated successfully')
+      }
     } catch (e) {
       setError(`Could not create product`);
     } finally {
-      setFormState({...initial});
+      // setFormState({...initial});
     }
   };
 
@@ -89,7 +121,7 @@ export const ProductDetailForm = () => {
         label: 'Box Price',
         required: true,
         placeholder: 'Box Price',
-        value: formState.dozen_price,
+        value: formState.box_price,
         name: 'box-price',
         input_type: 'number',
         type: 'number',
@@ -101,7 +133,7 @@ export const ProductDetailForm = () => {
       label: 'Unit Qty in Box',
       required: true,
       placeholder: 'Box Units',
-      value: formState.dozen_price,
+      value: formState.box_units,
       name: 'box-units',
       input_type: 'number',
       type: 'number',
@@ -156,19 +188,19 @@ export const ProductDetailForm = () => {
       label: 'Enter Some Tags ...',
       required: false,
       placeholder: 'Add tag',
-      tag_list: formState.tag_list,
+      tags: formState.tags,
       suggestion: <SearchTagBox path='/tags/search'/> ,
       input_type: 'tag',
       name: 'tags',
       className: '',
       action: (tags) => {
-        setFormState((s) => ({...s, tag_list: tags.join(',')}));
+        setFormState((s) => ({...s, tags: tags.join(',')}));
       },
     },
     {
       label: 'Photos',
-      name: 'photos',
       input_type: 'image-file',
+      name: 'photos',
       image_props: {photos, setPhotos}
     },
     {
