@@ -93,6 +93,7 @@ const renderField = (field) => {
               key={option}
               type="radio"
               name={field.name}
+              checked={field.value === option}
               value={option}
               onChange={field.action}
               className={

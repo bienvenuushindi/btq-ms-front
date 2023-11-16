@@ -12,7 +12,7 @@ export const ProductDetailForm = ({variant}) => {
   const router = useRouter();
   const path = useParams();
   const isAddMode = !variant
-  console.log(path)
+  console.log(variant)
   let initial = {
     size: '',
     expired_date: '',
@@ -21,10 +21,15 @@ export const ProductDetailForm = ({variant}) => {
     box_price: 0.0,
     dozen_units: 12,
     box_units: 1,
-    currency: '',
-    active: '',
     tags: '',
     supplier_id: null,
+    currency: variant.currency,
+    status: variant.status,
+  };
+  let  content = {
+    header: 'Create a product variant',
+    subheader: '',
+    buttonText: 'Create'
   };
   if (!isAddMode) {
     initial = {
@@ -35,10 +40,16 @@ export const ProductDetailForm = ({variant}) => {
       box_price: variant.box_price,
       dozen_units: variant.dozen_units,
       box_units: variant.box_units,
-      // currency: variant.,
-      // active: '',
+      currency: variant.currency,
+      status: variant.status,
       tags: variant.tags.join(','),
       // supplier_id: null,
+    };
+
+    content = {
+      header: 'Update Product variant',
+      subheader: '',
+      buttonText: 'Update'
     };
   }
 
@@ -111,6 +122,7 @@ export const ProductDetailForm = ({variant}) => {
       name: 'currency',
       input_type: 'radio',
       className: '',
+      value: formState.currency,
       options: ['fc', 'ugx', 'usd'],
       action: (e) => {
         setFormState((s) => ({...s, currency: e.target.value}));
@@ -207,9 +219,9 @@ export const ProductDetailForm = ({variant}) => {
       label: 'Status',
       input_type: 'checkbox',
       className: '',
-      checked: formState.active,
+      checked: formState.status,
       action: (e) => {
-        setFormState((s) => ({...s, active: !formState.active}));
+        setFormState((s) => ({...s, status: !formState.status}));
       }
     },
     {
@@ -220,11 +232,8 @@ export const ProductDetailForm = ({variant}) => {
     }
   ];
 
-  const content = {
-    header: 'Create a product',
-    subheader: '',
-    buttonText: 'Create'
-  };
+
+
   return (
     <ContainerOne>
         <div className="w-full lg:w-2/4 mx-auto">
