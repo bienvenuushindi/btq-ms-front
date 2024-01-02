@@ -1,9 +1,35 @@
-import DataGrid from '@/components/DataGrid';
+'use client'
 import {useContext} from 'react';
 import {SidebarContext} from '@/components/sidebar/SidebarContainer';
+import {Edit, Trash2} from 'react-feather';
+import {useParams, useRouter} from 'next/navigation';
+import EntityTable from '@/components/EntityTable';
 
-export const ProductDetailsTable = ({details}) => {
+export const ProductDetailsTable = ({details, isLoading}) => {
   const {setOpenBar, setSidebarData} = useContext(SidebarContext);
+  const router = useRouter();
+  const params = useParams();
+  const productID = params.id;
+  const actions = [
+    {
+      label: 'Edit',
+      icon: (
+        <Edit size={20}/>
+      ),
+      onClick: (rowIndex) => {
+        router.push(`/products/${productID}/details/update/${rowIndex}`);
+      },
+    },
+    {
+      label: 'Delete',
+      icon: (
+        <Trash2 size={20}/>
+      ),
+      onClick: (rowIndex) => {
+        console.log(`Delete clicked for row ${rowIndex}`);
+      },
+    },
+  ];
   const columns = [
     {
       key: 'size',
@@ -56,19 +82,21 @@ export const ProductDetailsTable = ({details}) => {
       key: 'button',
       type: 'details',
       label: "Prices",
-      action: (data, id) => {
+      action: (data) => {
         setOpenBar({state: true, target: 'price_details'});
         setSidebarData(data);
       }
-    }
+    },
   ];
 
   return (
     <>
-      <DataGrid
-        data={details}
+      <EntityTable
+        isLoading={isLoading}
         columns={columns}
-        tHeadProps={{color: 'primary'}}
+        data={details}
+        actions={actions}
+        searchable={false}
       />
     </>
   );

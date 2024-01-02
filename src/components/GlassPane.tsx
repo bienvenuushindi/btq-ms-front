@@ -2,7 +2,7 @@ import clsx from 'clsx';
 
 const GlassPane = ({children, className}) => {
   return <div className={clsx(
-    'glass',
+    'flex min-h-screen',
     className
   )}>
     {children}

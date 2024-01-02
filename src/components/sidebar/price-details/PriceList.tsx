@@ -4,7 +4,7 @@ export default function PriceList({prices}) {
   return (
     <>
       <ul>
-        {prices.map(price => <li key={prices.id}>
+        {prices.map(price => <li key={`${price.id}-${Math.random()}`}>
           <PriceItem price={price.attributes}/>
         </li>)}
       </ul>

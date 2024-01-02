@@ -2,7 +2,9 @@ import ProductDetailsSidebar from '@/components/sidebar/ProductDetailsSidebar';
 import PriceDetailsSidebar from '@/components/sidebar/PriceDetailsSidebar';
 import {PriceDetailForm} from '@/components/PriceDetailForm';
 import {useContext} from 'react';
-import {SidebarContext} from '@/components/sidebar/SidebarContainer';
+import {SidebarContainer, SidebarContext} from '@/components/sidebar/SidebarContainer';
+import RequisitionDetails from '@/components/sidebar/RequisitionDetails';
+import SupplierDetails from '@/components/suppliers/SupplierDetails';
 
 export default function SidebarContentSelector({target}) {
   const {sidebarData} = useContext(SidebarContext);
@@ -14,13 +16,19 @@ export default function SidebarContentSelector({target}) {
         return <ProductDetailsSidebar/>;
       case 'add_price':
         return <PriceDetailForm productDetailID={sidebarData.id}/>;
+      case 'requisition_details':
+        return <RequisitionDetails/>;
+      case 'supplier_details':
+        return <SupplierDetails/>;
       default:
         return 'no content';
     }
   };
   return (
-    <div className="relative">
-      {renderSwitch(target)}
-    </div>
+    <SidebarContainer>
+      <div className="relative overflow-y-auto">
+        {renderSwitch(target)}
+      </div>
+    </SidebarContainer>
   );
 }

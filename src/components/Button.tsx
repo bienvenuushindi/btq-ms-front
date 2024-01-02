@@ -4,43 +4,59 @@ import {cva, VariantProps} from 'class-variance-authority';
 
 export const buttonClasses = cva(
   [
-    'rounded-3xl',
+    'rounded',
     'font-bold',
-    'hover:scale-110',
-    'active:scale-100',
     'transition',
     'duration-200',
     'ease-in-out',
+    'focus:outline-0',
   ],
   {
     variants: {
       intent: {
+        text: ['bg-transparent', 'text-gray-800', 'hover:bg-gray-100'],
         primary: [
-          'bg-violet-500',
+          'bg-lightBlue-100',
           'text-white',
           'border-transparent',
-          'hover:bg-violet-600',
+          'hover:bg-lightBlue-200',
         ],
-
+        danger:[
+         "text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800"
+        ],
         secondary: [
           'bg-white',
           'text-black',
           'border-gray-400',
           'hover:bg-gray-100',
           'border-solid',
-          'border-2',
-          'border-gray-800',
+          'border',
+          'border-gray-100',
         ],
-        text: ['bg-transparent', 'text-black', 'hover:bg-gray-100'],
+        tertiary: [
+          'text-white',
+          'bg-blue-700',
+          'rounded-lg',
+          'hover:bg-blue-800',
+          'focus:ring-4',
+          'focus:outline-none',
+          'focus:ring-blue-300',
+          'dark:bg-blue-600',
+          'dark:hover:bg-blue-700',
+          'dark:focus:ring-blue-800'
+        ],
+        default:[
+          "text-gray-800 hover:text-white bg-gray-200 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:focus:ring-gray-800"
+        ]
       },
       size: {
-        small: ['text-md', 'py-1', 'px-2'],
+        small: ['px-1', 'py-1', ' text-xs'],
         medium: ['text-lg', 'px-6', 'py-2'],
         large: ['text-xlg', 'px-8', 'py-4'],
       },
     },
     defaultVariants: {
-      intent: 'primary',
+      intent: 'default',
       size: 'medium',
     },
   }

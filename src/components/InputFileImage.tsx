@@ -2,7 +2,8 @@ import React, {useContext} from 'react';
 import clsx from 'clsx';
 import PhotoPreviewList from '@/components/PhotoPreviewList';
 import {InputImageContext} from '@/components/Form';
-
+import {Camera} from 'react-feather';
+import '@/styles/animation/style.css';
 
 
 const InputFileImage = () => {
@@ -21,7 +22,7 @@ const InputFileImage = () => {
     handlePhotosArray(uploadedPhotos);
   };
   return (
-    <div className="mb-8">
+    <div className="mb-4 flex gap-2">
       <input
         id="photosUpload"
         type="file"
@@ -32,10 +33,12 @@ const InputFileImage = () => {
       />
       <label htmlFor="photosUpload">
         <a type="button"
-           className={clsx('bg-violet-500',
-             'text-white',
-             'border-transparent',
-             'hover:bg-violet-600', photos.length === MAX_AMOUNT && 'bg-black')}>{photos.length === MAX_AMOUNT ? 'Limit Reached!' : 'Add Photos'}
+           className={clsx(' text-sm font-medium mr-2 rounded  border  border-dashed flex items-center',
+             photos.length !== MAX_AMOUNT && 'bg-gray-100 hover:border-gray-600 border-gray-500 hover:bg-gray-500 p-4',
+             photos.length === MAX_AMOUNT && 'bip-animation bg-red-100 px-2.5 py-0.5'
+           )}>
+          {photos.length === MAX_AMOUNT ? <span className=" text-red-800">Limit Reached</span> :
+            <Camera size={50} color="#bbbec4"/>}
         </a>
       </label>
       <PhotoPreviewList photos={photos}/>

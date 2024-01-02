@@ -2,13 +2,18 @@
 import React, {useState} from 'react';
 import Card from '@/components/Card';
 import {useRouter, useParams} from 'next/navigation';
-import {send} from '@/lib/api';
+import {BASE_URL, send} from '@/lib/api';
 import Form from '@/components/Form';
+import SearchTagBox from '@/components/tags/SearchTag';
+import ContainerOne from '@/components/ContainerOne';
+import toastShow from '@/components/toast/toast-selector';
 
-export const ProductDetailForm = () => {
+export const ProductDetailForm = ({variant}) => {
   const router = useRouter();
   const path = useParams();
-  const initial = {
+  const isAddMode = !variant
+  console.log(variant)
+  let initial = {
     size: '',
     expired_date: '',
     unit_price: 0.0,
@@ -16,12 +21,47 @@ export const ProductDetailForm = () => {
     box_price: 0.0,
     dozen_units: 12,
     box_units: 1,
-    currency: '',
-    active: ''
+    tags: '',
+    supplier_id: null,
+    currency: variant.currency,
+    status: variant.status,
+  };
+  let  content = {
+    header: 'Create a product variant',
+    subheader: '',
+    buttonText: 'Create'
+  };
+  if (!isAddMode) {
+    initial = {
+      size: variant.size,
+      expired_date: variant.expired_date,
+      unit_price: variant.unit_price,
+      dozen_price: variant.dozen_price,
+      box_price: variant.box_price,
+      dozen_units: variant.dozen_units,
+      box_units: variant.box_units,
+      currency: variant.currency,
+      status: variant.status,
+      tags: variant.tags.join(','),
+      // supplier_id: null,
+    };
+
+    content = {
+      header: 'Update Product variant',
+      subheader: '',
+      buttonText: 'Update'
+    };
+  }
+
+  const getImageUrls = () => {
+    if (isAddMode) return [];
+    return (variant.image_urls).map((image_path) => (
+      `${BASE_URL + image_path}`
+    ));
   };
   const [formState, setFormState] = useState({...initial});
   const [error, setError] = useState('');
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState(getImageUrls());
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -32,15 +72,23 @@ export const ProductDetailForm = () => {
       formData.append('product_detail[images][]', photos[i]);
     }
     try {
-      //submit promise
-      await send('/products/' + path.id + '/product_details', formData);
-      router.replace('/products/' + path.id);
+
+      if(isAddMode){
+        //submit promise
+        await send('/products/' + path.id + '/product_details', formData);
+        toastShow('success','Supplier created successfully')
+        router.replace('/products/' + path.id);
+      }else{
+        await send('/products/' + path.id + '/product_details/'+path.variant, formData, "PUT");
+        toastShow('success','Supplier updated successfully')
+      }
     } catch (e) {
       setError(`Could not create product`);
     } finally {
-      setFormState({...initial});
+      // setFormState({...initial});
     }
   };
+
   const productDetailForm = [
     {
       label: 'Size',
@@ -69,6 +117,73 @@ export const ProductDetailForm = () => {
       },
     },
     {
+      label: 'Choose currency',
+      placeholder: 'Select Currency',
+      name: 'currency',
+      input_type: 'radio',
+      className: '',
+      value: formState.currency,
+      options: ['fc', 'ugx', 'usd'],
+      action: (e) => {
+        setFormState((s) => ({...s, currency: e.target.value}));
+      }
+    },
+    [
+      {
+        label: 'Box Price',
+        required: true,
+        placeholder: 'Box Price',
+        value: formState.box_price,
+        name: 'box-price',
+        input_type: 'number',
+        type: 'number',
+        className: '',
+        action: (e) => {
+          setFormState((s) => ({...s, box_price: e.target.value}));
+        },
+      },{
+      label: 'Unit Qty in Box',
+      required: true,
+      placeholder: 'Box Units',
+      value: formState.box_units,
+      name: 'box-units',
+      input_type: 'number',
+      type: 'number',
+      className: '',
+      action: (e) => {
+        setFormState((s) => ({...s, box_units: e.target.value}));
+      },
+    },
+    ],
+    [
+      {
+        label: 'Dozen Price',
+        required: true,
+        placeholder: 'Dozen Price',
+        value: formState.dozen_price,
+        name: 'dozen-price',
+        input_type: 'number',
+        type: 'number',
+        className: '',
+        action: (e) => {
+          setFormState((s) => ({...s, dozen_price: e.target.value}));
+        },
+      },
+      {
+        label: 'Unit Qty in Dozen',
+        required: true,
+        placeholder: 'Dozen units',
+        value: formState.dozen_units,
+        name: 'dozen-units',
+        input_type: 'number',
+        type: 'number',
+        className: '',
+        action: (e) => {
+          setFormState((s) => ({...s, dozen_units: e.target.value}));
+        },
+      },
+    ],
+    {
       label: 'Unit Price',
       required: true,
       placeholder: 'Unit Price',
@@ -82,80 +197,31 @@ export const ProductDetailForm = () => {
       },
     },
     {
-      label: 'Dozen Price',
-      required: true,
-      placeholder: 'Dozen Price',
-      value: formState.dozen_price,
-      name: 'dozen-price',
-      input_type: 'number',
-      type: 'number',
+      label: 'Enter Some Tags ...',
+      required: false,
+      placeholder: 'Add tag',
+      tags: formState.tags,
+      suggestion: <SearchTagBox path='/tags/search'/> ,
+      input_type: 'tag',
+      name: 'tags',
       className: '',
-      action: (e) => {
-        setFormState((s) => ({...s, dozen_price: e.target.value}));
+      action: (tags) => {
+        setFormState((s) => ({...s, tags: tags.join(',')}));
       },
-    },
-    {
-      label: 'Box Price',
-      required: true,
-      placeholder: 'Box Price',
-      value: formState.dozen_price,
-      name: 'box-price',
-      input_type: 'number',
-      type: 'number',
-      className: '',
-      action: (e) => {
-        setFormState((s) => ({...s, box_price: e.target.value}));
-      },
-    },
-    {
-      label: 'Unit Qty in Dozen',
-      required: true,
-      placeholder: 'Dozen units',
-      value: formState.dozen_units,
-      name: 'dozen-units',
-      input_type: 'number',
-      type: 'number',
-      className: '',
-      action: (e) => {
-        setFormState((s) => ({...s, dozen_units: e.target.value}));
-      },
-    },
-    {
-      label: 'Unit Qty in Box',
-      required: true,
-      placeholder: 'Box Units',
-      value: formState.dozen_price,
-      name: 'box-units',
-      input_type: 'number',
-      type: 'number',
-      className: '',
-      action: (e) => {
-        setFormState((s) => ({...s, box_units: e.target.value}));
-      },
-    },
-    {
-      label: 'Choose currency',
-      placeholder: 'Select Currency',
-      name: 'country',
-      input_type: 'radio',
-      className: '',
-      options: ['fc', 'ugx', 'usd'],
-      action: (e) => {
-        setFormState((s) => ({...s, currency: e.target.value}));
-      }
     },
     {
       label: 'Photos',
       input_type: 'image-file',
+      name: 'photos',
       image_props: {photos, setPhotos}
     },
     {
       label: 'Status',
       input_type: 'checkbox',
       className: '',
-      checked: formState.active,
+      checked: formState.status,
       action: (e) => {
-        setFormState((s) => ({...s, active: !formState.active}));
+        setFormState((s) => ({...s, status: !formState.status}));
       }
     },
     {
@@ -166,22 +232,17 @@ export const ProductDetailForm = () => {
     }
   ];
 
-  const content = {
-    header: 'Create a product',
-    subheader: '',
-    buttonText: 'Create'
-  };
+
+
   return (
-    <>
-      <Card>
-        <div className="w-full">
+    <ContainerOne>
+        <div className="w-full lg:w-2/4 mx-auto">
           <div className="text-center">
             <h2 className="text-3xl mb-2 text-black">{content.header}</h2>
             <p className="tex-lg text-black/25">{content.subheader}</p>
           </div>
           <Form fields={productDetailForm} handleSubmit={handleSubmit}/>
         </div>
-      </Card>
-    </>
+    </ContainerOne>
   );
 };

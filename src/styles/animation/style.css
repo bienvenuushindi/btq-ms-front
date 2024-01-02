@@ -1,0 +1,15 @@
+@keyframes bip {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bip-animation {
+    animation: bip 3s infinite;
+}
