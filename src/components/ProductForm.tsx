@@ -46,7 +46,7 @@ export const ProductForm = ({product}) => {
       if(isAddMode){
         await send('/products', formData);
         toastShow('success','Supplier created successfully')
-        router.replace('/products');
+        router.push('/products');
       }else{
 
         const productID = params.id;

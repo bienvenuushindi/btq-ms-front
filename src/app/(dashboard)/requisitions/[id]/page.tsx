@@ -4,7 +4,6 @@ import {useFetcher} from '@/app/hooks/useFetcher';
 import SidebarContentSelector from '@/components/SidebarContentSelector';
 import {SidebarContext} from '@/components/sidebar/SidebarContainer';
 import React, {useContext} from 'react';
-import RequisitionItem from '@/components/requisitions/RequisitionItem';
 import Container from '@/components/Container';
 import RequisitionDetailsHeader from '@/components/requisitions/RequisitionDetailsHeader';
 import ContainerOne from '@/components/ContainerOne';
@@ -12,6 +11,8 @@ import ReqItemProductList from '@/components/requisitions/ReqItemProductList';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Card from '@/components/Card';
 import GridLoader from '@/components/banners/GridLoader';
+import {RequisitionInfoWithContext} from '@/components/requisitions/home-page/RequisitionItem';
+import RequisitionProvider from '@/components/requisitions/RequisitionContext';
 
 export default function Requisition() {
   const {openBar} = useContext(SidebarContext);
@@ -37,11 +38,13 @@ export default function Requisition() {
           }
           {requisition_items && (
             <>
-              <Card className="w-full">
-                <RequisitionItem requisition={requisition_items.attributes}/>
-              </Card>
-              <ReqItemProductList details={requisition_items.attributes.product_items} requisitionId={requisitionId}/>
-              <SidebarContentSelector target={openBar.target}/>
+              <RequisitionProvider>
+                <Card className="w-full">
+                  <RequisitionInfoWithContext requisition={requisition_items.attributes} withLink={false}/>
+                </Card>
+                <ReqItemProductList details={requisition_items.attributes.product_items} requisitionId={requisitionId}/>
+                <SidebarContentSelector target={openBar.target}/>
+              </RequisitionProvider>
             </>
           )}
         </ErrorBoundary>

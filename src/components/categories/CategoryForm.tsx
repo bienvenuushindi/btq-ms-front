@@ -19,7 +19,7 @@ export default function CategoryForm() {
 
     try {
       const result = await send('/categories', formData);
-      router.replace('/categories');
+      router.push('/categories');
     } catch (e) {
       console.log(`Could not create category`);
       console.log(e);

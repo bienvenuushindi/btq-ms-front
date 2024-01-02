@@ -1,7 +1,7 @@
 'use client';
 import {useContext, useState} from 'react';
 import {useSuppliers} from '@/app/hooks/useSuppliers';
-import {BASE_URL} from '@/lib/api';
+import {API_URL, BASE_URL} from '@/lib/api';
 import {SidebarContext} from '@/components/sidebar/SidebarContainer';
 import SidebarContentSelector from '@/components/SidebarContentSelector';
 import SuppliersHeader from '@/components/suppliers/SuppliersHeader';
@@ -13,10 +13,11 @@ import {Edit, Trash2} from 'react-feather';
 import {useRouter} from 'next/navigation';
 
 export default function Suppliers() {
-  const [url, setUrl] = useState(null);
-  const {openBar} = useContext(SidebarContext);
+  const [url, setUrl] = useState(`${API_URL}/suppliers`);
+  const {openBar, setOpenBar, setSidebarData} = useContext(SidebarContext);
   const {suppliers, meta, links, error, isLoading} = useSuppliers(url);
   const router = useRouter();
+  console.log(suppliers)
   const columns = [
     {
       key: 'image_urls',
@@ -31,17 +32,20 @@ export default function Suppliers() {
     {
       key: 'shop_name',
       type: 'text',
+      sortable: true,
       label: 'Shop Name',
       // dataTransformation: (value: any) => value.toUpperCase(),
     },
+    {
+      key: 'button',
+      type: 'details',
+      label: "Address",
+      action: (data) => {
+        setOpenBar({state: true, target: 'supplier_details'});
+        setSidebarData(data);
+      }
+    },
   ];
-  const callMe = (text) => {
-    setUrl(text);
-  };
-  const content = {
-    linkUrl: '/suppliers/create',
-    linkText: 'New Supplier'
-  };
   const actions = [
     {
       label: 'Edit',

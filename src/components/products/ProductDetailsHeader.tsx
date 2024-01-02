@@ -17,10 +17,10 @@ const ProductDetailsHeader = ({details}) => {
           href={ '/products/' + productId + '/details/create'}
           size="small"
           intent={'primary'}
-          className="px-3 py-2 rounded-md flex items-center space-x-1"
+          className="px-1 py-2 rounded-md flex items-center gap-1 text-sm"
         >
           <PlusCircle color="#FFFFFF" size={20}/>
-          <span className="text-neutral-50 px-1">Add Variant </span>
+          <span className="text-neutral-50 ">Add Variant </span>
         </ButtonLink>
         <SelectProductVariant details={details}/>
       </div>

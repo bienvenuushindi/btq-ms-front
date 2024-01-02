@@ -6,7 +6,7 @@ const links = [
   {label: 'Requisitions', icon: 'BookOpen', link: '/requisitions'},
   {label: 'Suppliers', icon: 'Truck', link: '/suppliers'},
   {label: 'Categories', icon: 'Grid', link: '/categories'},
-  {label: 'Profile', icon: 'User', link: '/profile'},
+  {label: 'Profile', icon: 'User', link: '/account'},
   {label: 'Settings', icon: 'Settings', link: '/settings'},
 ];
 const Sidebar = ({open, onClose}) => {

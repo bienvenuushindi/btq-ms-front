@@ -1,7 +1,11 @@
-export default function ContainerOne({children}) {
+import React from 'react';
+
+const ContainerOne = ({ children }) => {
   return (
-    <div className="w-full h-full container py-4 mx-auto flex flex-col items-start">
-          {children}
+    <div className="w-full h-full container mx-auto py-4 flex flex-col items-start">
+      {children}
     </div>
-  )
-}
+  );
+};
+
+export default ContainerOne;

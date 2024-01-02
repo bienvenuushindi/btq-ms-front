@@ -63,7 +63,7 @@ export const SupplierForm = ({supplier}) => {
       if(isAddMode){
         await send('/suppliers', formData);
         toastShow('success','Supplier created successfully')
-        router.replace('/suppliers');
+        router.push('/suppliers');
       }else{
         await send(`/suppliers/${supplier.id}`, formData, 'PUT');
         toastShow('success','Supplier updated successfully')

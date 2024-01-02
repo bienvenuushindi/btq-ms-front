@@ -17,17 +17,7 @@ export default function Form({fields, handleSubmit}) {
         return (
           <div key={`form-group-${index}`} className="flex mb-4 justify-between">
             <div className="w-full text-start">
-              {Array.isArray(field) ?
-                <div className='flex gap-2'>
-                  {field.map((child, index) => {
-                    return (
-                      <div key={`form-group-horizontal-${index}`} className={`w-1/${field.length}`}>
-                        {renderGroup(child)}
-                      </div>
-                    )
-                  })}
-                </div>
-                : renderGroup(field)}
+              {renderGroup(field)}
             </div>
           </div>
         );
@@ -39,19 +29,33 @@ export default function Form({fields, handleSubmit}) {
 
 const renderGroup = (field) => {
   return (
+
     <>
-      {field.name && <label htmlFor={field.label}
-                            className={clsx('block mb-2 text-start text-sm font-medium text-gray-900 -dark:text-white', field.labelClassName)}>
-        {field.label}
-      </label>}
-      {renderField(field)}
+      {Array.isArray(field) ?
+        <div className="flex gap-2">
+          {field.map((child, index) => {
+            return (
+              <div key={`form-field-${field.length}-${index}`} className={`flex flex-col w-1/${field.length}`}>
+                {renderGroup(child)}
+              </div>
+            );
+          })}
+        </div>
+        :
+        <>
+          {field.name && <label htmlFor={field.label}
+                                className={clsx('mb-2 text-start text-sm font-medium text-gray-900 -dark:text-white', field.labelClassName)}>
+            {field.label}
+          </label>}
+          {renderField(field)}
+        </>}
     </>
-  )
-}
+  );
+};
 const renderField = (field) => {
   switch (field['input_type']) {
     case 'custom':
-      return field.component
+      return field.component;
     case 'text-area':
       return (<Textarea
         required={field.required}
@@ -72,7 +76,7 @@ const renderField = (field) => {
           className={
             clsx('bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 -dark:bg-gray-700 -dark:border-gray-600 -dark:placeholder-gray-400 -dark:text-white -dark:focus:ring-blue-500 -dark:focus:border-blue-500', field.className)
           }
-          onChange={(e)=>field.action(e)} disabled={field.disabled || false}>
+          onChange={(e) => field.action(e)} disabled={field.disabled || false}>
           <option value="">{field.placeholder}</option>
           {Array.isArray(field.options)
             ? field.options.map(option =>
@@ -122,12 +126,10 @@ const renderField = (field) => {
           <span>{field.label}</span>
         </div>
       );
-      case 'toggle':
-        return (
-          <div className="flex items-center">
-            <Toggle enabled={field.checked} setEnabled={field.action} label={field.label}/>
-          </div>
-        )
+    case 'toggle':
+      return (
+          <Toggle enabled={field.checked} setEnabled={field.action} label={field.label}/>
+      );
     case 'tag':
       return (
         <TagInput defaultTags={field.tags} action={field.action}>
@@ -136,7 +138,8 @@ const renderField = (field) => {
       );
     case 'button':
       return (
-        <Button type={field.type} size={20} intent="primary" disabled={field.disabled || false} className={
+        <Button type={field.type} onClick={field.action} size={20} intent={field.intent || 'primary'}
+                disabled={field.disabled || false} className={
           clsx(' px-2 py-2 text-sm', field.className)
         }>
           {field.placeholder}
@@ -150,10 +153,13 @@ const renderField = (field) => {
           value={field.value || ''}
           type={field.type}
           name={field.name}
+          disabled={field.disabled || false}
+          key={field.key || field.name}
           className={
             clsx('bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 -dark:bg-gray-700 -dark:border-gray-600 -dark:placeholder-gray-400 -dark:text-white -dark:focus:ring-blue-500 -dark:focus:border-blue-500', field.className)
           }
-          onChange={field.action}
+          onChange={field.action }
+          onBlur = {field.onBlur}
         />
       );
   }

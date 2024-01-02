@@ -11,6 +11,7 @@ import ModalContainer from '@/components/modal/ModalContainer';
 import Form from '@/components/Form';
 import useCurrencies from '@/app/hooks/useCurrencies';
 import Badge from '@/components/Badge';
+import {format} from 'date-fns';
 
 
 export default function CreateRequisition() {
@@ -30,10 +31,11 @@ export default function CreateRequisition() {
       }
       nextDate.setDate(nextDate.getDate() + daysToAdd);
       const dayName = daysOfWeek[nextDate.getDay()];
-      const day = nextDate.getDate();
-      const month = (nextDate.getMonth() + 1).toString().padStart(2, '0'); // Add leading zero to the month
-      const year = nextDate.getFullYear();
-      const formattedDate = `${year}-${month}-${day}`;
+      // const day = nextDate.getDate();
+      // const month = (nextDate.getMonth() + 1).toString().padStart(2, '0'); // Add leading zero to the month
+      // const year = nextDate.getFullYear();
+      // const formattedDate = `${year}-${month}-${day}`;
+      const formattedDate = format(nextDate, 'yyyy-MM-dd');
       return `${dayName}, ${formattedDate}`;
     },
     []
@@ -58,7 +60,7 @@ export default function CreateRequisition() {
     });
     try {
       const result = await send('/requisitions', formData);
-      router.replace('/requisitions/' + result.id );
+      router.push('/requisitions/' + result.id );
     } catch (e) {
       console.log(`Could not create requisition`);
       console.log(e);

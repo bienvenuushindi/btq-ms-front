@@ -1,110 +1,139 @@
-'use client';
-import React, {useContext, useState} from 'react';
-import Card from '@/components/Card';
-import {send} from '@/lib/api';
-import {useCountries} from '@/app/hooks/useCountries';
-import {useSuppliers} from '@/app/hooks/useSuppliers';
+import React, { useContext, useState } from 'react';
+import { send } from '@/lib/api';
 import Form from '@/components/Form';
-import {SidebarContext} from '@/components/sidebar/SidebarContainer';
+import { SidebarContext } from '@/components/sidebar/SidebarContainer';
 import ContainerOne from '@/components/ContainerOne';
 import SelectSupplier from '@/components/requisitions/SelectSupplier';
+import clsx from 'clsx';
+import Toggle from '@/components/forms/Toggle';
 
-export const PriceDetailForm = ({productDetailID}) => {
-  const {setOpenBar} = useContext(SidebarContext);
-  const [s_country, setCountry] = useState(null);
-  const initial = {
-    dozen: 0,
-    box: 0,
+export const PriceDetailForm = ({ productDetailID }) => {
+  const sizes = [
+    { code: 'box', name: 'Box' },
+    { code: 'dozen', name: 'Dozen' },
+    { code: 'unit', name: 'Unit' },
+  ];
+
+  const { setOpenBar } = useContext(SidebarContext);
+
+  const initialFormState = {
+    prices: {},
     supplier_id: null,
     product_detail_id: productDetailID,
     currency: 'usd',
   };
 
-  const {countries, error: countryError, isLoading: isCountryLoading} = useCountries();
-  const {suppliers, error: supplierError, isLoading: isSupplierLoading} = useSuppliers(s_country);
-  const [formState, setFormState] = useState({...initial});
-  const [error, setError] = useState('');
+  const [formState, setFormState] = useState({ ...initialFormState });
+  const [, setError] = useState('');
+  const [activeSizes, setActiveSizes] = useState([false, false, false]);
+
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const formData = new FormData();
+
+    // Append non-price fields
     Object.keys(formState).forEach((key) => {
-      formData.append(`price_detail[${key}]`, formState[key]);
+      if (key !== 'prices') {
+        formData.append(`price_detail[${key}]`, formState[key]);
+      }
+    });
+
+    // Append prices
+    const { prices } = formState;
+    Object.keys(prices).forEach((sizeCode) => {
+      formData.append(`price_detail[prices][${sizeCode}]`, prices[sizeCode]);
     });
 
     try {
-      await send('/product_details/' + productDetailID + '/price_details', formData);
-      setOpenBar({state: true, target: 'price_details'});
-    } catch (e) {
-      setError(`Could not create product`);
+      await send(`/product_details/${productDetailID}/price_details`, formData);
+      // setOpenBar({ state: true, target: 'price_details' });
+    } catch (error) {
+      setError('Could not create product');
     } finally {
-      setFormState({...initial});
+      setFormState({ ...initialFormState });
     }
   };
 
-  const selectSupplier=(id)=>{
-    setFormState((s)=>({...s,supplier_id:id}))
-  }
+  const selectSupplier = (supplier) => {
+    setFormState((prevState) => ({ ...prevState, supplier_id: supplier.id }));
+  };
+
+  const handleToggle = (index) => {
+    setActiveSizes((prevSizes) => prevSizes.map((prevSize, i) => i === index ? !prevSize : prevSize));
+
+    // If toggling off, remove size.code from prices
+    if (!activeSizes[index]) {
+      setFormState((prevState) => {
+        const { [sizes[index].code]: omittedSize, ...restPrices } = prevState.prices;
+        return {
+          ...prevState,
+          prices: restPrices,
+        };
+      });
+    }
+  };
 
   const content = {
-    header: 'Add price',
+    header: 'Add Price',
     subheader: '',
-    buttonText: 'Create'
+    buttonText: 'Create',
   };
-  const priceForm = [
+
+  const forms = [
     {
-      label:'Select Supplier',
-      input_type:'custom',
-      component:   <SelectSupplier action={selectSupplier} />,
+      label: 'Select Supplier',
+      input_type: 'custom',
+      component: <SelectSupplier action={selectSupplier} productId={productDetailID} supplierId={null} />,
     },
     {
-      label: 'Price of dozen',
-      required: true,
-      placeholder: 'Price of dozen',
-      value: formState.dozen,
-      name: 'dozen',
-      type: 'number',
-      input_type: 'text',
-      className: '',
-      action: (e) => {
-        setFormState((s) => ({...s, dozen: e.target.value}));
-      },
-    },
-    {
-      label: 'Price of a box',
-      required: true,
-      placeholder: 'Price of a box',
-      value: formState.box,
-      name: 'box',
-      input_type: 'text',
-      type: 'number',
-      className: '',
-      action: (e) => {
-        setFormState((s) => ({...s, box: e.target.value}));
-      },
-    },
-    {
-      label: 'Select currency',
-      required: true,
-      placeholder: 'Select currency',
+      label: 'Choose Currency',
+      placeholder: 'Select Currency',
       name: 'currency',
-      input_type: 'select',
+      input_type: 'radio',
+      value: formState.currency,
       className: '',
-      options: [{code: 'fc', name: 'fc'}, {code: 'ugx', name: 'ugx'}, {code: 'usd', name: 'usd'}],
-      action: (e) => {
-        setFormState((s) => ({...s, currency: e.target.value}));
-      }
+      options: ['fc', 'ugx', 'usd'],
+      action: (e) => setFormState((prevState) => ({ ...prevState, currency: e.target.value })),
     },
+    sizes.map((size, index) =>[
+      // {
+      //   label: size.name,
+      //   input_type: 'toggle',
+      //   name: 'found',
+      //   checked: activeSizes[index],
+      //   action: () => handleToggle(index),
+      // },
+        {
+        label: <Toggle enabled={activeSizes[index]} setEnabled={()=>handleToggle(index)} label={size.name}/>,
+        placeholder: `${size.name} Price`,
+        name: `${size.code}_price`,
+        type: 'number',
+        value: formState.prices[`${size.code}`],
+        className: clsx(activeSizes[index] || 'hidden'),
+        // labelClassName: clsx(activeSizes[index] || 'hidden'),
+        action: (e) => {
+          setFormState((prevState) => ({
+            ...prevState,
+            prices: {
+              ...prevState.prices,
+              [size.code]: e.target.value,
+            },
+          }));
+        },
+      }]
+    ),
     {
       input_type: 'button',
       className: '',
       type: 'submit',
-      placeholder: content.buttonText
-    }
+      placeholder: content.buttonText,
+    },
   ];
+
   return (
     <ContainerOne>
       <div className="w-full">
-        <Form handleSubmit={handleSubmit} fields={priceForm}/>
+        <Form handleSubmit={handleSubmit} fields={forms} />
       </div>
     </ContainerOne>
   );

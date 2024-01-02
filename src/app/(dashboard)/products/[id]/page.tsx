@@ -18,24 +18,25 @@ export default function Product() {
   const {openBar} = useContext(SidebarContext);
   const params = useParams();
   const productId = params.id;
-  const {data: product, included: details, error, isLoading} = useProduct(productId);
+  const {product, included: details, error, isLoading} = useProduct(productId);
   return <Container>
     <ProductDetailsHeader details={details}/>
     <ContainerOne>
-      {isLoading && <Card className="w-full"><ProductItemLoader/></Card>}
-      <ErrorBoundary error={error}>
-        {product && (
-          <ProductItem key={product.id} product={product}/>
-        )}
-      </ErrorBoundary>
-
+      {isLoading ? <Card className="w-full"><ProductItemLoader/></Card> :(
+        <ErrorBoundary error={error}>
+          {product && (
+            <ProductItem key={product.id} product={product}/>
+          )}
+        </ErrorBoundary>
+      )}
     </ContainerOne>
     <ContainerOne>
       <Card className="w-full">
-        <ProductDetailsTable details={details} isLoading={isLoading}/>
+        {product && (
+        <ProductDetailsTable productName={product.name} details={details} isLoading={isLoading}/>
+        )}
       </Card>
       <SidebarContentSelector target={openBar.target}/>
     </ContainerOne>
-
   </Container>;
 }

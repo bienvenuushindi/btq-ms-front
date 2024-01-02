@@ -46,7 +46,10 @@ export const buttonClasses = cva(
           'dark:focus:ring-blue-800'
         ],
         default:[
-          "text-gray-800 hover:text-white bg-gray-200 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:focus:ring-gray-800"
+          "text-gray-800 hover:text-white bg-gray-200 hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:focus:ring-gray-800"
+        ],
+        none: [
+          'bg-transparent',
         ]
       },
       size: {

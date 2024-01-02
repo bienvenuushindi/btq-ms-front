@@ -3,7 +3,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 
 export const textClasses = cva(
   [
-    "text-md font-medium text-gray-700 py-0.5"
+    "text-md  py-0.5"
   ],
   {
     variants: {
@@ -13,8 +13,9 @@ export const textClasses = cva(
         large: ['text-lg'],
       },
       intent: {
-        primary: ['text-blue-500'],
+        primary: ['text-blue-900'],
         secondary: ['text-gray-500'],
+        tertiary: ['text-gray-800'],
         success: ['text-green-500'],
         danger: ['text-red-500'],
       },

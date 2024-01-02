@@ -10,15 +10,19 @@ import ModalHeader from '@/components/modal/ModalHeader';
 import ModalBody from '@/components/modal/ModalBody';
 import ModalFooter from '@/components/modal/ModalFooter';
 import ModalContainer from '@/components/modal/ModalContainer';
+import {updateUrl} from '@/lib/utils';
 export default function RequisitionForm({requisitionID, revalidate}) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   const [items, setItems] = useState([]);
-  const [url, setUrl] = useState('');
-  const callMe = (text) => {
-    setUrl(text);
-  };
+  const [url, setUrl] = useState(API_URL + '/products/search');
+
+  const updateParams = (newFilters) => {
+    setUrl((prevUrl) => {
+      return  updateUrl(prevUrl, newFilters);
+    });
+  }
   const [error, setError] = useState('');
   const handleSubmit = async () => {
     const formData = new FormData();
@@ -54,7 +58,7 @@ export default function RequisitionForm({requisitionID, revalidate}) {
           <ModalHeader closeModal={closeModal} title={'Add Product'}/>
           <ModalBody>
             <div className={' focus-within:shadow-lg'}>
-              <SearchBar updateList={callMe} submitTo={API_URL + '/products/search'}/>
+              <SearchBar onSearch={updateParams}/>
               <div>
                 {
                   (url ? <ProductSearchResults url={url} setItems={setItems}/> :

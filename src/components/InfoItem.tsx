@@ -1,11 +1,18 @@
 import Text from '@/components/Text';
 import clsx from 'clsx';
+import {MapPin} from 'react-feather';
+import {tagColors} from '@/lib/utils';
+import React from 'react';
 
-export default function InfoItem({label, value, children,classValue, classLabel, row = false}) {
+export default function InfoItem({label, value, children, classValue, classLabel, row = false, icon = null}) {
   return (
     <div className={clsx('flex pb-2', row ? 'flex-row' : 'flex-col')}>
-      <Text size="small" intent="secondary" className="font-bold flex gap-2 items-center">{label}:</Text>
-      <Text size="medium" intent="secondary" className="">{value}</Text>
+      <div className="flex gap-2 items-center w-fit text-gray-600">
+        {label}
+      </div>
+      {
+        value ? <Text size="large" intent="tertiary" className="ml-2">{value}</Text> : children
+      }
     </div>
   );
 }
