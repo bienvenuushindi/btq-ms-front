@@ -34,6 +34,13 @@ module.exports = {
         noto: ["Noto Sans", "sans-serif"],
         open: ["Open Sans", "sans-serif"],
       },
+      backgroundColor: {
+        warning: '#ff9900', // This is a typical warning color (you can adjust it)
+        'warning-light': '#ffeb3b', // Adjust this to a color near warning
+      },
+      textColor: {
+        'warning-text': '#ffd700', // Adjust this to a color near warning
+      },
       colors: {
         gray: {
           100: "#f1f2f3",

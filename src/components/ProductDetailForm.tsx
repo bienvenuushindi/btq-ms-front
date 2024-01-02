@@ -23,8 +23,8 @@ export const ProductDetailForm = ({variant}) => {
     box_units: 1,
     tags: '',
     supplier_id: null,
-    currency: variant.currency,
-    status: variant.status,
+    currency: '',
+    status: false,
   };
   let  content = {
     header: 'Create a product variant',
@@ -43,7 +43,6 @@ export const ProductDetailForm = ({variant}) => {
       currency: variant.currency,
       status: variant.status,
       tags: variant.tags.join(','),
-      // supplier_id: null,
     };
 
     content = {
@@ -77,7 +76,7 @@ export const ProductDetailForm = ({variant}) => {
         //submit promise
         await send('/products/' + path.id + '/product_details', formData);
         toastShow('success','Supplier created successfully')
-        router.replace('/products/' + path.id);
+        router.push('/products/' + path.id);
       }else{
         await send('/products/' + path.id + '/product_details/'+path.variant, formData, "PUT");
         toastShow('success','Supplier updated successfully')
@@ -131,7 +130,7 @@ export const ProductDetailForm = ({variant}) => {
     [
       {
         label: 'Box Price',
-        required: true,
+        required: false,
         placeholder: 'Box Price',
         value: formState.box_price,
         name: 'box-price',
@@ -143,7 +142,7 @@ export const ProductDetailForm = ({variant}) => {
         },
       },{
       label: 'Unit Qty in Box',
-      required: true,
+      required: false,
       placeholder: 'Box Units',
       value: formState.box_units,
       name: 'box-units',
@@ -158,7 +157,7 @@ export const ProductDetailForm = ({variant}) => {
     [
       {
         label: 'Dozen Price',
-        required: true,
+        required: false,
         placeholder: 'Dozen Price',
         value: formState.dozen_price,
         name: 'dozen-price',
@@ -171,7 +170,7 @@ export const ProductDetailForm = ({variant}) => {
       },
       {
         label: 'Unit Qty in Dozen',
-        required: true,
+        required: false,
         placeholder: 'Dozen units',
         value: formState.dozen_units,
         name: 'dozen-units',
@@ -185,7 +184,7 @@ export const ProductDetailForm = ({variant}) => {
     ],
     {
       label: 'Unit Price',
-      required: true,
+      required: false,
       placeholder: 'Unit Price',
       value: formState.unit_price,
       name: 'unit-price',

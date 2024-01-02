@@ -1,5 +1,5 @@
 'use client';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {send} from '@/lib/api';
 import Form from '@/components/Form';
 import useQuantityTypes from '@/app/hooks/useQuantityTypes';
@@ -10,14 +10,18 @@ import Card from '@/components/Card';
 import 'react-toastify/dist/ReactToastify.css';
 import {delay} from '@/lib/async';
 import toastShow from '@/components/toast/toast-selector';
+import {RequisitionContext} from '@/components/requisitions/RequisitionContext';
+import clsx from 'clsx';
+import SwitchCurrency from '@/components/requisitions/item-page/SwitchCurrency';
 
 export default function RequisitionItemPricing({requisitionId, productDetails}) {
   const {data: quantityType = {}} = useQuantityTypes();
   const {data: currencies = {}} = useCurrencies();
-
+  const {currency} = useContext(RequisitionContext);
+  const [modalIsOpen, setIsOpen] = useState(false);
   const initial = {
     price: productDetails.price || 0,
-    currency: productDetails.currency || null,
+    currency: productDetails.currency,
     found: productDetails.found || false,
     quantity: productDetails.quantity || 0,
     quantity_type: productDetails.quantity_type,
@@ -35,7 +39,10 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       setError('Please select a supplier');
       return;
     }
-
+    if(currency != formState.currency){
+      setIsOpen(true)
+      return
+    }
     setLoading(true);
     await delay(2000);
     const formData = new FormData();
@@ -46,8 +53,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
     try {
       await send('/requisitions/' + requisitionId + '/update_products/' + productDetails.product_detail_id, formData, 'PUT');
       if (supplierId != productDetails.supplier_id) productDetails.supplier_id = supplierId;
-      console.log('success');
-      toastShow('success', 'Updated Successfully')
+      toastShow('success', 'Updated Successfully');
       setLoading(false);
     } catch (e) {
       setError(`Could not create product`);
@@ -63,7 +69,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       checked: formState.found,
       action: () => {
         setFormState((s) => ({...s, found: !formState.found}));
-        productDetails.found = !productDetails.found
+        productDetails.found = !productDetails.found;
       }
     },
     [{
@@ -77,21 +83,21 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       className: '',
       action: (e) => {
         setFormState((s) => ({...s, price: e.target.value}));
-        productDetails.price = e.target.value
+        productDetails.price = e.target.value;
       },
     },
       {
-        label: 'Select currency',
+        label: 'Currency',
         required: true,
-        placeholder: 'Select currency',
+        disabled: true,
         name: 'currency',
         value: formState.currency || '',
-        input_type: 'select',
+        // input_type: 'select',
         className: '',
-        options: Object.keys(currencies).map((c) => ({code: c, name: c.toUpperCase()})),
+        // options: Object.keys(currencies).map((c) => ({code: c, name: c.toUpperCase()})),
         action: (e) => {
           setFormState((s) => ({...s, currency: e.target.value}));
-          productDetails.currency = e.target.value
+          productDetails.currency = e.target.value;
         }
       },
       {
@@ -105,7 +111,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
         options: Object.values(quantityType).map((q) => ({code: q, name: q.toUpperCase()})),
         action: (e) => {
           setFormState((s) => ({...s, quantity_type: e.target.value}));
-          productDetails.quantity_type = e.target.value
+          productDetails.quantity_type = e.target.value;
         }
       }],
     [{
@@ -119,23 +125,28 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       className: '',
       action: (e) => {
         setFormState((s) => ({...s, quantity: e.target.value}));
-        productDetails.quantity = e.target.value
+        productDetails.quantity = e.target.value;
       },
     },
       {
-        label: 'Quantity type',
+        label: 'Quantity Type',
         required: true,
-        placeholder: 'Select quantity type',
         name: 'quantity_type',
         value: formState.quantity_type || '',
-        input_type: 'select',
+        // input_type: 'select',
         className: '',
         disabled: true,
-        options: Object.values(quantityType).map((q) => ({code: q, name: q.toUpperCase()})),
+        // options: Object.values(quantityType).map((q) => ({code: q, name: q.toUpperCase()})),
         action: (e) => {
           setFormState((s) => ({...s, quantity_type: e.target.value}));
-          productDetails.quantity_type = e.target.value
+          productDetails.quantity_type = e.target.value;
         }
+      },
+      {
+        label: 'Total Price',
+        name: 'total_price',
+        value: clsx((formState.price * formState.quantity) || '0', formState.currency),
+        disabled: true,
       }], {
       label: 'Expired date',
       placeholder: 'Expired Date',
@@ -146,7 +157,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       className: '',
       action: (e) => {
         setFormState((s) => ({...s, expired_date: e.target.value}));
-        productDetails.expired_date = e.target.value
+        productDetails.expired_date = e.target.value;
       },
     },
     {
@@ -158,18 +169,22 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       className: '',
       action: (e) => {
         setFormState((s) => ({...s, note: e.target.value}));
-        productDetails.note = e.target.value
+        productDetails.note = e.target.value;
       },
     },
     {
       input_type: 'button',
       className: '',
       type: 'submit',
-      placeholder: loading ? 'Loading...' : 'Update',
+      placeholder: loading ? 'Loading...' : formState.currency == currency ? 'Update' : clsx('Convert To ', currency),
       disabled: loading
     }
   ];
 
+  const convertedPrice=async (price)=>{
+    formState.price = price
+    formState.currency=currency
+  }
   const updateForm = (supplier) => {
     setSupplierId(supplier.id);
     if (supplier.id == productDetails.supplier_id) {
@@ -196,6 +211,15 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
           fields={pricingForm}
         />
       </div>
+      <SwitchCurrency
+        setIsOpen={setIsOpen}
+        modalIsOpen={modalIsOpen}
+        currencies={currencies}
+        productCurrency={formState.currency}
+        requisitionCurrency={currency}
+        priceToConvert={formState.price}
+        convertFunc={convertedPrice}
+      />
     </Card>
   );
 }

@@ -18,6 +18,7 @@ export const badgeClasses = cva(
         secondary: ['bg-gray-100 text-gray-800'],
         success: ['bg-green-100 text-green-800'],
         danger: ['bg-red-100 text-red-800'],
+        warning: ['bg-warning text-warning-text'],
       },
       size: {
         small: 'text-xs',   // Add small size class

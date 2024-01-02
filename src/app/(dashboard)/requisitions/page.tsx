@@ -52,7 +52,7 @@ export default function Requisitions() {
       type: 'button',
       label: 'Show',
       action: async (data) => {
-        await router.replace('/requisitions/' + data.id)
+        await router.push('/requisitions/' + data.id)
       }
     }
   ];

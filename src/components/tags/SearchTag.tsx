@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useDebounce} from '@/app/hooks/useDebounce';
 import {useFetcher} from '@/app/hooks/useFetcher';
-import {API_URL} from '@/lib/api';
 
 
 export default function SearchTagBox(props) {
@@ -17,7 +16,7 @@ export default function SearchTagBox(props) {
     {
 
        <div>
-          <h2>{input.length ? `Results for "${input}"` : 'Select a tag'}</h2>
+          <h2>{input ? `Results for "${input}"` : 'Select a tag'}</h2>
 
           {
           (isLoading && !error) ? (<div>Loading...</div>) :

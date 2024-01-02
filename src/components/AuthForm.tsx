@@ -44,7 +44,7 @@ export default function AuthForm({mode}: { mode: 'register' | 'signin' }) {
         } else {
           await signin(data);
         }
-        router.replace('/home');
+        router.push('/home');
       } catch (e) {
         setError(`Could not ${mode}`);
       } finally {

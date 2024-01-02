@@ -2,22 +2,26 @@ import {useContext} from 'react';
 import {SidebarContext} from '@/components/sidebar/SidebarContainer';
 import {usePriceDetails} from '@/app/hooks/usePriceDetails';
 import PriceList from '@/components/sidebar/price-details/PriceList';
-import Button from '@/components/Button';
 import AddSupplier from '@/components/pages/products/details/AddSuppliers';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import ShowImages from '@/components/ShowImages';
 
 export default function PriceDetailsSidebar() {
-  const {sidebarData, setOpenBar} = useContext(SidebarContext);
-  const {priceDetails, isLoading, error} = usePriceDetails(sidebarData.id);
+  const {sidebarData} = useContext(SidebarContext);
+  const {result, isLoading, error} = usePriceDetails(sidebarData.id);
   return (
     <>
       {
-        isLoading && !error ? (<div>Loading...</div>) :
-          error ? <div>Failed to load</div> :
-            <>
-              {/*<Button onClick={()=>setOpenBar((prev)=>({...prev, target: 'add_price', product_detail_id: sidebarData.id}))}>Add Price</Button>*/}
-              <AddSupplier productDetailID={sidebarData.id}/>
-              <PriceList prices={priceDetails}/>
-            </>
+        isLoading ? (<div>Loading...</div>) :
+        <ErrorBoundary error={error}>
+            <ShowImages imagesUrls={sidebarData.attributes?.image_urls} carouselWrapperClassName="w-fit"/>
+            <div className="my-4">
+              <div className="flex justify-end pr-2">
+                <AddSupplier productDetailID={sidebarData.id}/>
+              </div>
+              <PriceList prices={result}/>
+            </div>
+        </ErrorBoundary>
       }
     </>
   );

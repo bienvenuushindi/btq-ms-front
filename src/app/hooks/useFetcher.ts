@@ -1,4 +1,3 @@
-import useSWR from 'swr';
 import {API_URL, authFetcher} from '@/lib/api';
 import useSWRImmutable from 'swr/immutable';
 

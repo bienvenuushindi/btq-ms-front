@@ -7,7 +7,7 @@ export default function RequisitionDetails(){
   return(
     <>
       <div>
-        <ShowImages/>
+        <ShowImages imagesUrls={sidebarData.attributes.image_urls}/>
         <h2>Product Details</h2>
         <h4>{sidebarData.name} - {sidebarData.size}</h4>
         <ul>

@@ -1,18 +1,15 @@
 import React, {useEffect, useState} from 'react';
-// import { Popover } from '@headlessui/react';
 import TableLoader from '@/components/banners/TableLoader';
 import clsx from 'clsx';
-import {renderCell} from '@/components/DataGrid';
+import {renderCell, RenderTableHead} from '@/components/DataGrid';
 import {MoreVertical} from 'react-feather';
 import {createPortal} from 'react-dom';
 import Button from '@/components/Button';
 
-const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, actions}) => {
+const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, actions, onSorting}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
   const [popoverPosition, setPopoverPosition] = useState({top: 0, left: 0});
-
-
   const closePopover = () => {
     setIsOpen(false);
     setSelectedRowIndex(null);
@@ -56,8 +53,8 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
   };
 
   useEffect(() => {
-    if(isOpen) closePopover()
-  },[data])
+    if (isOpen) closePopover();
+  }, [data]);
 
   useEffect(() => {
     window.addEventListener('click', handleOutsideClick);
@@ -83,10 +80,7 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
       <table className="w-full text-sm text-left text-gray-500 -dark:text-gray-40 ">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 -dark:bg-gray-700 -dark:text-gray-400">
         <tr>
-          {columns.map((column) => (
-            <th scope="col" className="px-6 py-3" {...tHeadProps}
-                key={`thead-${column.key as React.Key}-${Math.random()}`}>{column.label}</th>
-          ))}
+          <RenderTableHead tHeadProps={tHeadProps} columns={columns} onSorting={onSorting} />
           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sr-only">
             Actions
           </th>
@@ -110,7 +104,7 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
               className="bg-white border-b -dark:bg-gray-800 -dark:border-gray-700 hover:bg-gray-50 -dark:hover:bg-gray-600"
               key={`row-${index}`}>
               {columns.map((column) => (
-                <td key={`row-cell-${column.key as React.Key}-${Math.random()}`}
+                <td key={`row-cell-${column.key as React.Key}-${column.label}`}
                     className={clsx('px-6 py-4', column.key ? 'table-cell' : 'd-flex justify-content-end')}>
                   {column.key ? renderCell(column, row) : renderCell(column, column.customKey)}
                 </td>

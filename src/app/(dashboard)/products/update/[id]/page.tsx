@@ -8,8 +8,7 @@ import {useProduct} from '@/app/hooks/useProduct';
 export default function UpdateProduct() {
   const params = useParams();
   const productID = params.id;
-  const {data: result = {}, isLoading} = useProduct(productID);
-  const {attributes: product = {}} = result;
+  const {product, isLoading} = useProduct(productID);
   return (
     <Container>
       {isLoading ? <div>Loading ....</div> : <ProductForm product={product}/>}

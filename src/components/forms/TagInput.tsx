@@ -59,7 +59,7 @@ export default function TagInput({action, defaultTags, children}) {
   const renderChildren = () => {
     return React.Children.map(children, (child) => {
       return React.cloneElement(child, {
-        input: input,
+        valueToConvert: input,
         pushTag: addTag
       });
     });
