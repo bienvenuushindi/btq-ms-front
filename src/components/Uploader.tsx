@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Uploader({children}){
+export default function Uploader(){
   return (
     <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-md">
       <h1 className="text-2xl font-semibold mb-4">Upload Your Image</h1>

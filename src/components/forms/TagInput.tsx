@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import {XCircle} from 'react-feather';
 import Badge from '@/components/Badge';
 
-export default function TagInput({action, defaultTags, children}) {
+export default function TagInput({action, defaultTags, children}:any) {
   const [tags, setTags] = useState( defaultTags ? defaultTags.split(',') : []);
   const [input, setInput] = useState('');
   const [showAutoComplete, setShowAutoComplete] = useState(false);

@@ -1,7 +1,9 @@
 import '@/styles/global.css'
 import GlassPane from '@/components/GlassPane';
 
-export default function AuthRootLayout({children}) {
+export default function AuthRootLayout({children}:{
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
     <head/>

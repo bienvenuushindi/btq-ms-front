@@ -1,6 +1,6 @@
 import Modal from 'react-modal';
 
-export default function ModalContainer({isOpen, onRequestClose, children}) {
+export default function ModalContainer({isOpen, onRequestClose, children}:any) {
   return (
     <Modal
       isOpen={isOpen}

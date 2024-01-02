@@ -4,7 +4,9 @@ import Sidebar from '@/components/Sidebar';
 import AppBar from '@/components/AppBar';
 import PageContainer from '@/components/PageContainer';
 import {ToastContainer} from 'react-toastify';
-export default function DashboardRootLayout({children}) {
+export default function DashboardRootLayout({children}:{
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
     <head/>

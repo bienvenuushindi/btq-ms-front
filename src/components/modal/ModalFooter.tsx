@@ -1,6 +1,6 @@
 import Button from '@/components/Button';
 
-export default function ModalFooter({closeModal, children}) {
+export default function ModalFooter({closeModal, children}:any) {
   return (
     <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b -dark:border-gray-600">
       {children}

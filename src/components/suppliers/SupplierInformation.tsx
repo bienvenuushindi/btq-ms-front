@@ -5,7 +5,9 @@ import Image from 'next/image';
 import InfoItem from '@/components/InfoItem';
 import { tagColors } from '@/lib/utils';
 
-const Card = ({ children }) => (
+const Card = ({ children }:{
+  children: React.ReactNode
+}) => (
   <div className="bg-white shadow-md p-6 rounded-md">{children}</div>
 );
 

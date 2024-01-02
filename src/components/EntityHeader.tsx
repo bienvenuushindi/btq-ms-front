@@ -3,7 +3,7 @@ import {PlusCircle} from 'react-feather';
 import ButtonLink from '@/components/ButtonLink';
 import Button from '@/components/Button';
 
-const EntityHeader = ({title, actions, addAction,children}) => {
+const EntityHeader = ({title, actions, addAction,children}:any) => {
   return (
     <div className="container mx-auto">
       <div className="space-y-3">

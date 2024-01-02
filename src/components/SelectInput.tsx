@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
 
-const SelectInput = ({children, className, ...props}) => {
+const SelectInput = ({children, className, ...props}:any) => {
   return (
     <select
       className={clsx(
