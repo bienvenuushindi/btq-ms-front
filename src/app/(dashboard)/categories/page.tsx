@@ -8,15 +8,17 @@ import EntityTable from '@/components/EntityTable';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Badge from '@/components/Badge';
 import {Edit, Trash2} from 'react-feather';
+import {API_URL} from '@/lib/api';
 
 export default function Categories() {
-  const [url, setUrl] = useState(null);
+  const [url, setUrl] = useState(`${API_URL}/categories`);
   const {categories, meta, links, error, isLoading, mutate} = useCategories(url);
   const categoryColumns = [
     {
       key: 'name',
       type: 'text',
       label: 'Category Name',
+      sortable: true,
     }, {
       key: 'description',
       type: 'text',
@@ -25,16 +27,19 @@ export default function Categories() {
       key: 'active',
       type: 'text',
       label: ' Status',
+      sortable: true,
       dataTransformation: (value: any) => value ? <Badge variant="success">Active</Badge> : <Badge variant="danger">Inactive</Badge>,
     }, {
       key: 'created_at',
       type: 'text',
       label: 'Created',
+      sortable: true,
 
     }, {
       key: 'count_products',
       type: 'text',
       label: 'Numb of Products',
+      sortable: true,
     },
   ];
   const actions = [
@@ -69,7 +74,6 @@ export default function Categories() {
             data={categories}
             updateList={setUrl}
             columns={categoryColumns}
-            entities={'categories'}
             actions={actions}
           />
         </ErrorBoundary>
