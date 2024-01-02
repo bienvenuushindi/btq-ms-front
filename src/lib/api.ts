@@ -1,8 +1,8 @@
 'use client';
-import clsx from 'clsx';
 import {delay} from '@/lib/async';
 
-export const BASE_URL = 'http://127.0.0.1:3001';
+export const BASE_URL = 'https://btq-ms.onrender.com';
+// export const BASE_URL = 'http://127.0.0.1:3001';
 export const API_URL = BASE_URL + '/api/v1';
 
 const fetcher = async ({url, method, body}) => {
