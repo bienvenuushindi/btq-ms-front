@@ -1,6 +1,6 @@
 'use client';
 import React, {useState} from 'react';
-import {countries} from '@/data/countries';
+// import {countries} from '@/data/countries';
 import {BASE_URL, send} from '@/lib/api';
 import {useParams, useRouter} from 'next/navigation';
 import Form from '@/components/Form';

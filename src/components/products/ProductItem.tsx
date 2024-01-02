@@ -1,7 +1,7 @@
 import Card from '@/components/Card';
 import {BASE_URL} from '@/lib/api';
 import InfoItem from '@/components/InfoItem';
-import {countries} from '@/data/countries';
+// import {countries} from '@/data/countries';
 import {Info, AlignLeft, FileText, Clock, MapPin} from 'react-feather';
 import Carousel from '@/components/carousel/Carousel';
 import {getImageUrls, tagColors} from '@/lib/utils';
