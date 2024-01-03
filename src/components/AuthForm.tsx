@@ -25,7 +25,7 @@ const signinContent = {
   buttonText: 'Sign In',
 };
 
-const initial = {email: '', password: '', firstName: '', lastName: ''};
+const initial = {email: '', password: '', name: '', phone_number: '+243995007529', role_id: 1};
 
 export default function AuthForm({mode}: { mode: 'register' | 'signin' }) {
   const [formState, setFormState] = useState({...initial});
@@ -54,8 +54,7 @@ export default function AuthForm({mode}: { mode: 'register' | 'signin' }) {
     [
       formState.email,
       formState.password,
-      formState.firstName,
-      formState.lastName,
+      formState.name,
     ]
   );
 
@@ -73,27 +72,15 @@ export default function AuthForm({mode}: { mode: 'register' | 'signin' }) {
             <div className="flex mb-8 justify-between">
               <div className="pr-2">
                 <div className="text-lg mb-4 ml-2 text-black/50">
-                  First Name
+                  Full Name
                 </div>
                 <Input
                   required
-                  placeholder="First Name"
-                  value={formState.firstName}
+                  placeholder="Full Name"
+                  value={formState.name}
                   className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
                   onChange={(e) =>
-                    setFormState((s) => ({...s, firstName: e.target.value}))
-                  }
-                />
-              </div>
-              <div className="pl-2">
-                <div className="text-lg mb-4 ml-2 text-black/50">Last Name</div>
-                <Input
-                  required
-                  placeholder="Last Name"
-                  value={formState.lastName}
-                  className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
-                  onChange={(e) =>
-                    setFormState((s) => ({...s, lastName: e.target.value}))
+                    setFormState((s) => ({...s, name: e.target.value}))
                   }
                 />
               </div>
