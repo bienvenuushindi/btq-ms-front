@@ -1,7 +1,5 @@
 'use client';
 import {useFetcher} from '@/app/hooks/useFetcher';
-import {RadioGroup} from '@headlessui/react';
-import {CheckCircle} from 'react-feather';
 import {useEffect, useState} from 'react';
 import SupplierList from '@/components/requisitions/SupplierList';
 import ErrorBoundary from '@/components/ErrorBoundary';
