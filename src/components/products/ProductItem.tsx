@@ -1,7 +1,6 @@
 import Card from '@/components/Card';
-import {BASE_URL} from '@/lib/api';
 import InfoItem from '@/components/InfoItem';
-// import {countries} from '@/data/countries';
+import {countries} from '@/styles/data/countries';
 import {Info, AlignLeft, FileText, Clock, MapPin} from 'react-feather';
 import Carousel from '@/components/carousel/Carousel';
 import {getImageUrls, tagColors} from '@/lib/utils';
@@ -21,7 +20,7 @@ export default function ProductItem({product}) {
     <Card className="w-full">
       <div className="flex  justify-items-center gap-3">
         <div id="carousel" className="p-1 rounded shadow border-gray-100 border">
-          <Carousel hasMediaButton={false}
+          <Carousel
                     images={getImageUrls(image_urls || [])}
                     style={{
                       height: 400,

@@ -1,6 +1,10 @@
 import React, {FC} from 'react';
 import {cva, VariantProps} from 'class-variance-authority';
 
+type DefaultVariants = {
+  intent?: string;
+  size?: 'small' | 'medium' | 'large';
+};
 
 export const badgeClasses = cva(
   [
@@ -29,15 +33,17 @@ export const badgeClasses = cva(
     defaultVariants: {
       intent: 'default',
       size: 'medium',
-    },
+    }  as DefaultVariants,
   }
 );
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof badgeClasses> {
-  size?: 'small' | 'medium' | 'large'; // Define size prop
+    VariantProps<typeof badgeClasses>,
+    DefaultVariants {
+  size?: 'small' | 'medium' | 'large';
 }
+
 
 const Badge: FC<BadgeProps> = ({ children, className, variant, size, ...props }) => {
   return (

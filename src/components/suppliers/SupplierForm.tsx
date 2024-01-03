@@ -7,7 +7,7 @@ import SearchTagBox from '@/components/tags/SearchTag';
 import ContainerOne from '@/components/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
 
-export const SupplierForm = ({supplier}) => {
+export const SupplierForm = ({supplier}: {supplier?: any}) => {
   const isAddMode = !supplier;
   console.log(supplier)
   const router = useRouter();

@@ -108,7 +108,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
         value: formState.quantity_type || '',
         input_type: 'select',
         className: '',
-        options: Object.values(quantityType).map((q) => ({code: q, name: q.toUpperCase()})),
+        options: Object.values(quantityType).map((q: any) => ({code: q, name: q.toUpperCase()})),
         action: (e) => {
           setFormState((s) => ({...s, quantity_type: e.target.value}));
           productDetails.quantity_type = e.target.value;

@@ -21,7 +21,7 @@ export const SidebarContainer = ({title, children, footer}:any) => {
           setSidebarData({});
           setOpenBar((prev) => ({...prev, state: false}));
         }}
-        tabIndex="-1"
+        tabIndex={-1}
         className={clsx('bg-[rgba(0,0,0,.4)] flex justify-center items-center absolute top-0 left-0 h-screen w-full transition-all ', !openBar.state && 'hidden')}
         style={{height: `${maxHeight}px`}} // Set the height dynamically
       ></div>

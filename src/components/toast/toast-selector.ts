@@ -1,14 +1,14 @@
-import {toast} from 'react-toastify';
+import { toast, ToastPosition } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function toastShow(target, message = 'This is an info notification') {
+export default function toastShow(target: string, message = 'This is an info notification') {
   const options = {
-    position: 'top-right',
-    autoClose: 3000, // Auto close after 3 seconds
+    position: 'top-right' as ToastPosition, // Explicitly set the type
+    autoClose: 3000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
-  }
+  };
 
   switch (target) {
     case 'success':
@@ -26,5 +26,4 @@ export default function toastShow(target, message = 'This is an info notificatio
     default:
       toast(message, options);
   }
-
 }

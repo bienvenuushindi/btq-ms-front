@@ -9,7 +9,7 @@ const links = [
   {label: 'Profile', icon: 'User', link: '/account'},
   {label: 'Settings', icon: 'Settings', link: '/settings'},
 ];
-const Sidebar = ({open, onClose}) => {
+const Sidebar = ({open}: {open?: any}) => {
   // const lgUp = window.innerWidth >= 1024; // Example media query breakpoint
   const lgUp = true; // Example media query breakpoint
 

@@ -10,7 +10,7 @@ import Toggle from '@/components/forms/Toggle';
 
 export const InputImageContext = createContext(null);
 
-export default function Form({fields, handleSubmit}) {
+export default function Form({fields, handleSubmit}: {fields: any, handleSubmit?: any}) {
   return (
     <form onSubmit={handleSubmit} className="py-4 w-full">
       {fields.map((field, index) => {
@@ -138,7 +138,7 @@ const renderField = (field) => {
       );
     case 'button':
       return (
-        <Button type={field.type} onClick={field.action} size={20} intent={field.intent || 'primary'}
+        <Button onClick={field.action} size="small" intent={field.intent || 'primary'}
                 disabled={field.disabled || false} className={
           clsx(' px-2 py-2 text-sm', field.className)
         }>

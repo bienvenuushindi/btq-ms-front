@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { send } from '@/lib/api';
 import Form from '@/components/Form';
-import { SidebarContext } from '@/components/sidebar/SidebarContainer';
 import ContainerOne from '@/components/ContainerOne';
 import SelectSupplier from '@/components/requisitions/SelectSupplier';
 import clsx from 'clsx';
@@ -13,8 +12,6 @@ export const PriceDetailForm = ({ productDetailID }) => {
     { code: 'dozen', name: 'Dozen' },
     { code: 'unit', name: 'Unit' },
   ];
-
-  const { setOpenBar } = useContext(SidebarContext);
 
   const initialFormState = {
     prices: {},
@@ -64,7 +61,7 @@ export const PriceDetailForm = ({ productDetailID }) => {
     // If toggling off, remove size.code from prices
     if (!activeSizes[index]) {
       setFormState((prevState) => {
-        const { [sizes[index].code]: omittedSize, ...restPrices } = prevState.prices;
+        const { [sizes[index].code]: omittedSize, ...restPrices } = prevState.prices as Record<string, string>;
         return {
           ...prevState,
           prices: restPrices,

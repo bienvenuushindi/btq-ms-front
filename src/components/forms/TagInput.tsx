@@ -88,7 +88,7 @@ export default function TagInput({action, defaultTags, children}:any) {
           onFocus={onFocus}
         />
       </div>
-      <div tabIndex="1" onBlur={() => setShowAutoComplete(false)}
+      <div tabIndex={1} onBlur={() => setShowAutoComplete(false)}
            className={`absolute bg-white text-start p-2 max-h-40 overflow-x-hidden border w-full z-30 ${showAutoComplete ? '' : 'hidden'}`}>
         {renderChildren()}
       </div>

@@ -20,7 +20,10 @@ export const getImageUrls = (urls) => {
 };
 
 // urlUtils.js
-export const updateUrl = (prevUrl, newFilters) => {
+export const updateUrl = <T extends Record<string, string | undefined | null>>(
+  prevUrl: string,
+  newFilters: T
+) => {
   const url = new URL(prevUrl);
   const params = new URLSearchParams(url.search);
 
@@ -37,6 +40,7 @@ export const updateUrl = (prevUrl, newFilters) => {
   url.search = params.toString();
   return url.toString();
 };
+
 
 export function truncateDescription(description, maxLength = 200) {
   if (!description || description.length <= maxLength) {

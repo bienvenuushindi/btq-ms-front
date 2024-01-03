@@ -12,7 +12,7 @@ export default function SidebarContentSelector({target}) {
       case 'price_details':
         return <PriceDetailsSidebar/>;
       case 'add_price':
-        return <PriceDetailForm productDetail={sidebarData.id}/>;
+        return <PriceDetailForm productDetailID={sidebarData.id}/>;
       case 'requisition_details':
         return <RequisitionDetails/>;
       case 'supplier_details':

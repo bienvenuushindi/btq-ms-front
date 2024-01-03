@@ -5,7 +5,7 @@ import {useDebounce} from '@/app/hooks/useDebounce';
 import {Search} from 'react-feather';
 import {className} from 'postcss-selector-parser';
 
-export function SearchBar({onSearch, containerClassName}) {
+export function SearchBar({onSearch, containerClassName}: {onSearch: any, containerClassName?: any}) {
   const [query, setQuery] = useState('');
   const debouncedSearchTerm = useDebounce(query, 1000);
   const active = useRef(false);

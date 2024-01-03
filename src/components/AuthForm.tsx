@@ -137,7 +137,7 @@ export default function AuthForm({mode}: { mode: 'register' | 'signin' }) {
               </span>
             </div>
             <div>
-              <Button type="submit" intent="secondary">
+              <Button intent="secondary">
                 {content.buttonText}
               </Button>
             </div>

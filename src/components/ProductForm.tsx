@@ -1,6 +1,6 @@
 'use client';
 import React, {useState} from 'react';
-// import {countries} from '@/data/countries';
+import {countries} from '@/styles/data/countries';
 import {BASE_URL, send} from '@/lib/api';
 import {useParams, useRouter} from 'next/navigation';
 import Form from '@/components/Form';
@@ -8,7 +8,7 @@ import SearchTagBox from '@/components/tags/SearchTag';
 import ContainerOne from '@/components/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
 
-export const ProductForm = ({product}) => {
+export const ProductForm = ({product}: {product?: any}) => {
   const isAddMode = !product;
   const params = useParams();
   const router = useRouter();

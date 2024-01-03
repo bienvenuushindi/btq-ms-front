@@ -2,7 +2,7 @@ import Button from '@/components/Button';
 import {X} from 'react-feather'
 import React from 'react';
 import clsx from 'clsx';
-export default function ModalHeader({title, closeModal, titleClassName}) {
+export default function ModalHeader({title, closeModal, titleClassName}:{title: any, closeModal: any, titleClassName?: any}) {
   return (
     <div className="flex items-start justify-between p-4 border-b rounded-t -dark:border-gray-600">
       <h3 className={clsx("text-xl font-semibold text-gray-900 ",titleClassName)}>

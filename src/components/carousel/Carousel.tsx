@@ -5,7 +5,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import clsx from 'clsx';
 
-export default function Carousel ({ images, style, wrapperClassName }){
+export default function Carousel ({ images, style, wrapperClassName }:{ images: any, style:any, wrapperClassName?: any }){
   const settings = {
     dots: true,
     infinite: true,
@@ -36,20 +36,6 @@ export default function Carousel ({ images, style, wrapperClassName }){
         ))}
       </Slider>
     </div>
-    // <div>
-    //   <Slider {...settings}>
-    //     {images.map((image, index) => (
-    //       <div key={index}>
-    //         <Image
-    //           src={image}
-    //           alt={`slide ${index + 1}`}
-    //           width={style.width}
-    //           height={style.height}
-    //         />
-    //       </div>
-    //     ))}
-    //   </Slider>
-    // </div>
   );
 };
 

@@ -20,7 +20,7 @@ const EntityTable = ({
                        actions,
                        filters,
                        searchable = true
-                     }) => {
+                     }: any) => {
 
   const updateParams = (newFilters) => {
     updateList((prevUrl) => {

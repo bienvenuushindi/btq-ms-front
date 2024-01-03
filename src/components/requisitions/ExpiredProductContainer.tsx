@@ -9,7 +9,7 @@ import { useFetcher } from '@/app/hooks/useFetcher';
 import { useRouter } from 'next/navigation';
 import { BASE_URL } from '@/lib/api';
 
-export default function ExpiredProductContainer({ title, type, limit }) {
+export default function ExpiredProductContainer({ title, type, limit }: {title: any, type: any, limit?: any}) {
   const router = useRouter();
   const params = limit ? `?limit=${limit}` : '';
   const endpoint = `/product_details/${type}${params}`;

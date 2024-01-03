@@ -48,7 +48,7 @@ export default function Categories() {
       icon: (
         <Edit size={20}/>
       ),
-      onClick: (rowIndex) => {
+      onClick: (rowIndex:any) => {
         console.log(`Edit clicked for row ${rowIndex}`);
       },
     },
@@ -57,7 +57,7 @@ export default function Categories() {
       icon: (
         <Trash2 size={20}/>
       ),
-      onClick: (rowIndex) => {
+      onClick: (rowIndex:any) => {
         console.log(`Delete clicked for row ${rowIndex}`);
       },
     },

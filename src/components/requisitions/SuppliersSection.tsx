@@ -9,7 +9,7 @@ export default function SuppliersSection({action, productId,suppliers, supplierI
     <div className="w-72 px-2 rounded">
       <SelectSupplier action={action} productId={productId} supplierId={supplierId}/>
       <Divider/>
-      <PreviousSuppliers action={action}  suppliers={suppliers} productId={productId} supplierId={supplierId}/>
+      <PreviousSuppliers action={action} productId={productId} supplierId={supplierId}/>
     </div>
   )
 }

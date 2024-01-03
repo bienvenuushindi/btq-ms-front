@@ -2,7 +2,7 @@
 import Carousel from '@/components/carousel/Carousel';
 import useImageCarousel from '@/app/hooks/useImageCarousel';
 
-export default function ShowImages({imagesUrls, width, height,carouselWrapperClassName}) {
+export default function ShowImages({imagesUrls, width, height,carouselWrapperClassName}: {imagesUrls:any, width?: any, height?:any,carouselWrapperClassName?:any}) {
   const images = useImageCarousel(imagesUrls);
   return (
     <>

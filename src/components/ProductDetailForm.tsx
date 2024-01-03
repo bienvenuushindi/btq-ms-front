@@ -8,7 +8,7 @@ import SearchTagBox from '@/components/tags/SearchTag';
 import ContainerOne from '@/components/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
 
-export const ProductDetailForm = ({variant}) => {
+export const ProductDetailForm = ({variant=null}:{variant?: any}) => {
   const router = useRouter();
   const path = useParams();
   const isAddMode = !variant
@@ -43,6 +43,7 @@ export const ProductDetailForm = ({variant}) => {
       currency: variant.currency,
       status: variant.status,
       tags: variant.tags.join(','),
+      supplier_id: null,
     };
 
     content = {

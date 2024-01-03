@@ -19,7 +19,6 @@ export default function SwitchCurrency({modalIsOpen, setIsOpen,productCurrency,r
           />
           <ModalBody>
             <ConvertCurrency
-              currencies={currencies}
               productCurrency={productCurrency}
               requisitionCurrency={requisitionCurrency}
               priceToConvert={priceToConvert}

@@ -6,7 +6,7 @@ import Image from 'next/image';
 import TableLoader from '@/components/banners/TableLoader';
 import { ArrowDown, ArrowUp } from 'react-feather';
 
-const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }) => {
+const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: { data:any, columns:any, tHeadProps:any, isLoading:any, loader?:any, onSorting?:any }) => {
   return (
     <div className="w-full relative">
       <table className="w-full text-sm text-left text-gray-500 -dark:text-gray-40">

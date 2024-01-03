@@ -18,7 +18,7 @@ export default function SelectSupplier({action, productId, supplierId}) {
         <SearchBar onSearch={updateParams} />
         <div className="w-full">
           {
-            (url ? <SearchSupplierResults url={url} action={action} productId={productId} supplierId={supplierId}/> :
+            (url ? <SearchSupplierResults url={url} action={action} supplierId={supplierId}/> :
               null)
           }
         </div>

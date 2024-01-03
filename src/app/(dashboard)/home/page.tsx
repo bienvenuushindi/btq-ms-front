@@ -13,8 +13,8 @@ import clsx from 'clsx';
 export default function Home() {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1)
-  const [date, setDate] = useState(null);
-  const onChange = (newDate) => {
+  const [date, setDate] = useState<Date>(tomorrow);
+  const onChange = (newDate:  any) => {
     setDate(newDate);
     // selectedDate = newDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
   };
@@ -28,7 +28,7 @@ export default function Home() {
           </Card>
           <div className="w-3/4 flex flex-col gap-2">
             <RequisitionItem date={new Date()} title="Today's Requisition" />
-            <RequisitionItem date={date || tomorrow} title={clsx(date ? date.toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }) :"Tomorrow","Requisition")}/>
+            <RequisitionItem date={date} title={clsx(date == tomorrow ? "Tomorrow's " : date.toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }),"Requisition")}/>
           </div>
         </div>
       </ContainerOne>
