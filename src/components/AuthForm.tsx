@@ -25,7 +25,7 @@ const signinContent = {
   buttonText: 'Sign In',
 };
 
-const initial = {email: '', password: '', name: '', phone_number: '+243995007529', role_id: 1};
+const initial = {email: '', password: '', name: '', phone_number: '', role_id: 1};
 
 export default function AuthForm({mode}: { mode: 'register' | 'signin' }) {
   const [formState, setFormState] = useState({...initial});
@@ -84,7 +84,23 @@ export default function AuthForm({mode}: { mode: 'register' | 'signin' }) {
                   }
                 />
               </div>
+
+              <div className="mb-8">
+                <div className="text-lg mb-4 ml-2 text-black/50">Phone number</div>
+                <Input
+                  required
+                  type="tel"
+                  placeholder="Phone"
+                  value={formState.phone_number}
+                  className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
+                  onChange={(e) =>
+                    setFormState((s) => ({...s, phone_number: e.target.value}))
+                  }
+                 />
+              </div>
+              
             </div>
+            
           )}
           <div className="mb-8">
             <div className="text-lg mb-4 ml-2 text-black/50">Email</div>
