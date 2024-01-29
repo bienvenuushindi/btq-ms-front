@@ -7,7 +7,6 @@ import DataGrid from '@/components/DataGrid';
 import Button from '@/components/Button';
 import { useFetcher } from '@/app/hooks/useFetcher';
 import { useRouter } from 'next/navigation';
-import { BASE_URL } from '@/lib/api';
 
 export default function ExpiredProductContainer({ title, type, limit }: {title: any, type: any, limit?: any}) {
   const router = useRouter();
@@ -26,7 +25,7 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
       key: 'image_urls',
       type: 'picture',
       label: '',
-      dataTransformation: (value: any) => BASE_URL + value[0],
+      dataTransformation: (value: any) => value[0],
     },
     {
       key: 'size',
@@ -56,12 +55,12 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
           <span
             className={clsx(
               'px-2 rounded-2xl font-bold',
-              type === 'expired' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
+              type === 'expired' ? 'bg-red-100 text-red-800' : 'bg-orange-100 text-orange-800'
             )}
           >
             {productCount}
           </span>
-          <span className={clsx(type === 'expired' ? 'text-red-300' : 'text-green-300')}>Product(s)</span>
+          <span className={clsx(type === 'expired' ? 'text-red-300' : 'text-orange-300')}>Product(s)</span>
         </div>
       </div>
 
