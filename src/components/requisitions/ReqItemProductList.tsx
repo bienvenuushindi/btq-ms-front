@@ -5,6 +5,7 @@ import DeleteAlert from '@/components/DeleteAlert';
 import ContainerOne from '@/components/ContainerOne';
 import ReqProductItem from '@/components/requisitions/ReqProductItem';
 import Card from '@/components/Card';
+import Text from "@/components/Text";
 
 
 export default function ReqItemProductList({details, requisitionId}) {
@@ -34,12 +35,12 @@ export default function ReqItemProductList({details, requisitionId}) {
   return (
     <ContainerOne>
       <Card className='w-full'>
-        <h1 className="text-xl py-1 font-normal text-gray-900 pb-3 border-b ">Items</h1>
+        <Text intent="tertiary" size="large" className="font-extrabold">Items</Text>
         <ul className=" mx-auto py-2">
           {data.map((row) => {
             row.isOpen = false;
             return <li key={row.id}
-                       className="flex w-full items-start justify-center gap-2 mb-2 py-1 border border-gray-100 rounded shadow-sm">
+                       className="flex w-full items-start justify-center gap-2 mb-2 py-1 border-b border-gray-100 rounded ">
               <ReqProductItem
                 row={row}
                 requisitionId={requisitionId}
