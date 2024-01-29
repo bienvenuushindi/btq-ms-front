@@ -5,8 +5,6 @@ import React, {useState} from 'react';
 import Text from '@/components/Text';
 import {XCircle} from 'react-feather';
 import Image from 'next/image';
-import {getImageUrls} from '@/lib/utils';
-import {BASE_URL} from '@/lib/api';
 import clsx from 'clsx';
 
 export default function ReqProductItem({row, requisitionId, removeItem, openAccordion, toggleAccordion}) {
@@ -32,7 +30,7 @@ const Title = ({name, size, image_url}) => {
   return (
     <div className="flex gap-2">
       <Image
-        src={BASE_URL + image_url}
+        src={image_url}
         alt={name}
         className="rounded-md border border-gray-100"
         width={60}
