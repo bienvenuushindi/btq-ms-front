@@ -5,6 +5,7 @@ import {getImageUrls} from '@/lib/utils';
 import Divider from '@/components/Divider';
 import Carousel from '@/components/carousel/Carousel';
 import DateDisplay from "@/components/DateDisplay";
+import Text from "@/components/Text";
 
 export default function RequisitionProduct({product}) {
     return (
@@ -15,34 +16,41 @@ export default function RequisitionProduct({product}) {
             </div>
             <div className="w-2/3">
                 <div>
-                    <h2 className='font-medium'>Product Details</h2>
+                    <Text intent="primary" size="medium" className="font-extrabold">Details</Text>
                     <Divider/>
                     <div className="flex justify-between">
                         <InfoItem label="Name" value={product.name}/>
                         <InfoItem label="Size" value={product.size}/>
-                        <InfoItem label="Expiration Date" value={<DateDisplay date={product.expired_date} />}/>
+                        <InfoItem label="Expiration Date" value={<DateDisplay date={product.expired_date}/>}/>
                     </div>
 
                 </div>
                 <div>
-                    <h2>Prices</h2>
+                    <Text intent="primary" size="medium" className="font-extrabold">Prices</Text>
                     <div className="flex gap-3">
-                        <Card className="flex flex-col justify-between border">
-                            <InfoItem label="Box Price" value={product.box_price}/>
-                            <InfoItem label="Quantity" value={product.box_units}/>
-                        </Card>
-                        <Card className="flex flex-col justify-between border">
-                            <InfoItem label="Dozen Price" value={product.dozen_price}/>
-                            <InfoItem label="Quantity" value={product.dozen_units}/>
-                        </Card>
-                        <Card className="flex flex-col justify-between border">
-                            <InfoItem label="Unit Price" value={product.unit_price}/>
-                            <InfoItem label="Quantity" value={1}/>
-                        </Card>
+                        {renderCard('Box Price', product.box_price, 'Quantity', product.box_units)}
+                        {renderCard('Dozen Price', product.dozen_price, 'Quantity', product.dozen_units)}
+                        {renderCard('Unit Price', product.unit_price, 'Quantity', 1)}
                     </div>
-
                 </div>
             </div>
         </Card>
     )
+}
+
+const renderCard = (label1, value1, label2, value2) => {
+    return (
+        <Card className="flex gap-1 justify-between border">
+            <InfoItem label={label1} value={value1}/>
+            <span className="font-bold text-sm"> / </span>
+            <InfoItem label={label2}>
+                <div className="flex gap-1">
+                    <Text size="large" intent="tertiary" className="font-bold">{value2}</Text>
+                    <span className="flex gap-2 items-center w-fit text-gray-700 text-sm">
+                    pcs
+                </span>
+                </div>
+            </InfoItem>
+        </Card>
+    );
 }
