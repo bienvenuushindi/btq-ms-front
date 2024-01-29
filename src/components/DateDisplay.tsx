@@ -24,7 +24,7 @@ const DateDisplay = ({date}) => {
 
 
     return (
-        <div className={`px-2 rounded-2xl font-bold ${colorVariant}`}>
+        <div className={`px-1 rounded text-md py-0.5 font-bold ${colorVariant}`}>
             {format(expirationDate, 'yyyy-MM-dd')}
         </div>
     );
