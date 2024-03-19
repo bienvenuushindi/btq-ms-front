@@ -8,7 +8,6 @@ import {useFetcher} from '@/app/hooks/useFetcher';
 
 export default function Account(){
   const {data} = useFetcher('/current_user')
-  console.log(data)
   return (
     <Container>
       <ContainerOne>

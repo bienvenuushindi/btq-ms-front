@@ -1,18 +1,18 @@
 'use client';
 import ContainerOne from '@/components/ContainerOne';
 import Container from '@/components/Container';
-import {useCategories} from '@/app/hooks/useCategories';
 import CategoriesHeader from '@/components/categories/CategoriesHeader';
 import {useState} from 'react';
 import EntityTable from '@/components/EntityTable';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Badge from '@/components/Badge';
 import {Edit, Trash2} from 'react-feather';
-import {API_URL} from '@/lib/api';
+import {API_ENDPOINTS, API_URL} from '@/lib/api';
+import {useFetcher} from "@/app/hooks/useFetcher";
 
 export default function Categories() {
-  const [url, setUrl] = useState(`${API_URL}/categories`);
-  const {categories, meta, links, error, isLoading, mutate} = useCategories(url);
+  const [url, setUrl] = useState(API_ENDPOINTS.CATEGORIES);
+  const {data: categories=[], meta, links, error, isLoading, mutate} = useFetcher(url);
   const categoryColumns = [
     {
       key: 'name',

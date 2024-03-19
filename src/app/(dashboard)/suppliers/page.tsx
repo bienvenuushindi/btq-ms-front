@@ -1,7 +1,6 @@
 'use client';
 import {useContext, useState} from 'react';
-import {useSuppliers} from '@/app/hooks/useSuppliers';
-import {API_URL, BASE_URL} from '@/lib/api';
+import {API_ENDPOINTS, API_URL} from '@/lib/api';
 import {SidebarContext} from '@/components/sidebar/SidebarContainer';
 import SidebarContentSelector from '@/components/SidebarContentSelector';
 import SuppliersHeader from '@/components/suppliers/SuppliersHeader';
@@ -11,19 +10,19 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import EntityTable from '@/components/EntityTable';
 import {Edit, Trash2} from 'react-feather';
 import {useRouter} from 'next/navigation';
+import {useFetcher} from "@/app/hooks/useFetcher";
 
 export default function Suppliers() {
-  const [url, setUrl] = useState(`${API_URL}/suppliers`);
+  const [url, setUrl] = useState(API_ENDPOINTS.SUPPLIERS);
   const {openBar, setOpenBar, setSidebarData} = useContext(SidebarContext);
-  const {suppliers, meta, links, error, isLoading} = useSuppliers(url);
+  const {suppliers, meta, links, error, isLoading} = useFetcher(url);
   const router = useRouter();
-  console.log(suppliers)
   const columns = [
     {
       key: 'image_urls',
       type: 'picture',
       label: 'Supplier',
-      dataTransformation: (value: any) => BASE_URL + value[0],
+      dataTransformation: (value: any) => value[0],
       // action: (data) => {
       //   setOpenBar({state: true, target: 'supplier_details'});
       //   setSidebarData(data.attributes);

@@ -11,8 +11,8 @@ import ReqItemProductList from '@/components/requisitions/ReqItemProductList';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Card from '@/components/Card';
 import GridLoader from '@/components/banners/GridLoader';
-import {RequisitionInfoWithContext} from '@/components/requisitions/home-page/RequisitionItem';
 import RequisitionProvider from '@/components/requisitions/RequisitionContext';
+import {RequisitionInfoWithContext} from "@/components/requisitions/home-page/RequisitionInfoWithContext";
 
 export default function Requisition() {
   const {openBar} = useContext(SidebarContext);
@@ -40,9 +40,10 @@ export default function Requisition() {
             <>
               <RequisitionProvider>
                 <Card className="w-full">
-                  <RequisitionInfoWithContext requisition={requisition_items.attributes} withLink={false}/>
+                    {/* eslint-disable-next-line react/jsx-no-undef */}
+                  <RequisitionInfoWithContext requisition={requisition_items} withLink={false}/>
                 </Card>
-                <ReqItemProductList details={requisition_items.attributes.product_items} requisitionId={requisitionId}/>
+                <ReqItemProductList details={requisition_items.product_items} requisitionId={requisitionId}/>
                 <SidebarContentSelector target={openBar.target}/>
               </RequisitionProvider>
             </>

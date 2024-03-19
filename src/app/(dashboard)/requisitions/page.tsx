@@ -1,5 +1,4 @@
 'use client';
-import {useRequisitions} from '@/app/hooks/useRequisitions';
 import ContainerOne from '@/components/ContainerOne';
 import Container from '@/components/Container';
 import RequisitionsHeader from '@/components/requisitions/RequisitionsHeader';
@@ -8,10 +7,12 @@ import EntityTable from '@/components/EntityTable';
 import {useRouter} from 'next/navigation';
 import Badge from '@/components/Badge';
 import {useState} from 'react';
+import {useFetcher} from "@/app/hooks/useFetcher";
+import {API_ENDPOINTS} from "@/lib/api";
 
 export default function Requisitions() {
-  const [url, setUrl] = useState(null);
-  const {requisitions, meta, links, error, isLoading} = useRequisitions(url);
+  const [url, setUrl] = useState(API_ENDPOINTS.REQUISITIONS);
+  const {data, meta, links, error, isLoading} =useFetcher(url);
   const router = useRouter()
   const columns = [
     {
@@ -66,7 +67,7 @@ export default function Requisitions() {
             searchable={false}
             meta={meta}
             links={links}
-            data={requisitions}
+            data={data}
             updateList={setUrl}
             columns={columns}
             entities={'requisitions'}/>
