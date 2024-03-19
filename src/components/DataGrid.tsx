@@ -8,8 +8,8 @@ import { ArrowDown, ArrowUp } from 'react-feather';
 
 const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: { data:any, columns:any, tHeadProps:any, isLoading:any, loader?:any, onSorting?:any }) => {
   return (
-    <div className="w-full relative">
-      <table className="w-full text-sm text-left text-gray-500 -dark:text-gray-40">
+    <div className="w-full relative h-full shadow-md">
+      <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 -dark:bg-gray-700 -dark:text-gray-400">
         <tr>
           <RenderTableHead tHeadProps={tHeadProps} columns={columns} onSorting={onSorting} />
@@ -25,8 +25,8 @@ const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: {
         )}
         {isLoading ||
           (data.length === 0 ? (
-            <tr className="bg-white border-b -dark:bg-gray-800 -dark:border-gray-700 hover:bg-gray-50 -dark:hover:bg-gray-600">
-              <td colSpan={columns.length} className="text-center">
+            <tr className="bg-white -dark:bg-gray-800 -dark:border-gray-700 hover:bg-gray-50 -dark:hover:bg-gray-600">
+              <td colSpan={columns.length} className="text-center h-40">
                 No Data Found
               </td>
             </tr>
@@ -40,8 +40,8 @@ const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: {
                   <td
                     key={`tbody-row-${column.key as React.Key}-${column.label}`}
                     className={clsx(
-                      'px-1 py-4',
-                      column.key ? 'table-cell' : 'd-flex justify-content-end'
+                      'px-1 py-3',
+                      column.key ? 'table-cell' : 'flex justify-start '
                     )}
                   >
                     {column.key ? renderCell(column, row) : renderCell(column, column.customKey)}
@@ -60,14 +60,14 @@ export const renderCell = (column, value: any) => {
     return column.customComponent;
   }
   let transformedValue;
-  if (value.attributes) {
-    transformedValue = column.dataTransformation?.(value.attributes[column.key]) || value.attributes[column.key];
+  if (value) {
+    transformedValue = column.dataTransformation?.(value[column.key]) || value[column.key];
   } else {
     transformedValue = value[column.key];
   }
 
   if(column.appendTransformation){
-    transformedValue = column.appendTransformation(value.attributes[column.key], value.attributes)
+    transformedValue = column.appendTransformation(value[column.key], value)
   }
   switch (column.type) {
     case 'radio':
@@ -136,12 +136,13 @@ export const RenderTableHead = ({ columns, onSorting, tHeadProps }) => {
           {...tHeadProps}
           key={`thead-${column.key as React.Key}-${column.label}`}
         >
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 justify-start">
             <span>{column.label}</span>
             {column.sortable && (
               <Button
                 intent="none"
-                className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring focus:border-blue-300"
+                size="small"
+                className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring focus:border-gray-50"
                 onClick={() => handleSort(column.key)}
               >
                 {params.sort === column.key ? (

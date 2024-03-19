@@ -7,7 +7,6 @@ const DateDisplay = ({date}) => {
             <div className="p-2 rounded bg-gray-300">Not Applied</div>
         );
     }
-    console.log(date)
     const currentDate = new Date().getTime();
     const expirationDate = new Date(date).getTime();
 
@@ -24,7 +23,7 @@ const DateDisplay = ({date}) => {
 
 
     return (
-        <div className={`px-1 rounded text-md py-0.5 font-bold ${colorVariant}`}>
+        <div className={`px-1 w-fit rounded text-md py-0.5 font-bold ${colorVariant}`}>
             {format(expirationDate, 'yyyy-MM-dd')}
         </div>
     );

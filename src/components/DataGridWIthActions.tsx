@@ -9,7 +9,7 @@ import CustomPopover from "@/components/popover/CustomPopover";
 const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, actions, onSorting}) => {
     return (
         <div className="w-full relative">
-            <table className="w-full text-sm text-left text-gray-500 -dark:text-gray-40 ">
+            <table className="w-full text-sm text-left text-gray-500 -dark:text-gray-40 shadow-md ">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 -dark:bg-gray-700 -dark:text-gray-400">
                 <tr>
                     <RenderTableHead tHeadProps={tHeadProps} columns={columns} onSorting={onSorting}/>
@@ -38,7 +38,7 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
                             key={`row-${index}`}>
                             {columns.map((column) => (
                                 <td key={`row-cell-${column.key as React.Key}-${column.label}`}
-                                    className={clsx('px-6 py-4', column.key ? 'table-cell' : 'd-flex justify-content-end')}>
+                                    className={clsx('px-1 py-3', column.key ? 'table-cell' : 'flex justify-start')}>
                                     {column.key ? renderCell(column, row) : renderCell(column, column.customKey)}
                                 </td>
                             ))}

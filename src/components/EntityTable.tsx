@@ -39,7 +39,7 @@ const EntityTable = ({
       </div>
 
     )}
-      <Card className="w-full relative justify-start my-2">
+      <Card className="w-full relative justify-start my-2 bg-gray-100">
         <div className="flex justify-end w-full my-2">
           {links && meta && <TableMetaData meta={meta}/>}
         </div>
