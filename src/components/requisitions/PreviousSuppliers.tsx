@@ -5,8 +5,7 @@ import SupplierList from '@/components/requisitions/SupplierList';
 import ErrorBoundary from '@/components/ErrorBoundary';
 
 export default function PreviousSuppliers({action, supplierId, productId}) {
-  const {data: product = {}, error, isLoading} = useFetcher('/product_details/' + productId + '/suppliers');
-  const {attributes: productSuppliers = {}} = product;
+  const {data: productSuppliers = {}, error, isLoading} = useFetcher('/product_details/' + productId + '/suppliers');
   const {suppliers: list = []} = productSuppliers;
   const [selected, setSelected] = useState(supplierId)
   const updateSelected = (id) => {

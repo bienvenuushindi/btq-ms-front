@@ -4,9 +4,9 @@ import {tagColors} from "@/lib/utils";
 
 const RequisitionDetailsCard = ({ label, icon, value }) => {
     return (
-        <Card className="p-4">
-            <div className="flex items-center gap-4">
-                {icon && React.cloneElement(icon, { size: 50, color: tagColors.primary })}
+        <Card className="p-4 h-full w-full">
+            <div className="flex items-center gap-2">
+                {icon && React.cloneElement(icon, { size: 40, color: tagColors.primary })}
 
                 <div className="flex flex-col">
                     <span className="text-gray-700 text-sm">{label}</span>

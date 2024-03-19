@@ -43,7 +43,7 @@ export default function SelectProductVariant({details }) {
                 <li>
                   <Card className={' flex items-center gap-2'}>
                     <input type="radio" name="supplier_id" onChange={()=>handleChange(detail.id)} value={detail.id}/>
-                    <label> {detail.attributes.size}</label>
+                    <label> {detail.size}</label>
                   </Card>
                 </li>
               </ul>)

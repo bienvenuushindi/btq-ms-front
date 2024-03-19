@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { API_URL, send } from '@/lib/api';
+import {API_ENDPOINTS, API_URL, send} from '@/lib/api';
 import { updateUrl } from '@/lib/utils';
 
 export function useRequisitionForm({ requisitionID, revalidate, closeModal }) {
     const [items, setItems] = useState([]);
-    const [url, setUrl] = useState(API_URL + '/products/search');
+    const [url, setUrl] = useState(API_ENDPOINTS.SEARCH_PRODUCTS);
     const [error, setError] = useState('');
 
     const updateParams = (newFilters) => {

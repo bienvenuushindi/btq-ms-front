@@ -1,7 +1,7 @@
 'use client';
 import React, {useState} from 'react';
 import {countries} from '@/styles/data/countries';
-import {BASE_URL, send} from '@/lib/api';
+import {send} from '@/lib/api';
 import {useParams, useRouter} from 'next/navigation';
 import Form from '@/components/Form';
 import SearchTagBox from '@/components/tags/SearchTag';
@@ -24,7 +24,7 @@ export const ProductForm = ({product}: {product?: any}) => {
   const getImageUrls = () => {
     if (isAddMode) return [];
     return (product.image_urls).map((image_path) => (
-      `${BASE_URL + image_path}`
+      image_path
     ));
   };
   const [formState, setFormState] = useState({...initial});

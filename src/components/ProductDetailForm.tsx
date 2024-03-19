@@ -1,8 +1,7 @@
 'use client';
 import React, {useState} from 'react';
-import Card from '@/components/Card';
 import {useRouter, useParams} from 'next/navigation';
-import {BASE_URL, send} from '@/lib/api';
+import {send} from '@/lib/api';
 import Form from '@/components/Form';
 import SearchTagBox from '@/components/tags/SearchTag';
 import ContainerOne from '@/components/ContainerOne';
@@ -12,7 +11,6 @@ export const ProductDetailForm = ({variant=null}:{variant?: any}) => {
   const router = useRouter();
   const path = useParams();
   const isAddMode = !variant
-  console.log(variant)
   let initial = {
     size: '',
     expired_date: '',
@@ -56,7 +54,7 @@ export const ProductDetailForm = ({variant=null}:{variant?: any}) => {
   const getImageUrls = () => {
     if (isAddMode) return [];
     return (variant.image_urls).map((image_path) => (
-      `${BASE_URL + image_path}`
+       image_path
     ));
   };
   const [formState, setFormState] = useState({...initial});

@@ -2,26 +2,6 @@ import React, { Fragment, useState } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 
 const CustomPopover = ({ title, children }) => {
-    const [popoverPosition, setPopoverPosition] = useState({top: 0, left: 0});
-    const handleButtonActionsClick = (event) => {
-        const button = event.currentTarget;
-        const popoverWidth = 94;
-        const popoverPosition = calculatePopoverPosition(button, popoverWidth);
-        setPopoverPosition(popoverPosition);
-    };
-    const calculatePopoverPosition = (button, popoverWidth) => {
-        const buttonRect = button.getBoundingClientRect();
-        const spaceRight = window.innerWidth - buttonRect.right;
-        const top = buttonRect.bottom + window.scrollY;
-        let left = buttonRect.right + window.scrollX;
-        if (spaceRight < popoverWidth) {
-            left = buttonRect.left + window.scrollX - popoverWidth;
-        }
-        return {
-            top,
-            left,
-        };
-    };
     return (
         <Popover className="relative">
             {({ open }) => (
@@ -42,7 +22,7 @@ const CustomPopover = ({ title, children }) => {
                         leaveFrom="opacity-100 translate-y-0"
                         leaveTo="opacity-0 translate-y-1"
                     >
-                        <Popover.Panel className="absolute left-1/2  z-10 mt-3  max-w-sm -translate-x-1/2 transform px-4 sm:px-0">
+                        <Popover.Panel className="absolute left-14  z-10  max-w-sm -translate-x-1/2 transform px-4 sm:px-0">
                             {children}
                         </Popover.Panel>
                     </Transition>

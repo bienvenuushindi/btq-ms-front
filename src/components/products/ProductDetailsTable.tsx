@@ -5,7 +5,7 @@ import {Edit, Trash2} from 'react-feather';
 import {useParams, useRouter} from 'next/navigation';
 import EntityTable from '@/components/EntityTable';
 import Badge from '@/components/Badge';
-import {BASE_URL} from '@/lib/api';
+import DateDisplay from "@/components/DateDisplay";
 
 export const ProductDetailsTable = ({productName, details, isLoading}) => {
   const {setOpenBar, setSidebarData} = useContext(SidebarContext);
@@ -38,7 +38,7 @@ export const ProductDetailsTable = ({productName, details, isLoading}) => {
       type: 'picture',
       label: '',
       className:'w-full bg-gray-600',
-      dataTransformation: (value: any) => BASE_URL + value[0],
+      dataTransformation: (value: any) => value[0],
       // action: (data) => {
       //   // setOpenBar({state: true, target: 'supplier_details'});
       //   // setSidebarData(data.attributes);
@@ -83,6 +83,7 @@ export const ProductDetailsTable = ({productName, details, isLoading}) => {
       key: 'expired_date',
       type: 'text',
       label: 'Expiration',
+      dataTransformation: (value: any) => <DateDisplay date={value} />
     },
     {
       key: 'status',
@@ -96,7 +97,7 @@ export const ProductDetailsTable = ({productName, details, isLoading}) => {
       type: 'details',
       label: "Prices",
       action: (data) => {
-        setOpenBar({state: true, target: 'price_details',title:  productName + ' (' + data.attributes.size+ ')'});
+        setOpenBar({state: true, target: 'price_details',title:  productName + ' (' + data.size+ ')'});
         setSidebarData(data);
       }
     },

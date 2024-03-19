@@ -1,13 +1,12 @@
 'use client';
-import {useSuppliers} from '@/app/hooks/useSuppliers';
-import {RadioGroup} from '@headlessui/react';
-import {CheckCircle} from 'react-feather';
 import {useEffect, useState} from 'react';
 import SupplierList from '@/components/requisitions/SupplierList';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import {useFetcher} from "@/app/hooks/useFetcher";
+import {API_ENDPOINTS} from "@/lib/api";
 
 export default function SearchSupplierResults({url, action, supplierId}) {
-  const {suppliers, error, isLoading} = useSuppliers(url);
+  const {data: suppliers=[], error, isLoading} = useFetcher(url);
   const [selected, setSelected] = useState(supplierId);
   const updateSelected = (id) => {
     setSelected(id);

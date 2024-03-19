@@ -1,29 +1,22 @@
-import {format} from 'date-fns';
-import {useRequisition} from '@/app/hooks/useRequisition';
 import Text from '@/components/Text';
 import React from 'react';
-import Loading from '@/components/state/Loading';
-import NotFound from '@/components/state/NotFound';
-import DataWrapper from "@/components/utils/DataWrapper";
 import {RequisitionInfo} from "@/components/requisitions/home-page/RequisitionInfo";
+import Card from "@/components/Card";
+import Dot from "@/components/utils/Dot";
 
-export function RequisitionItemByDate({title, date}) {
-    const formattedDate = format(date, 'yyyy-MM-dd');
-    const {requisition, error, isLoading} = useRequisition(formattedDate);
-
+export function RequisitionItemCard({title, requisition, className = ''}) {
     return (
-        <>
-            <div className="w-full h-36">
-                <Text intent="primary" size="medium" className="font-extrabold">{title}</Text>
-                <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
-                    {requisition && <RequisitionInfo requisition={requisition}/>}
-                    {!requisition && <NotFound/>}
-                </DataWrapper>
+        <Card className="min-h-36 w-full bg-white">
+            <div className="flex items-center">
+                <Dot variant="primary"/>
+                <Text intent="secondary" size="medium" className="font-extrabold">
+                    {title}
+                </Text>
             </div>
-        </>
-    );
+            <RequisitionInfo requisition={requisition} className={className}/>
+        </Card>
+    )
 }
-
 
 
 

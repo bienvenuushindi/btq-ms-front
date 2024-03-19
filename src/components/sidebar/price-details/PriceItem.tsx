@@ -1,7 +1,5 @@
 import clsx from 'clsx';
 import Card from '@/components/Card';
-import {BASE_URL} from '@/lib/api';
-import Image from 'next/image';
 import React from 'react';
 import {SupplierInformation} from '@/components/suppliers/SupplierInformation';
 import {getImageUrls} from '@/lib/utils';
@@ -9,7 +7,7 @@ import Badge from '@/components/Badge';
 
 
 export default function PriceItem({details, supplier}) {
-  const {data: {attributes: supplier_info}} = supplier;
+  const {data: supplier_info} = supplier;
   const image_urls = [...supplier_info.image_urls];
   const {
     id,

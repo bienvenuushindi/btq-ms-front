@@ -1,9 +1,7 @@
 'use client';
 import React, {useContext, useState} from 'react';
-import {send} from '@/lib/api';
+import {API_ENDPOINTS, send} from '@/lib/api';
 import Form from '@/components/Form';
-import useQuantityTypes from '@/app/hooks/useQuantityTypes';
-import useCurrencies from '@/app/hooks/useCurrencies';
 import SuppliersSection from '@/components/requisitions/SuppliersSection';
 import Badge from '@/components/Badge';
 import Card from '@/components/Card';
@@ -13,10 +11,11 @@ import toastShow from '@/components/toast/toast-selector';
 import {RequisitionContext} from '@/components/requisitions/RequisitionContext';
 import clsx from 'clsx';
 import SwitchCurrency from '@/components/requisitions/item-page/SwitchCurrency';
+import {useFetcher} from "@/app/hooks/useFetcher";
 
 export default function RequisitionItemPricing({requisitionId, productDetails}) {
-  const {data: quantityType = {}} = useQuantityTypes();
-  const {data: currencies = {}} = useCurrencies();
+  const {data: quantityType = {}} = useFetcher(API_ENDPOINTS.QUANTITY_TYPES);
+  const {data: currencies = {}} = useFetcher( '/currencies');
   const {currency} = useContext(RequisitionContext);
   const [modalIsOpen, setIsOpen] = useState(false);
   const initial = {
@@ -194,7 +193,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
     setFormState((s) => ({...s, ...supplier, quantity: 0}));
   };
   return (
-    <Card className={'flex justify-between gap-4'}>
+    <Card className={'flex justify-between gap-4 bg-gray-50'}>
       <SuppliersSection
         action={updateForm}
         suppliers={productDetails.suppliers}

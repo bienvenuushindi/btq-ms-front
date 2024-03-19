@@ -24,7 +24,7 @@ export default function SearchTagBox(props) {
             (data &&
               <ul>
               {
-               data.map(item=> <li onClick={()=>pushTag(item.attributes.name)} key={item.attributes.name}>{item.attributes.name}</li>)
+               data.map(item=> <li onClick={()=>pushTag(item.name)} key={item.name}>{item.name}</li>)
               }
             </ul> ) ||  'Not found')
         }

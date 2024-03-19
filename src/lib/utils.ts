@@ -1,5 +1,3 @@
-import {BASE_URL} from '@/lib/api';
-
 type DataPropertyNames<T> = {
   [K in keyof T]: T[K] extends Function ? never : K;
 }[keyof T];
@@ -15,8 +13,7 @@ export  const capitalizeFirstLetter = (str) => {
 };
 
 export const getImageUrls = (urls) => {
-  return (urls || []).map((image_path) => (
-    `${BASE_URL + image_path}`));
+  return (urls || []).map((image_path) => image_path);
 };
 
 // urlUtils.js

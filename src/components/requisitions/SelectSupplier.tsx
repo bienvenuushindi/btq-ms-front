@@ -1,11 +1,11 @@
 import {SearchBar} from '@/components/SearchBar';
-import {API_URL} from '@/lib/api';
+import {API_ENDPOINTS, API_URL} from '@/lib/api';
 import React, {useState} from 'react';
 import SearchSupplierResults from '@/components/requisitions/SearchSupplierResults';
 import {updateUrl} from '@/lib/utils';
 
 export default function SelectSupplier({action, productId, supplierId}) {
-  const [url, setUrl] = useState(API_URL + '/suppliers/search/filter/' + productId);
+  const [url, setUrl] = useState(API_ENDPOINTS.SEARCH_SUPPLIERS(productId));
   const updateParams = (newFilters) => {
     setUrl((prevUrl) => {
       return  updateUrl(prevUrl, newFilters);

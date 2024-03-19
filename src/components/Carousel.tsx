@@ -1,9 +1,7 @@
-import {BASE_URL} from '@/lib/api';
-
 export default function Carousel({image_urls = []}) {
   const getImageUrls = () => {
     return (image_urls || []).map((image_path) => ({
-      src: `${BASE_URL + image_path}`
+      src:  image_path
     }));
   };
   // const imageList = images_url.map((image_url, index) => {

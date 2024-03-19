@@ -1,9 +1,9 @@
-import {useProducts} from '@/app/hooks/useProducts';
 import clsx from 'clsx';
-import Input from '@/components/Input';
+import {useFetcher} from "@/app/hooks/useFetcher";
+import {API_ENDPOINTS} from "@/lib/api";
 
 export default function ProductSearchResults({url, setItems}) {
-  const {data: products = [], meta, links, error, isLoading} = useProducts(url);
+  const {data: products = [], meta, links, error, isLoading} = useFetcher(API_ENDPOINTS.PRODUCTS)
   function handleChange(e) {
     const targetItem = JSON.parse(e.target.value)
     if (e.target.checked) {
@@ -23,9 +23,9 @@ export default function ProductSearchResults({url, setItems}) {
         isLoading && !error ? (<div>Loading...</div>) :
           error ? <div>Failed to load</div> :
             products.map((product, index) => <div key={product.id}>{index})
-              {product.attributes.name}
+              {product.name}
               <ul className="ml-3">
-                {product.attributes.details.map(item => <li key={clsx(item.id)}>
+                {product.details.map(item => <li key={clsx(item.id)}>
                   <div className={" flex"}>
                     <input type="checkbox" onChange={handleChange} value={JSON.stringify(item)}/>
                     <label> {item.name}</label>

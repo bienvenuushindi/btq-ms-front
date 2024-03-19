@@ -2,15 +2,13 @@ import SearchTagBox from '@/components/tags/SearchTag';
 import ContainerOne from '@/components/ContainerOne';
 import Form from '@/components/Form';
 import React, {useCallback, useState} from 'react';
-import {API_URL, authFetcher, BASE_URL} from '@/lib/api';
-import useSWRImmutable from 'swr/immutable';
 
 export default function UserForm({user}){
   const initial = {email: '', password: '', firstName: '', lastName: '',  country_name: '', city: '', tel1: '',tel2: '',address1: '', address2: ''};
   const [formState, setFormState] = useState({...initial});
   const getImageUrls = () => {
     return (user.image_urls).map((image_path) => (
-      `${BASE_URL + image_path}`
+      image_path
     ));
   };
   const [photos, setPhotos] = useState(getImageUrls());
@@ -20,7 +18,6 @@ export default function UserForm({user}){
       const data = {
         user: formState
       };
-      console.log(data)
       // try {
       //   if (mode === 'register') {
       //     await register(data);

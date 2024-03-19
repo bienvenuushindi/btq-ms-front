@@ -16,6 +16,10 @@
     box-sizing: border-box;
 }
 
+body {
+    @apply bg-gray-200
+}
+
 form, input, textarea{
     @apply text-gray-800
 }

@@ -4,7 +4,7 @@ import React from 'react';
 
 export default function ReqProductItemInfo({productDetails,requisitionId}){
   return (
-    <div>
+    <div className="w-full bg-gray-100 p-2">
       <RequisitionProduct product={productDetails}/>
       <div className="flex py-2">
         <div className="w-full">

@@ -13,7 +13,7 @@ export const textClasses = cva(
         large: ['text-lg'],
       },
       intent: {
-        primary: ['text-blue-900'],
+        primary: ['text-blue-700'],
         secondary: ['text-gray-500'],
         tertiary: ['text-gray-800'],
         success: ['text-green-500'],

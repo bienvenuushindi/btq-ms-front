@@ -1,9 +1,9 @@
 import Accordion from '@/components/Accordion';
 import ReqProductItemInfo from '@/components/requisitions/ReqProductItemInfo';
 import Button from '@/components/Button';
-import React, {useState} from 'react';
+import React from 'react';
 import Text from '@/components/Text';
-import {XCircle} from 'react-feather';
+import {XCircle, Trash} from 'react-feather';
 import Image from 'next/image';
 import clsx from 'clsx';
 
@@ -21,7 +21,7 @@ export default function ReqProductItem({row, requisitionId, removeItem, openAcco
       />
       <Button size="small" intent="danger" className="text-sm mx-1 mt-1" onClick={async () => {
         await removeItem(row.product_detail_id);
-      }}><XCircle size={17} color="#fff"/></Button>
+      }}><Trash size={17} color="#fff"/></Button>
     </>
   );
 }

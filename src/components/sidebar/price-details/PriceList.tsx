@@ -5,7 +5,7 @@ export default function PriceList({prices}) {
     <>
       <ul className="p-2">
         {prices.map(price => <li key={`price-${price.id}}`}>
-          <PriceItem details={price.attributes.price_details} supplier={price.attributes.supplier}/>
+          <PriceItem details={price.price_details} supplier={price.supplier}/>
         </li>)}
       </ul>
     </>

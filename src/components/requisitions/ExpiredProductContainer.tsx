@@ -48,28 +48,30 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
   const shouldDisplayViewAllButton = productCount > 5 && limit;
 
   return (
-    <Card>
-      <div className="flex w-full justify-between items-center">
-        <h3 className="font-semibold text-xl">{title}</h3>
+    <Card className="h-96 flex flex-col">
+      <div className="flex w-full justify-between items-center py-3">
+        <h3 className="font-semibold text-md">{title}</h3>
         <div className="flex items-center gap-1">
           <span
             className={clsx(
-              'px-2 rounded-2xl font-bold',
-              type === 'expired' ? 'bg-red-100 text-red-800' : 'bg-orange-100 text-orange-800'
+              'px-3 rounded font-bold',
+              type === 'expired' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'
             )}
           >
             {productCount}
           </span>
-          <span className={clsx(type === 'expired' ? 'text-red-300' : 'text-orange-300')}>Product(s)</span>
+          {/*<span className={clsx(type === 'expired' ? 'text-red-300' : 'text-yellow-800')}>Product(s)</span>*/}
         </div>
       </div>
 
-      <DataGrid
-        columns={columns}
-        data={expired}
-        tHeadProps={{ color: 'primary' }}
-        isLoading={isLoading}
+      <div className="flex-grow bg-gray-50">
+        <DataGrid
+          columns={columns}
+          data={expired}
+          tHeadProps={{ color: 'primary' }}
+          isLoading={isLoading}
       />
+      </div>
 
       {shouldDisplayViewAllButton && (
         <Button

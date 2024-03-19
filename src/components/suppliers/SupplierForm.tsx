@@ -1,6 +1,6 @@
 'use client';
 import React, {useState} from 'react';
-import {BASE_URL, send} from '@/lib/api';
+import {send} from '@/lib/api';
 import {useRouter} from 'next/navigation';
 import Form from '@/components/Form';
 import SearchTagBox from '@/components/tags/SearchTag';
@@ -9,7 +9,6 @@ import toastShow from '@/components/toast/toast-selector';
 
 export const SupplierForm = ({supplier}: {supplier?: any}) => {
   const isAddMode = !supplier;
-  console.log(supplier)
   const router = useRouter();
   let initial = {
     shop_name: '',
@@ -40,7 +39,7 @@ export const SupplierForm = ({supplier}: {supplier?: any}) => {
   const getImageUrls = () => {
     if (isAddMode) return [];
     return (supplier.image_urls).map((image_path) => (
-      `${BASE_URL + image_path}`
+      image_path
     ));
   };
   const [formState, setFormState] = useState({...initial});

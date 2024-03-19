@@ -29,7 +29,7 @@ const SupplierInformation = ({ shopName, country, city, address1, address2, tel1
               <li>{address1 || 'Address'}</li>
               {address2 && <li>{address2}</li>}
             </ul>
-            <div className="flex items-center mb-2">
+            <div className="flex items-start mb-2">
               <Phone className="mr-2" size={16} color={tagColors.primary} />
               <ul className="list-inside ml-2 font-light">
                 <li>{tel1 || 'N/A'}</li>

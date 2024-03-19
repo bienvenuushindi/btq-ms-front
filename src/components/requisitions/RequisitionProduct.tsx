@@ -9,12 +9,12 @@ import Text from "@/components/Text";
 
 export default function RequisitionProduct({product}) {
     return (
-        <Card className="flex gap-4 border-b py-4">
+        <Card className="flex gap-4 border-b py-2">
             <div id="carousel" className="p-2 shadow w-1/3">
                 <Carousel images={getImageUrls(product.image_urls || [])}
                           style={{height: 400, width: 400}}/>
             </div>
-            <div className="w-2/3">
+            <div className="w-2/3 bg-gray-50 p-2 rounded">
                 <div>
                     <Text intent="primary" size="medium" className="font-extrabold">Details</Text>
                     <Divider/>

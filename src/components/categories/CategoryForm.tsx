@@ -22,7 +22,6 @@ export default function CategoryForm() {
       router.push('/categories');
     } catch (e) {
       console.log(`Could not create category`);
-      console.log(e);
     } finally {
     }
   };

@@ -1,6 +1,5 @@
 import Form from '@/components/Form';
 import React, {useState} from 'react';
-// import useCurrencies from '@/app/hooks/useCurrencies';
 import clsx from 'clsx';
 import {delay} from '@/lib/async';
 
