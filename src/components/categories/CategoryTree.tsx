@@ -1,9 +1,10 @@
 'use client';
 import {useFetcher} from '@/app/hooks/useFetcher';
 import React, {useState} from 'react';
+import {API_ENDPOINTS} from "@/lib/api";
 
 export default function CategoryTree({action}) {
-  const {data: categories = [], mutate, error, isLoading} = useFetcher('/categories/tree_structure');
+  const {data: categories = [], mutate, error, isLoading} = useFetcher(API_ENDPOINTS.CATEGORY_TREE_STRUCTURE);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
   const handleRadioChange = (categoryId) => {

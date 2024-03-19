@@ -4,15 +4,20 @@ import Container from '@/components/Container';
 import {useParams} from 'next/navigation';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
+import Loading from "@/components/state/Loading";
+import React from "react";
+import DataWrapper from "@/components/utils/DataWrapper";
 
 
 export default function UpdateSupplier() {
   const params = useParams();
   const supplierID = params.id;
-  const {data: supplier = {}, isLoading} = useFetcher(API_ENDPOINTS.SUPPLIER_BY_ID(supplierID))
+  const {data: supplier = {}, isLoading, error} = useFetcher(API_ENDPOINTS.SUPPLIER_BY_ID(supplierID))
   return (
     <Container>
-      {isLoading ? <div>Loading ....</div> : <SupplierForm supplier={supplier}/>}
+      <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
+        <SupplierForm supplier={supplier}/>
+      </DataWrapper>
     </Container>
   );
 }

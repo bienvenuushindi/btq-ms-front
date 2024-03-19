@@ -1,4 +1,4 @@
-import {useContext} from 'react';
+import React, {useContext} from 'react';
 import {SidebarContext} from '@/components/sidebar/SidebarContainer';
 import PriceList from '@/components/sidebar/price-details/PriceList';
 import AddSupplier from '@/components/pages/products/details/AddSuppliers';
@@ -6,6 +6,8 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import ShowImages from '@/components/ShowImages';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
+import Loading from "@/components/state/Loading";
+import DataWrapper from "@/components/utils/DataWrapper";
 
 export default function PriceDetailsSidebar() {
   const {sidebarData} = useContext(SidebarContext);
@@ -14,10 +16,7 @@ export default function PriceDetailsSidebar() {
   console.log(sidebarData.attributes?.image_urls)
   return (
     <>
-      {
-        isLoading ? (<div>Loading...</div>) :
-        <ErrorBoundary error={error}>
-
+      <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
             <ShowImages imagesUrls={sidebarData.attributes?.image_urls}/>
             <div className="my-4">
               <div className="flex justify-end pr-2">
@@ -25,8 +24,7 @@ export default function PriceDetailsSidebar() {
               </div>
               <PriceList prices={result}/>
             </div>
-        </ErrorBoundary>
-      }
+      </DataWrapper>
     </>
   );
 }

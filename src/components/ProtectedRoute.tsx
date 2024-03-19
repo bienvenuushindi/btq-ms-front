@@ -4,12 +4,13 @@ import {useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import useAuth from "@/app/hooks/useAuth";
 import useSWRImmutable from "swr/immutable";
-import {API_URL, authFetcher} from "@/lib/api";
+import {API_ENDPOINTS, API_URL, authFetcher} from "@/lib/api";
+import {useFetcher} from "@/app/hooks/useFetcher";
 
 const ProtectedRoute = ({ children }) => {
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(null);
-    const { data, isLoading } = useSWRImmutable(API_URL + '/check-auth', authFetcher);
+    const { data, isLoading } = useFetcher(API_ENDPOINTS.CHECK_AUTH);
 
     useEffect(() => {
         const checkAuth = () => {

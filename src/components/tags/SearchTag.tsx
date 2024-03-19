@@ -1,6 +1,8 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDebounce} from '@/app/hooks/useDebounce';
 import {useFetcher} from '@/app/hooks/useFetcher';
+import Loading from "@/components/state/Loading";
+import DataWrapper from "@/components/utils/DataWrapper";
 
 
 export default function SearchTagBox(props) {
@@ -17,17 +19,16 @@ export default function SearchTagBox(props) {
 
        <div>
           <h2>{input ? `Results for "${input}"` : 'Select a tag'}</h2>
-
+          <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
           {
-          (isLoading && !error) ? (<div>Loading...</div>) :
-            (error ? <div>Failed to load</div> :
             (data &&
               <ul>
               {
                data.map(item=> <li onClick={()=>pushTag(item.name)} key={item.name}>{item.name}</li>)
               }
-            </ul> ) ||  'Not found')
-        }
+            </ul> ) ||  'Not found'
+          }
+          </DataWrapper>
        </div>
     }
      </>

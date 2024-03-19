@@ -4,14 +4,19 @@ import {useParams} from 'next/navigation';
 import {ProductDetailForm} from '@/components/ProductDetailForm';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
+import Loading from "@/components/state/Loading";
+import React from "react";
+import DataWrapper from "@/components/utils/DataWrapper";
 export default function UpdateProductDetails() {
   const params = useParams();
   const {id: productID, variant: variantID} = params;
 
-  const {data: variant = {}, isLoading} =  useFetcher(API_ENDPOINTS.PRODUCT_DETAIL_BY_ID(productID, variantID))
+  const {data: variant = {}, isLoading, error} =  useFetcher(API_ENDPOINTS.PRODUCT_DETAIL_BY_ID(productID, variantID))
   return (
     <Container>
-      {isLoading ? <div>Loading ....</div> : <ProductDetailForm variant={variant}/>}
+      <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
+       <ProductDetailForm variant={variant}/>
+      </DataWrapper>
     </Container>
   );
 }

@@ -16,9 +16,7 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
   const {
     data: expired_products = [],
     meta,
-    error,
     isLoading,
-    mutate,
   } = useFetcher(API_URL+endpoint);
 
   const columns = [
