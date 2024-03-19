@@ -2,12 +2,11 @@
 import { useState, useEffect } from 'react';
 import {getImageUrls} from '@/lib/utils';
 
-function useImageCarousel(imagesUrls) {
+function useImageCarousel(imagesUrls: string[]) {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
       setImages(getImageUrls(imagesUrls || []));
-    // }
   }, [imagesUrls]);
 
   return images;
