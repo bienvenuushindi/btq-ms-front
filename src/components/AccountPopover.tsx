@@ -1,15 +1,10 @@
 'use client';
 import {useCallback} from 'react';
-// import { useRouter } from 'next/router';
-// import PropTypes from 'prop-types';
 import {Menu, Transition} from '@headlessui/react';
-// import { useAuth } from 'src/hooks/use-auth';
+
 
 export const AccountPopover = (props) => {
   const {anchorEl, onClose, open} = props;
-  // const router = useRouter();
-  // const auth = useAuth();
-
   const handleSignOut = useCallback(
     () => {
       //   onClose?.();
@@ -55,9 +50,3 @@ export const AccountPopover = (props) => {
     </Transition>
   );
 };
-//
-// AccountPopover.propTypes = {
-//   anchorEl: PropTypes.any,
-//   onClose: PropTypes.func,
-//   open: PropTypes.bool.isRequired,
-// };
