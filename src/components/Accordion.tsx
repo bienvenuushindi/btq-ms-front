@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 const Accordion = ({id,title, content, isOpen, toggleAccordion, className}) => {
   return (
-    <div className={clsx("pl-1 flex flex-col items-center w-full rounded", className)}>
+    <div className={clsx("pl-1 flex flex-col items-start  w-full rounded", className)}>
       <Button
         size="small"
         intent={'text'}
@@ -11,11 +11,11 @@ const Accordion = ({id,title, content, isOpen, toggleAccordion, className}) => {
         onClick={() => toggleAccordion(id)}
       >
         <span className="text-lg font-semibold">{title}</span>
-        <span className={`transform ${isOpen ? 'rotate-0' : 'rotate-180'} transition-transform border px-1 rounded bg-lightBlue-200 text-white`}>
+        <span className={`transform ${isOpen ? 'rotate-0' : 'rotate-180'} transition-transform border px-2 text-lg rounded text-lightBlue-200`}>
           &#9660;
         </span>
       </Button>
-      {isOpen && <div className="p-2">{content}</div>}
+      {isOpen && <div className="p-2 w-full">{content}</div>}
     </div>
   );
 };
