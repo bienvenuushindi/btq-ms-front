@@ -15,7 +15,7 @@ import {useFetcher} from "@/app/hooks/useFetcher";
 
 export default function RequisitionItemPricing({requisitionId, productDetails}) {
   const {data: quantityType = {}} = useFetcher(API_ENDPOINTS.QUANTITY_TYPES);
-  const {data: currencies = {}} = useFetcher( '/currencies');
+  const {data: currencies = {}} = useFetcher( API_ENDPOINTS.CURRENCIES);
   const {currency} = useContext(RequisitionContext);
   const [modalIsOpen, setIsOpen] = useState(false);
   const initial = {

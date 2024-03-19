@@ -7,18 +7,19 @@ import DataGrid from '@/components/DataGrid';
 import Button from '@/components/Button';
 import { useFetcher } from '@/app/hooks/useFetcher';
 import { useRouter } from 'next/navigation';
+import {API_ENDPOINTS, API_URL} from "@/lib/api";
 
 export default function ExpiredProductContainer({ title, type, limit }: {title: any, type: any, limit?: any}) {
   const router = useRouter();
   const params = limit ? `?limit=${limit}` : '';
   const endpoint = `/product_details/${type}${params}`;
   const {
-    data: expired = [],
-    meta: { count: productCount } = {},
+    data: expired_products = [],
+    meta,
     error,
     isLoading,
     mutate,
-  } = useFetcher(endpoint);
+  } = useFetcher(API_URL+endpoint);
 
   const columns = [
     {
@@ -45,7 +46,7 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
     },
   ];
 
-  const shouldDisplayViewAllButton = productCount > 5 && limit;
+  const shouldDisplayViewAllButton = meta && meta.total > 5 && limit;
 
   return (
     <Card className="h-96 flex flex-col">
@@ -58,7 +59,7 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
               type === 'expired' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'
             )}
           >
-            {productCount}
+            {meta && meta.total}
           </span>
           {/*<span className={clsx(type === 'expired' ? 'text-red-300' : 'text-yellow-800')}>Product(s)</span>*/}
         </div>
@@ -67,7 +68,7 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
       <div className="flex-grow bg-gray-50">
         <DataGrid
           columns={columns}
-          data={expired}
+          data={expired_products}
           tHeadProps={{ color: 'primary' }}
           isLoading={isLoading}
       />

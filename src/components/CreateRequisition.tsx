@@ -1,5 +1,5 @@
 'use client';
-import {send} from '@/lib/api';
+import {API_ENDPOINTS, send} from '@/lib/api';
 import React, {useCallback, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import Button from '@/components/Button';
@@ -15,7 +15,7 @@ import {useFetcher} from "@/app/hooks/useFetcher";
 
 
 export default function CreateRequisition() {
-  const {data: currencies={}} = useFetcher( '/currencies');
+  const {data: currencies={}} = useFetcher( API_ENDPOINTS.CURRENCIES);
   const [modalIsOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
