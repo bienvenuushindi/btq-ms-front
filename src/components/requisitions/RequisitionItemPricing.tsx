@@ -196,7 +196,6 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
     <Card className={'flex justify-between gap-4 bg-gray-50'}>
       <SuppliersSection
         action={updateForm}
-        suppliers={productDetails.suppliers}
         productId={productDetails.product_detail_id}
         supplierId={supplierId}
       />
