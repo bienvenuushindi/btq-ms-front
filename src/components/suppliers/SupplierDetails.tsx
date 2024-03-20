@@ -12,7 +12,7 @@ export default function SupplierDetails({supplierId}) {
     const {
         shop_name,
         tags,
-        address,
+        address: supplierAddress={} ,
     } = supplier
 
     const {
@@ -22,7 +22,7 @@ export default function SupplierDetails({supplierId}) {
         address2,
         tel1,
         tel2,
-    } = address
+    } = supplierAddress
     return (
         <>
             <div>
