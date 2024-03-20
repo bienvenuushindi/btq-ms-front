@@ -3,7 +3,7 @@ import React from 'react';
 const ErrorBoundary = ({ error, children }: any) => {
   return (
     <>
-      {error ? <div>Failed to load</div> : children}
+      {error ? <div>Something went wrong</div> : children}
     </>
   );
 };
