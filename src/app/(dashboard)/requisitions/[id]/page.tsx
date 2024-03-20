@@ -13,12 +13,13 @@ import Card from '@/components/Card';
 import GridLoader from '@/components/banners/GridLoader';
 import RequisitionProvider from '@/components/requisitions/RequisitionContext';
 import {RequisitionInfoWithContext} from "@/components/requisitions/home-page/RequisitionInfoWithContext";
+import {API_ENDPOINTS} from "@/lib/api";
 
 export default function Requisition() {
   const {openBar} = useContext(SidebarContext);
   const params = useParams();
   const requisitionId = params.id;
-  const {data: requisition_items, mutate, error, isLoading} = useFetcher('/requisitions/' + requisitionId);
+  const {data: requisition_items, mutate, error, isLoading} = useFetcher(API_ENDPOINTS.REQUISITION_BY_ID(requisitionId));
   return (
     <Container>
       <RequisitionDetailsHeader revalidate={mutate}/>
