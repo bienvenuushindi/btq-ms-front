@@ -6,7 +6,7 @@ import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
 
 export default function SearchSupplierResults({url, action, supplierId}) {
-  const {data: suppliers=[], error, isLoading} = useFetcher(url);
+  const {data: suppliers=[], meta,  error, isLoading} = useFetcher(url);
   const [selected, setSelected] = useState(supplierId);
   const updateSelected = (id) => {
     setSelected(id);
@@ -21,7 +21,7 @@ export default function SearchSupplierResults({url, action, supplierId}) {
     <>
       <ErrorBoundary error={error}>
         <SupplierList
-          title={'Search Results'}
+          title={`Search Results (${meta && meta.total || 0})`}
           suppliers={suppliers}
           isLoading={isLoading}
           selected={selected}
