@@ -15,7 +15,7 @@ import {useFetcher} from "@/app/hooks/useFetcher";
 export default function Suppliers() {
   const [url, setUrl] = useState(API_ENDPOINTS.SUPPLIERS);
   const {openBar, setOpenBar, setSidebarData} = useContext(SidebarContext);
-  const {suppliers, meta, links, error, isLoading} = useFetcher(url);
+  const {data:suppliers=[], meta, links, error, isLoading} = useFetcher(url);
   const router = useRouter();
   const columns = [
     {
