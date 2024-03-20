@@ -1,5 +1,5 @@
 import {SearchBar} from '@/components/SearchBar';
-import {API_ENDPOINTS, API_URL} from '@/lib/api';
+import {API_ENDPOINTS} from '@/lib/api';
 import React, {useState} from 'react';
 import SearchSupplierResults from '@/components/requisitions/SearchSupplierResults';
 import {updateUrl} from '@/lib/utils';
@@ -17,10 +17,7 @@ export default function SelectSupplier({action, productId, supplierId}) {
       <div className={'w-full flex justify-start flex-col items-start'}>
         <SearchBar onSearch={updateParams} />
         <div className="w-full">
-          {
-            (url ? <SearchSupplierResults url={url} action={action} supplierId={supplierId}/> :
-              null)
-          }
+           <SearchSupplierResults url={url} action={action} supplierId={supplierId}/>
         </div>
       </div>
     </div>
