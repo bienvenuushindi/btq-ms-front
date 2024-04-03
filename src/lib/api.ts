@@ -1,14 +1,19 @@
 'use client';
-import {delay} from '@/lib/async';
+import Cookies from 'js-cookie';
+import {setToken} from "@/lib/auth";
 
 // export const BASE_URL = 'https://btq-ms.onrender.com';
 export const BASE_URL = 'http://127.0.0.1:3001';
 export const API_URL = BASE_URL + '/api/v1';
 
+// Function to retrieve the authentication token from cookies
+export function getTokenFromCookie() {
+    return Cookies.get('accessToken');
+}
 const fetcher = async ({url, method, body}) => {
     const res = await fetch(url, {
         method,
-        ...(body && {body: JSON.stringify(body)}),
+        ...(body && { body: JSON.stringify(body) }),
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
@@ -18,9 +23,13 @@ const fetcher = async ({url, method, body}) => {
     if (!res.ok) {
         throw new Error('API Error');
     }
-    localStorage.setItem('token', res.headers.get('Authorization'));
 
-    return await res.json();
+    const jsonData = await res.json().then(result => result.data); // Parse JSON data
+
+    const token = res.headers.get('Authorization'); // Get token from response headers
+    setToken(JSON.stringify(jsonData), token); // Assuming setToken function accepts parsed JSON data and token separately
+    localStorage.setItem('token', token); // Set token in local storage
+    return jsonData; // Return parsed JSON data
 };
 export const signin = async (user) => {
     return fetcher({
@@ -40,11 +49,10 @@ export const register = async (user) => {
 };
 
 export async function authFetcher(url) {
-    await delay();
     return fetch(url, {
         headers: {
             Accept: 'application/json',
-            Authorization: typeof window !== 'undefined' ? window.localStorage.getItem('token') : '',
+            Authorization: typeof window !== 'undefined' ? getTokenFromCookie() : '',
             'Content-Type': 'application/json',
         },
     }).then(response => response.json()).then(result => {
@@ -58,7 +66,7 @@ export function send(path, body, method = 'POST') {
         method: method,
         body: body,
         headers: {
-            Authorization: typeof window !== 'undefined' ? window.localStorage.getItem('token') : '',
+            Authorization: typeof window !== 'undefined' ? getTokenFromCookie() : '',
         },
     }).then(response => response.json()).then(result => {
         return result.data;
@@ -70,7 +78,7 @@ export function deleteItem(path) {
     return fetch(API_URL + path, {
         method: 'DELETE',
         headers: {
-            Authorization: typeof window !== 'undefined' ? window.localStorage.getItem('token') : '',
+            Authorization: typeof window !== 'undefined' ? getTokenFromCookie() : '',
         },
     });
 }
