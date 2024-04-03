@@ -7,20 +7,23 @@ import Badge from '@/components/Badge';
 
 
 export default function PriceItem({details, supplier}) {
-  const {data: supplier_info} = supplier;
-  const image_urls = [...supplier_info.image_urls];
   const {
     id,
     shop_name,
+    image_urls,
+    address: supplierAddress,
+  } = supplier;
+
+  const {
     city,
     country,
     address1,
     address2,
     tel1,
     tel2
-  } = supplier_info;
+  } = supplierAddress
   return (
-    <Card className="border border-2 my-4 ">
+    <Card className="border-2 my-4 ">
       <div className="m-2 flex flex-col gap-2" key={'supplier-price-details' + id}>
         <SupplierInformation
           shopName={shop_name}

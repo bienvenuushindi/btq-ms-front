@@ -1,12 +1,11 @@
 import clsx from 'clsx';
 import {useFetcher} from "@/app/hooks/useFetcher";
-import {API_ENDPOINTS} from "@/lib/api";
 import Loading from "@/components/state/Loading";
 import React from "react";
 import DataWrapper from "@/components/utils/DataWrapper";
 
-export default function ProductSearchResults({url, setItems}) {
-  const {data: products = [], meta, links, error, isLoading} = useFetcher(API_ENDPOINTS.PRODUCTS)
+export default function RequisitionProductSearchResults({url, setItems, oldItems}) {
+  const {data: products = [], meta, links, error, isLoading} = useFetcher(url)
   function handleChange(e) {
     const targetItem = JSON.parse(e.target.value)
     if (e.target.checked) {
@@ -23,13 +22,24 @@ export default function ProductSearchResults({url, setItems}) {
   return (
     <>
       <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
-        { products.map((product, index) => <div key={product.id}>{index})
+        { products.map((product, index) => <div key={"product-"+product.id}>{index})
               {product.name}
               <ul className="ml-3">
                 {product.details.map(item => <li key={clsx(item.id)}>
-                  <div className={" flex"}>
-                    <input type="checkbox" onChange={handleChange} value={JSON.stringify(item)}/>
-                    <label> {item.name}</label>
+                  <div className={"flex"}>
+                    {
+                      (oldItems.indexOf(item.id) !== -1) ?
+                          <>
+                            <input type="checkbox" checked={true} disabled={true} value={JSON.stringify(item)}/>
+                            <label> {item.name}</label>
+                            <span>(already included)</span>
+                          </>
+                          :
+                          <>
+                            <input type="checkbox" onChange={handleChange} value={JSON.stringify(item)}/>
+                            <label> {item.name}</label>
+                          </>
+                    }
                   </div>
                 </li>)}
               </ul>

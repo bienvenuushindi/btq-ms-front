@@ -10,7 +10,7 @@ import Card from '@/components/Card';
 import ModalFooter from '@/components/modal/ModalFooter';
 import AddSupplier from '@/components/pages/products/details/AddSuppliers';
 
-export default function SelectProductVariant({details }) {
+export default function SelectProductVariant({product }) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(null);
   const openModal = () => {
@@ -39,11 +39,11 @@ export default function SelectProductVariant({details }) {
           <ModalHeader closeModal={closeModal} title={'Select Variant'}/>
           <ModalBody>
             {
-              details.map((detail, index) => <ul key={detail.id}>
+              Object.keys(product).length > 0 && product.product_details.map((detail, index) => <ul key={"product-detail-"+detail.id}>
                 <li>
                   <Card className={' flex items-center gap-2'}>
                     <input type="radio" name="supplier_id" onChange={()=>handleChange(detail.id)} value={detail.id}/>
-                    <label> {detail.size}</label>
+                    <label> {product.name } - {detail.size}</label>
                   </Card>
                 </li>
               </ul>)

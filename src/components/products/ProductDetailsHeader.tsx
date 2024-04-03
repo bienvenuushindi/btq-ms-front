@@ -6,7 +6,7 @@ import ButtonLink from '@/components/ButtonLink';
 import SelectProductVariant from '@/components/pages/products/details/SelectProductVariant';
 
 
-const ProductDetailsHeader = ({details}) => {
+const ProductDetailsHeader = ({product}) => {
   const params = useParams();
   const productId = params.id;
   const actions = [];
@@ -22,7 +22,7 @@ const ProductDetailsHeader = ({details}) => {
           <PlusCircle color="#FFFFFF" size={20}/>
           <span className="text-neutral-50 ">Add Variant </span>
         </ButtonLink>
-        <SelectProductVariant details={details}/>
+        <SelectProductVariant product={product}/>
       </div>
     </EntityHeader>
   );

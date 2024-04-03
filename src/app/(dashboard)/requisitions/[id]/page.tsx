@@ -8,49 +8,41 @@ import Container from '@/components/Container';
 import RequisitionDetailsHeader from '@/components/requisitions/RequisitionDetailsHeader';
 import ContainerOne from '@/components/ContainerOne';
 import ReqItemProductList from '@/components/requisitions/ReqItemProductList';
-import ErrorBoundary from '@/components/ErrorBoundary';
 import Card from '@/components/Card';
-import GridLoader from '@/components/banners/GridLoader';
 import RequisitionProvider from '@/components/requisitions/RequisitionContext';
-import {RequisitionInfoWithContext} from "@/components/requisitions/home-page/RequisitionInfoWithContext";
 import {API_ENDPOINTS} from "@/lib/api";
+import DataWrapper from "@/components/utils/DataWrapper";
+import {RequisitionInfoWithContext} from "@/components/requisitions/item-page/RequisitionInfoWithContext";
+import RequisitionLoader from "@/components/banners/RequisitionLoader";
 
 export default function Requisition() {
-  const {openBar} = useContext(SidebarContext);
-  const params = useParams();
-  const requisitionId = params.id;
-  const {data: requisition_items, mutate, error, isLoading} = useFetcher(API_ENDPOINTS.REQUISITION_BY_ID(requisitionId));
-  return (
-    <Container>
-      <RequisitionDetailsHeader revalidate={mutate}/>
-      <ContainerOne>
-        <ErrorBoundary error={error}>
-          {isLoading && (
-            <div className="w-full flex flex-col gap-6">
-              <Card className="w-full ">
-                <GridLoader cols={2}/>
-              </Card>
-              <Card className="w-full ">
-                <GridLoader rows={1} height={10} className='w-1/3'/>
-                <GridLoader rows={8} height={10}/>
-              </Card>
-            </div>
-          )
-          }
-          {requisition_items && (
-            <>
-              <RequisitionProvider>
-                <Card className="w-full">
-                    {/* eslint-disable-next-line react/jsx-no-undef */}
-                  <RequisitionInfoWithContext requisition={requisition_items} withLink={false}/>
-                </Card>
-                <ReqItemProductList details={requisition_items.product_items} requisitionId={requisitionId}/>
-                <SidebarContentSelector target={openBar.target}/>
-              </RequisitionProvider>
-            </>
-          )}
-        </ErrorBoundary>
-      </ContainerOne>
-    </Container>
-  );
+    const {openBar} = useContext(SidebarContext);
+    const params = useParams();
+    const requisitionId = params.id;
+    const {
+        data: requisition,
+        mutate,
+        error,
+        isLoading
+    } = useFetcher(API_ENDPOINTS.REQUISITION_BY_ID(requisitionId));
+    return (
+        <RequisitionProvider>
+            <Container>
+                <RequisitionDetailsHeader revalidate={mutate}/>
+                <ContainerOne>
+                    <DataWrapper error={error} loadingComponent={<RequisitionLoader/>} isLoading={isLoading}>
+                        {requisition && (
+                            <>
+                                <Card className="w-full">
+                                    <RequisitionInfoWithContext requisition={requisition}/>
+                                </Card>
+                                <ReqItemProductList details={requisition.product_items}/>
+                                <SidebarContentSelector target={openBar.target}/>
+                            </>
+                        )}
+                    </DataWrapper>
+                </ContainerOne>
+            </Container>
+        </RequisitionProvider>
+    );
 }

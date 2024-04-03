@@ -1,23 +1,22 @@
 'use client';
-
-import React from 'react';
+import React, {useContext} from 'react';
 import {Plus} from 'react-feather';
 import {useModal, useRequisitionForm} from '@/components/requisitions/hooks';
 import RequisitionModal from "@/components/requisitions/RequisitionModal";
 import Button from "@/components/Button";
-
+import {RequisitionContext} from "@/components/requisitions/RequisitionContext";
 
 export default function RequisitionForm({requisitionID, revalidate}) {
+    const {mutate} = useContext(RequisitionContext)
     const {modalIsOpen, openModal, closeModal} = useModal();
-    const {items, setItems, url, updateParams, error, handleSubmit} = useRequisitionForm({
+    const props = useRequisitionForm({
         requisitionID,
         revalidate,
         closeModal,
     });
-
-    const itemsList = items.map((item, index) => (
-        <li key={item.id}>
-            {index}
+    const itemsList = props.items.map((item, index) => (
+        <li key={"selected-item-" + item.id}>
+            {index + 1}
             {item.name}
         </li>
     ));
@@ -37,13 +36,9 @@ export default function RequisitionForm({requisitionID, revalidate}) {
 
             <RequisitionModal
                 modalIsOpen={modalIsOpen}
-                closeModal={closeModal}
-                updateParams={updateParams}
-                url={url}
-                items={items}
                 itemsList={itemsList}
-                setItems={setItems}
-                handleSubmit={handleSubmit}
+                closeModal={closeModal}
+                {...props}
             />
         </>
     );

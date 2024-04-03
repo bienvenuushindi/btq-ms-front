@@ -7,7 +7,7 @@ import EntityTable from '@/components/EntityTable';
 import Badge from '@/components/Badge';
 import DateDisplay from "@/components/DateDisplay";
 
-export const ProductDetailsTable = ({productName, details, isLoading}) => {
+export const ProductDetailsTable = ({product, isLoading}) => {
   const {setOpenBar, setSidebarData} = useContext(SidebarContext);
   const router = useRouter();
   const params = useParams();
@@ -48,7 +48,7 @@ export const ProductDetailsTable = ({productName, details, isLoading}) => {
       key: 'size',
       type: 'text',
       label: 'Size',
-      dataTransformation: (value: any) => <span>{productName}<br/>{value.toUpperCase()}</span>,
+      dataTransformation: (value: any) => <span>{product.name}<br/>{value.toUpperCase()}</span>,
     },
     {
       key: 'unit_price',
@@ -97,7 +97,7 @@ export const ProductDetailsTable = ({productName, details, isLoading}) => {
       type: 'details',
       label: "Prices",
       action: (data) => {
-        setOpenBar({state: true, target: 'price_details',title:  productName + ' (' + data.size+ ')'});
+        setOpenBar({state: true, target: 'price_details',title:  product.name + ' (' + data.size+ ')'});
         setSidebarData(data);
       }
     },
@@ -108,7 +108,7 @@ export const ProductDetailsTable = ({productName, details, isLoading}) => {
       <EntityTable
         isLoading={isLoading}
         columns={columns}
-        data={details}
+        data={product.product_details}
         actions={actions}
         searchable={false}
       />

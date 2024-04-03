@@ -99,7 +99,6 @@ export default function ProductsTable() {
     }
 
     const handleFilterChange = (selectedFilters) => {
-      console.log('Selected Filters:', selectedFilters);
       setUrl((prevUrl) => {
         return updateUrl(prevUrl, {status: selectedFilters});
       });

@@ -11,9 +11,7 @@ import DataWrapper from "@/components/utils/DataWrapper";
 
 export default function PriceDetailsSidebar() {
   const {sidebarData} = useContext(SidebarContext);
-  const {result, isLoading, error} =  useFetcher(API_ENDPOINTS.PRICE_DETAILS(sidebarData.id));
-  console.log('sidebarData.attributes?.image_urls')
-  console.log(sidebarData.attributes?.image_urls)
+  const {data: prices=[], isLoading, error} =  useFetcher(API_ENDPOINTS.PRICE_DETAILS(sidebarData.id));
   return (
     <>
       <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
@@ -22,7 +20,7 @@ export default function PriceDetailsSidebar() {
               <div className="flex justify-end pr-2">
                 <AddSupplier productDetailID={sidebarData.id}/>
               </div>
-              <PriceList prices={result}/>
+              <PriceList prices={prices}/>
             </div>
       </DataWrapper>
     </>

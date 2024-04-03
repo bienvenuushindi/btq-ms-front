@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {API_ENDPOINTS, API_URL, send} from '@/lib/api';
+import {API_ENDPOINTS, send} from '@/lib/api';
 import { updateUrl } from '@/lib/utils';
 
 export function useRequisitionForm({ requisitionID, revalidate, closeModal }) {

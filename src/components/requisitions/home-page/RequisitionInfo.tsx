@@ -11,7 +11,6 @@ export function RequisitionInfo({requisition, className = '', withLink = true}) 
     }
 
     const {date, count_products_bought, total_price, price_currency, count_products} = requisition;
-
     const details = [
         {icon: <Calendar/>, label: 'Scheduled Date', value: date},
         {

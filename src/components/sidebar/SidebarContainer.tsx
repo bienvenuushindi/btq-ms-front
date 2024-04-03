@@ -6,7 +6,7 @@ import Button from '@/components/Button';
 
 export const SidebarContext = createContext(null);
 
-export const SidebarContainer = ({title, children, footer}:any) => {
+export const SidebarContainer = ({title, children}:any) => {
   const {openBar, setOpenBar, setSidebarData} = useContext(SidebarContext);
     // Calculate the maximum height of the overlay
     const maxHeight = typeof window !== 'undefined'

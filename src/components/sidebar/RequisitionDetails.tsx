@@ -35,7 +35,7 @@ export default function RequisitionDetails(){
             </ul>
           </li>
           <li>Currency: {sidebarData.currency || '-'}</li>
-          <li>Found: {sidebarData['found'] || 'No'}</li>
+          <li>Found Status: {sidebarData['status'] || 'No'}</li>
           <li>Qty: {sidebarData.quantity}</li>
           <li>Qty Type: {sidebarData.quantity_type || '-'}</li>
           <li>Price: {sidebarData.price}</li>

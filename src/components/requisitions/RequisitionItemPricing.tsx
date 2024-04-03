@@ -13,7 +13,8 @@ import clsx from 'clsx';
 import SwitchCurrency from '@/components/requisitions/item-page/SwitchCurrency';
 import {useFetcher} from "@/app/hooks/useFetcher";
 
-export default function RequisitionItemPricing({requisitionId, productDetails}) {
+export default function RequisitionItemPricing({productDetails}) {
+  const {requisitionID} = useContext(RequisitionContext)
   const {data: quantityType = {}} = useFetcher(API_ENDPOINTS.QUANTITY_TYPES);
   const {data: currencies = {}} = useFetcher( API_ENDPOINTS.CURRENCIES);
   const {currency} = useContext(RequisitionContext);
@@ -21,7 +22,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
   const initial = {
     price: productDetails.price || 0,
     currency: productDetails.currency,
-    found: productDetails.found || false,
+    status: productDetails.status || false,
     quantity: productDetails.quantity || 0,
     quantity_type: productDetails.quantity_type,
     note: productDetails.note || '',
@@ -50,7 +51,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
     });
     formData.append('requisition_product[supplier_id]', supplierId);
     try {
-      await send('/requisitions/' + requisitionId + '/update_products/' + productDetails.product_detail_id, formData, 'PUT');
+      await send('/requisitions/' + requisitionID + '/update_products/' + productDetails.product_detail_id, formData, 'PUT');
       if (supplierId != productDetails.supplier_id) productDetails.supplier_id = supplierId;
       toastShow('success', 'Updated Successfully');
       setLoading(false);
@@ -64,11 +65,11 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       input_type: 'toggle',
       className: '',
       labelClassName: '',
-      name: 'found',
-      checked: formState.found,
+      name: 'status',
+      checked: formState.status,
       action: () => {
-        setFormState((s) => ({...s, found: !formState.found}));
-        productDetails.found = !productDetails.found;
+        setFormState((s) => ({...s, status: !formState.status}));
+        productDetails.status = !productDetails.status;
       }
     },
     [{
@@ -201,7 +202,7 @@ export default function RequisitionItemPricing({requisitionId, productDetails}) 
       />
       <div className="flex flex-col grow border-gray-100 border p-2 rounded">
         <div className="flex justify-end">
-          {productDetails.found ? <Badge variant={'success'}>Found</Badge> :
+          {productDetails.status ? <Badge variant={'success'}>Found Status</Badge> :
             <Badge variant={'danger'}> Not Found</Badge>}
         </div>
         <Form

@@ -15,7 +15,7 @@ export function SearchBar({onSearch, containerClassName}: {onSearch: any, contai
       // eslint-disable-next-line react-hooks/exhaustive-deps
       active.current = true;
     }
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, onSearch, query]);
   return (
     <div className={containerClassName || 'relative w-full'}>
       <Input type="text" placeholder="Search"

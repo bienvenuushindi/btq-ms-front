@@ -1,19 +1,14 @@
 import StatsCard from '@/components/StatsCard';
-import useSWRImmutable from 'swr/immutable';
-import {API_ENDPOINTS, API_URL, authFetcher} from '@/lib/api';
+import {API_ENDPOINTS} from '@/lib/api';
 import Dot from "@/components/utils/Dot";
 import {useFetcher} from "@/app/hooks/useFetcher";
-import Loading from "@/components/state/Loading";
 import React from "react";
-import DataWrapper from "@/components/utils/DataWrapper";
-
 export default function ProductStats() {
     const {data: result = {}, isLoading, error} = useFetcher(API_ENDPOINTS.PRODUCT_STATS);
     const {inactive, active} = result;
 
     return (
         <div className="flex gap-4">
-            <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
             {inactive !== undefined && active !== undefined && (
                 <>
                     <StatsCard
@@ -36,7 +31,6 @@ export default function ProductStats() {
                     />
                 </>
             )}
-            </DataWrapper>
         </div>
     );
 }

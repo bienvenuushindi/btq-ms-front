@@ -19,9 +19,9 @@ export default function Product() {
   const {openBar} = useContext(SidebarContext);
   const params = useParams();
   const productId = params.id;
-  const {data: product={}, included: details, error, isLoading} = useFetcher(API_ENDPOINTS.PRODUCT_BY_ID(productId));
+  const {data: product={}, error, isLoading} = useFetcher(API_ENDPOINTS.PRODUCT_BY_ID(productId));
   return <Container>
-    <ProductDetailsHeader details={details}/>
+    <ProductDetailsHeader product={product}/>
     <ContainerOne>
       {isLoading ? <Card className="w-full"><ProductItemLoader/></Card> :(
         <ErrorBoundary error={error}>
@@ -34,7 +34,7 @@ export default function Product() {
     <ContainerOne>
       <Card className="w-full">
         {product && (
-        <ProductDetailsTable productName={product.name} details={details} isLoading={isLoading}/>
+        <ProductDetailsTable product={product} isLoading={isLoading}/>
         )}
       </Card>
       <SidebarContentSelector target={openBar.target}/>

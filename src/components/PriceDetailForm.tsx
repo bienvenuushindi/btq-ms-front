@@ -43,7 +43,6 @@ export const PriceDetailForm = ({ productDetailID }) => {
 
     try {
       await send(`/product_details/${productDetailID}/price_details`, formData);
-      // setOpenBar({ state: true, target: 'price_details' });
     } catch (error) {
       setError('Could not create product');
     } finally {

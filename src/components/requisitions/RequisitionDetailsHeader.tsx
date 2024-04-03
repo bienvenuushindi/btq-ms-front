@@ -10,7 +10,7 @@ const RequisitionDetailsHeader = ({revalidate}) => {
   const actions = []
   return (
     <EntityHeader title="Requisition Details" actions={actions}>
-      <RequisitionForm revalidate={revalidate} requisitionID={requisitionId}/>
+      <RequisitionForm requisitionID={requisitionId} revalidate={revalidate}/>
     </EntityHeader>
   );
 };

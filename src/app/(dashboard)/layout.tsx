@@ -4,8 +4,6 @@ import Sidebar from '@/components/Sidebar';
 import AppBar from '@/components/AppBar';
 import PageContainer from '@/components/PageContainer';
 import {ToastContainer} from 'react-toastify';
-// import {AuthProvider} from "@/components/context/AuthContext";
-// import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function DashboardRootLayout({children}: {
     children: React.ReactNode

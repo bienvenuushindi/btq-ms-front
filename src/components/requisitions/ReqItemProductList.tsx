@@ -1,14 +1,16 @@
 'use client'
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {deleteItem} from '@/lib/api';
 import DeleteAlert from '@/components/DeleteAlert';
 import ContainerOne from '@/components/ContainerOne';
 import ReqProductItem from '@/components/requisitions/ReqProductItem';
 import Card from '@/components/Card';
 import Text from "@/components/Text";
+import {RequisitionContext} from "@/components/requisitions/RequisitionContext";
 
 
-export default function ReqItemProductList({details, requisitionId}) {
+export default function ReqItemProductList({details}) {
+    const {requisitionID} = useContext(RequisitionContext)
     const [data, setData] = useState(details);
     const [showDeleteAlert, setShowDeleteAlert] = useState(false);
     const [itemToDelete, setItemToDelete] = useState(null);
@@ -23,8 +25,8 @@ export default function ReqItemProductList({details, requisitionId}) {
         setShowDeleteAlert(false);
     };
     const handleConfirmDelete = async () => {
-        const newList = data.filter(item => item.product_detail_id != itemToDelete)
-        await deleteItem('/requisitions/' + requisitionId + '/product_details/' + itemToDelete + '/remove_item');
+        const newList = data.filter((item: { product_detail_id: any; }) => item.product_detail_id != itemToDelete)
+        await deleteItem('/requisitions/' + requisitionID + '/product_details/' + itemToDelete + '/remove_item');
         setData(newList);
         setShowDeleteAlert(false);
     };
@@ -37,13 +39,12 @@ export default function ReqItemProductList({details, requisitionId}) {
             <Card className='w-full'>
                 <Text intent="tertiary" size="large" className="font-extrabold">Items</Text>
                 <ul className="  py-2">
-                    {data.map((row) => {
+                    {data.map((row: { isOpen: boolean; id: React.Key; }) => {
                         row.isOpen = false;
                         return <li key={row.id}
                                    className="flex w-full items-start justify-center gap-2 mb-2 py-1 border-b border-gray-100 rounded ">
                             <ReqProductItem
                                 row={row}
-                                requisitionId={requisitionId}
                                 removeItem={removeItem}
                                 openAccordion={openAccordion}
                                 toggleAccordion={toggleAccordion}
