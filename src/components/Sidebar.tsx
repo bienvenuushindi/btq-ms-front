@@ -1,5 +1,6 @@
 'use client'
-import SidebarLink from './SidebarLink';
+import SidebarLink from "@/components/SidebarLink";
+
 const links = [
   {label: 'Home', icon: 'Home', link: '/home'},
   {label: 'Products', icon: 'Book', link: '/products'},

@@ -2,6 +2,7 @@
 import ExpiredProductContainer from '@/components/requisitions/ExpiredProductContainer';
 import React from 'react';
 import {useSearchParams} from 'next/navigation';
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function Products() {
   const searchParams = useSearchParams()
@@ -9,8 +10,10 @@ export default function Products() {
   const title = status == 'expired' ? 'Expired' : 'Expired Soon'
 
   return (
-    <div className="container mx-auto">
-      <ExpiredProductContainer title={title} type={status}/>
-    </div>
+      <ProtectedRoute>
+        <div className="container mx-auto">
+          <ExpiredProductContainer title={title} type={status}/>
+        </div>
+      </ProtectedRoute>
   );
 }

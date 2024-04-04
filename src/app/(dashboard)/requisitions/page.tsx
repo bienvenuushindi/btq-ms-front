@@ -9,6 +9,7 @@ import Badge from '@/components/Badge';
 import {useState} from 'react';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function Requisitions() {
   const [url, setUrl] = useState(API_ENDPOINTS.REQUISITIONS);
@@ -58,21 +59,23 @@ export default function Requisitions() {
     }
   ];
   return (
-    <Container>
-      <RequisitionsHeader/>
-      <ContainerOne>
-        <ErrorBoundary error={error}>
-          <EntityTable
-            isLoading={isLoading}
-            searchable={false}
-            meta={meta}
-            links={links}
-            data={data}
-            updateList={setUrl}
-            columns={columns}
-            entities={'requisitions'}/>
-        </ErrorBoundary>
-      </ContainerOne>
-    </Container>
+      <ProtectedRoute>
+        <Container>
+          <RequisitionsHeader/>
+          <ContainerOne>
+            <ErrorBoundary error={error}>
+              <EntityTable
+                  isLoading={isLoading}
+                  searchable={false}
+                  meta={meta}
+                  links={links}
+                  data={data}
+                  updateList={setUrl}
+                  columns={columns}
+                  entities={'requisitions'}/>
+            </ErrorBoundary>
+          </ContainerOne>
+        </Container>
+      </ProtectedRoute>
   );
 }

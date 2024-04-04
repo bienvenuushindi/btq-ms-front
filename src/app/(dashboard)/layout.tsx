@@ -15,8 +15,6 @@ export default function DashboardRootLayout({children}: {
         <div className="min-h-screen w-screen bg-neutral-50  overflow-x-hidden overflow-y-auto">
             <GlassPane className="w-full h-full flex">
                 <PageContainer>
-                    {/*<AuthProvider>*/}
-                        {/* <ProtectedRoute> */}
                             <AppBar/>
                             <Sidebar/>
                             <ToastContainer/>
@@ -25,8 +23,6 @@ export default function DashboardRootLayout({children}: {
                                     {children}
                                 </div>
                             </div>
-                        {/* </ProtectedRoute> */}
-                    {/*</AuthProvider>*/}
                 </PageContainer>
             </GlassPane>
         </div>

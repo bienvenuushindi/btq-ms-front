@@ -7,6 +7,7 @@ import {API_ENDPOINTS} from "@/lib/api";
 import Loading from "@/components/state/Loading";
 import React from "react";
 import DataWrapper from "@/components/utils/DataWrapper";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 
 export default function UpdateSupplier() {
@@ -14,10 +15,13 @@ export default function UpdateSupplier() {
   const supplierID = params.id;
   const {data: supplier = {}, isLoading, error} = useFetcher(API_ENDPOINTS.SUPPLIER_BY_ID(supplierID))
   return (
-    <Container>
-      <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
-        <SupplierForm supplier={supplier}/>
-      </DataWrapper>
-    </Container>
+      <ProtectedRoute>
+          <Container>
+              <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
+                  <SupplierForm supplier={supplier}/>
+              </DataWrapper>
+          </Container>
+      </ProtectedRoute>
+
   );
 }

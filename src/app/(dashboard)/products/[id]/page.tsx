@@ -13,6 +13,7 @@ import ProductItemLoader from '@/components/banners/ProductItemLoader';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 
 export default function Product() {
@@ -20,24 +21,26 @@ export default function Product() {
   const params = useParams();
   const productId = params.id;
   const {data: product={}, error, isLoading} = useFetcher(API_ENDPOINTS.PRODUCT_BY_ID(productId));
-  return <Container>
-    <ProductDetailsHeader product={product}/>
-    <ContainerOne>
-      {isLoading ? <Card className="w-full"><ProductItemLoader/></Card> :(
-        <ErrorBoundary error={error}>
-          {product && (
-            <ProductItem key={product.id} product={product}/>
-          )}
-        </ErrorBoundary>
-      )}
-    </ContainerOne>
-    <ContainerOne>
-      <Card className="w-full">
-        {product && (
-        <ProductDetailsTable product={product} isLoading={isLoading}/>
+  return <ProtectedRoute>
+    <Container>
+      <ProductDetailsHeader product={product}/>
+      <ContainerOne>
+        {isLoading ? <Card className="w-full"><ProductItemLoader/></Card> :(
+            <ErrorBoundary error={error}>
+              {product && (
+                  <ProductItem key={product.id} product={product}/>
+              )}
+            </ErrorBoundary>
         )}
-      </Card>
-      <SidebarContentSelector target={openBar.target}/>
-    </ContainerOne>
-  </Container>;
+      </ContainerOne>
+      <ContainerOne>
+        <Card className="w-full">
+          {product && (
+              <ProductDetailsTable product={product} isLoading={isLoading}/>
+          )}
+        </Card>
+        <SidebarContentSelector target={openBar.target}/>
+      </ContainerOne>
+    </Container>;
+  </ProtectedRoute>;
 }

@@ -7,16 +7,19 @@ import {API_ENDPOINTS} from "@/lib/api";
 import Loading from "@/components/state/Loading";
 import React from "react";
 import DataWrapper from "@/components/utils/DataWrapper";
+import ProtectedRoute from "@/components/ProtectedRoute";
 export default function UpdateProductDetails() {
   const params = useParams();
   const {id: productID, variant: variantID} = params;
 
   const {data: variant = {}, isLoading, error} =  useFetcher(API_ENDPOINTS.PRODUCT_DETAIL_BY_ID(productID, variantID))
   return (
-    <Container>
-      <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
-       <ProductDetailForm variant={variant}/>
-      </DataWrapper>
-    </Container>
+      <ProtectedRoute>
+          <Container>
+              <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
+                  <ProductDetailForm variant={variant}/>
+              </DataWrapper>
+          </Container>
+      </ProtectedRoute>
   );
 }

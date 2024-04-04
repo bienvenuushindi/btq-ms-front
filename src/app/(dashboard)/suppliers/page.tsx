@@ -11,6 +11,7 @@ import EntityTable from '@/components/EntityTable';
 import {Edit, Trash2} from 'react-feather';
 import {useRouter} from 'next/navigation';
 import {useFetcher} from "@/app/hooks/useFetcher";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function Suppliers() {
   const [url, setUrl] = useState(API_ENDPOINTS.SUPPLIERS);
@@ -66,22 +67,25 @@ export default function Suppliers() {
     },
   ];
   return (
-    <Container>
-      <SuppliersHeader/>
-      <ContainerOne>
-        <ErrorBoundary error={error}>
-          <EntityTable
-            isLoading={isLoading}
-            meta={meta}
-            links={links}
-            data={suppliers}
-            updateList={setUrl}
-            columns={columns}
-            entities={'suppliers'}
-            actions={actions}
-          />
-          <SidebarContentSelector target={openBar.target}/>
-        </ErrorBoundary>
-      </ContainerOne>
-    </Container>);
+      <ProtectedRoute>
+        <Container>
+          <SuppliersHeader/>
+          <ContainerOne>
+            <ErrorBoundary error={error}>
+              <EntityTable
+                  isLoading={isLoading}
+                  meta={meta}
+                  links={links}
+                  data={suppliers}
+                  updateList={setUrl}
+                  columns={columns}
+                  entities={'suppliers'}
+                  actions={actions}
+              />
+              <SidebarContentSelector target={openBar.target}/>
+            </ErrorBoundary>
+          </ContainerOne>
+        </Container>
+      </ProtectedRoute>
+  );
 }

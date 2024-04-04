@@ -1,12 +1,8 @@
 'use client'
-// components/ProtectedRoute.js
-import {useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
-import useAuth from "@/app/hooks/useAuth";
-import useSWRImmutable from "swr/immutable";
-import {API_ENDPOINTS, API_URL, authFetcher} from "@/lib/api";
+import {useEffect, useState} from 'react';
 import {useFetcher} from "@/app/hooks/useFetcher";
-
+import {API_ENDPOINTS} from "@/lib/api";
 const ProtectedRoute = ({ children }) => {
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -14,7 +10,7 @@ const ProtectedRoute = ({ children }) => {
 
     useEffect(() => {
         const checkAuth = () => {
-            if(isLoading){
+            if(!isLoading){
                 if (data) {
                     setIsAuthenticated(data.authenticated);
                 } else {
@@ -23,7 +19,6 @@ const ProtectedRoute = ({ children }) => {
                 }
             }
         };
-
         // Only check authentication if the status is not already set
         if (isAuthenticated === null) {
             checkAuth();
