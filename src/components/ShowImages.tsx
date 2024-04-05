@@ -6,7 +6,7 @@ export default function ShowImages({imagesUrls, width, height,carouselWrapperCla
   const images = useImageCarousel(imagesUrls);
   return (
     <>
-      {images.length === 0 ? <div>No Picture</div> : <div id="carousel" className="p-2 shadow flex justify-around">
+      {images.length > 0 && <div id="carousel" className="p-2 shadow flex justify-around">
         <Carousel
           images={images}
           style={{ height: width || 300, width: height || 300 }}
