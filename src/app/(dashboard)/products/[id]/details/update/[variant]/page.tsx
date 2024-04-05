@@ -4,7 +4,7 @@ import {useParams} from 'next/navigation';
 import {ProductDetailForm} from '@/components/ProductDetailForm';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
-import Loading from "@/components/state/Loading";
+import DataLoading from "@/components/state/Loading";
 import React from "react";
 import DataWrapper from "@/components/utils/DataWrapper";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -16,7 +16,7 @@ export default function UpdateProductDetails() {
   return (
       <ProtectedRoute>
           <Container>
-              <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
+              <DataWrapper isLoading={isLoading} error={error} loadingComponent={<DataLoading/>}>
                   <ProductDetailForm variant={variant}/>
               </DataWrapper>
           </Container>

@@ -1,6 +1,6 @@
 import {format} from 'date-fns';
 import React from 'react';
-import Loading from '@/components/state/Loading';
+import DataLoading from '@/components/state/Loading';
 import DataWrapper from "@/components/utils/DataWrapper";
 import clsx from "clsx";
 import {RequisitionItemCard} from "@/components/requisitions/home-page/RequisitionItemCard";
@@ -12,7 +12,7 @@ export function RequisitionItemByDate({date}) {
     const {data: requisition={}, error, isLoading} = useFetcher(API_ENDPOINTS.FIND_REQUISITION_BY_DATE(formattedDate));;
 
     return (
-        <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
+        <DataWrapper isLoading={isLoading} error={error} loadingComponent={<DataLoading/>}>
             <RequisitionItemCard title={clsx(formattedDate, "Requisition")} requisition={requisition} className="flex"/>
         </DataWrapper>
     );

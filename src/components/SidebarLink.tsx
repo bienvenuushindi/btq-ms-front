@@ -1,5 +1,5 @@
 'use client';
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
 import Link from 'next/link';
 import {Settings, User, Grid, Book, BookOpen, Truck, Home} from 'react-feather';
 import {usePathname} from 'next/navigation';
@@ -22,6 +22,7 @@ function isFirstPartMatching(pathname, link) {
 const SidebarLink = ({link}) => {
   const pathname = usePathname();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const {openBar, setOpenBar} = useContext(SidebarContext);
   let isActive = false;
 

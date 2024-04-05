@@ -4,6 +4,8 @@ import Sidebar from '@/components/Sidebar';
 import AppBar from '@/components/AppBar';
 import PageContainer from '@/components/PageContainer';
 import {ToastContainer} from 'react-toastify';
+import {Suspense} from "react";
+import Loading from "@/app/(dashboard)/loading";
 
 export default function DashboardRootLayout({children}: {
     children: React.ReactNode
@@ -20,7 +22,9 @@ export default function DashboardRootLayout({children}: {
                             <ToastContainer/>
                             <div className="lg:pl-72 pt-12 flex-grow flex-1 flex-col ">
                                 <div className="py-4">
-                                    {children}
+                                    <Suspense fallback={<Loading />}>
+                                        {children}
+                                    </Suspense>
                                 </div>
                             </div>
                 </PageContainer>

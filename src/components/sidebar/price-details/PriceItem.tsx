@@ -5,7 +5,17 @@ import {SupplierInformation} from '@/components/suppliers/SupplierInformation';
 import {getImageUrls} from '@/lib/utils';
 import Badge from '@/components/Badge';
 
+const QuantityTypeClass={
+  unit: "bg-[#FF6F61] text-white",
+  dozen: "bg-[#7ED957] text-white",
+  box: "bg-[#4FC1E9] text-white"
+}
 
+const QuantityTypeVariant={
+  unit: "primary",
+  dozen: "success",
+  box: "danger"
+}
 export default function PriceItem({details, supplier}) {
   const {
     id,
@@ -39,10 +49,13 @@ export default function PriceItem({details, supplier}) {
           {
             details.map((item, index) => <li key={'price-detail' + index}>
               <Card className="flex flex-col">
-                <Badge variant="primary" className="p-1 rounded-b-md">
+                <Badge variant={QuantityTypeVariant[item.quantity_type]} className={clsx("small px-1 rounded font-extrabold")}>
                   {item.quantity_type}
                 </Badge>
-                <span className="font-bold text-lg">{clsx(item.price, item.currency)}</span>
+                <div>
+                  <span className="font-bold text-lg">{clsx(item.price, ' ')}</span>
+                  <span className="font-light text-md">{clsx(item.currency)}</span>
+                </div>
               </Card>
             </li>)
           }

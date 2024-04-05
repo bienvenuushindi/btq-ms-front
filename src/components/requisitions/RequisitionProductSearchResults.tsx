@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import {useFetcher} from "@/app/hooks/useFetcher";
-import Loading from "@/components/state/Loading";
+import DataLoading from "@/components/state/Loading";
 import React from "react";
 import DataWrapper from "@/components/utils/DataWrapper";
 
@@ -21,7 +21,7 @@ export default function RequisitionProductSearchResults({url, setItems, oldItems
 
   return (
     <>
-      <DataWrapper isLoading={isLoading} error={error} loadingComponent={<Loading/>}>
+      <DataWrapper isLoading={isLoading} error={error} loadingComponent={<DataLoading/>}>
         { products.map((product, index) => <div key={"product-"+product.id}>{index})
               {product.name}
               <ul className="ml-3">
