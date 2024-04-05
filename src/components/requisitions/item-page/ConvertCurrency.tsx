@@ -1,5 +1,5 @@
 import Form from '@/components/Form';
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import clsx from 'clsx';
 import {delay} from '@/lib/async';
 
@@ -15,6 +15,15 @@ export default function ConvertCurrency({
     output: 1,
     converted: null,
   });
+
+  const convert = useCallback(() => {
+    return (priceToConvert * (exchange.output / exchange.valueToConvert)).toFixed(2);
+  }, [exchange.output, exchange.valueToConvert, priceToConvert]);
+
+  useEffect(() => {
+    setExchange((s) => ({...s, converted: convert()}));
+  }, [exchange.valueToConvert, exchange.output, convert]);
+
   const [loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -22,13 +31,9 @@ export default function ConvertCurrency({
     convertFunc(exchange.converted);
   };
 
-  const convert = () => {
-    return (priceToConvert * (exchange.output / exchange.valueToConvert)).toFixed(2);
-  };
-
   const forms = [
     [{
-      label: clsx('Product Exchange', '(', productCurrency, ')'),
+      label: clsx('Exchange', '(', productCurrency, ')'),
       placeholder: 'Add Exchange',
       required: true,
       value: exchange.valueToConvert,
@@ -36,18 +41,18 @@ export default function ConvertCurrency({
       type: 'number',
       action: (e) => {
         const newValue = e.target.value;
-        setExchange((s) => ({...s, valueToConvert: newValue, converted: convert()}));
+        setExchange((s) => ({...s, valueToConvert: newValue}));
       }
     },
       {
-        label: clsx('Requisition Exchange', '(', requisitionCurrency, ')'),
+        label: clsx('Exchange', '(', requisitionCurrency, ')'),
         placeholder: 'Add Exchange',
         required: true,
         type: 'number',
         value: exchange.output,
         name: 'req-ratio',
         action: (e) => {
-          setExchange((s) => ({...s, output: e.target.value, converted: convert()}));
+          setExchange((s) => ({...s, output: e.target.value}));
         }
       },
     ],
@@ -60,8 +65,6 @@ export default function ConvertCurrency({
       value: clsx(priceToConvert, productCurrency.toUpperCase()),
       name: 'prod-ratio',
       className: 'bg-gray-900 text-neutral-50',
-      action: (e) => {
-      }
     },
       {
         label: clsx('To', '(', requisitionCurrency, ')'),
@@ -71,8 +74,6 @@ export default function ConvertCurrency({
         className: 'bg-gray-900 text-neutral-50',
         value: (exchange.valueToConvert > 0) ? clsx(exchange.converted, requisitionCurrency.toUpperCase()) : 0,
         name: 'req-ratio',
-        action: (e) => {
-        }
       },
     ],
     {
