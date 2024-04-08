@@ -1,7 +1,7 @@
 // DeleteAlert.js
 
 import React from 'react';
-import Button from '@/components/Button';
+import Button from '@/components/utils/Button';
 
 const DeleteAlert = ({onCancel, onDelete, show, message}) => {
     return (

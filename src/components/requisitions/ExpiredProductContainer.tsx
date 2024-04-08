@@ -1,10 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import { ArrowRight } from 'react-feather';
-import Badge from '@/components/Badge';
-import Card from '@/components/Card';
-import DataGrid from '@/components/DataGrid';
-import Button from '@/components/Button';
+import Badge from '@/components/utils/Badge';
+import Card from '@/components/utils/wrappers/Card';
+import DataGrid from '@/components/table/DataGrid';
+import Button from '@/components/utils/Button';
 import { useFetcher } from '@/app/hooks/useFetcher';
 import { useRouter } from 'next/navigation';
 import {API_ENDPOINTS, API_URL} from "@/lib/api";

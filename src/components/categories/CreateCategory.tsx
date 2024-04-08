@@ -1,6 +1,6 @@
 'use client';
 import {useState} from 'react';
-import Button from '@/components/Button';
+import Button from '@/components/utils/Button';
 import ModalHeader from '@/components/modal/ModalHeader';
 import ModalBody from '@/components/modal/ModalBody';
 import ModalContent from '@/components/modal/ModalContent';

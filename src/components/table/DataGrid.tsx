@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import Input from '@/components/Input';
-import Button from '@/components/Button';
+import Input from '@/components/forms/Input';
+import Button from '@/components/utils/Button';
 import Image from 'next/image';
 import TableLoader from '@/components/banners/TableLoader';
 import { ArrowDown, ArrowUp } from 'react-feather';
 
 const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: { data:any, columns:any, tHeadProps:any, isLoading:any, loader?:any, onSorting?:any }) => {
   return (
-    <div className="w-full relative h-full shadow-md">
-      <table className="w-full text-sm text-left text-gray-500">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 -dark:bg-gray-700 -dark:text-gray-400">
+    <div className="w-full  h-full ">
+      <table className="w-full text-sm">
+        <thead className="text-xs text-white bg-lightBlue-100 uppercase  -dark:bg-gray-700 -dark:text-gray-400">
         <tr>
           <RenderTableHead tHeadProps={tHeadProps} columns={columns} onSorting={onSorting} />
         </tr>
         </thead>
         <tbody>
         {isLoading && (
-          <tr className="bg-white border-b -dark:bg-gray-800 -dark:border-gray-700 hover:bg-gray-50 -dark:hover:bg-gray-600">
+          <tr className="bg-white border-b border-gray-50 -dark:bg-gray-800 -dark:border-gray-700 hover:bg-gray-50 -dark:hover:bg-gray-600">
             <td colSpan={columns.length} className="text-center">
               {loader || <TableLoader columnLength={columns.length} />}
             </td>
@@ -33,7 +33,7 @@ const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: {
           ) : (
             data.map((row, index) => (
               <tr
-                className="bg-white border-b -dark:bg-gray-800 -dark:border-gray-700 hover:bg-gray-50 -dark:hover:bg-gray-600"
+                className="bg-white border-b  -dark:bg-gray-800 -dark:border-gray-700 hover:bg-gray-50 -dark:hover:bg-gray-600"
                 key={`row-${index}`}
               >
                 {columns.map((column) => (
@@ -93,9 +93,9 @@ export const renderCell = (column, value: any) => {
         }
         onChange={column.action}/>;
     case 'button':
-      return <Button size="small" intent="primary" onClick={() => column.action(value)}>{column.label}</Button>;
+      return <Button size="medium" intent="primary" onClick={() => column.action(value)}>{column.label}</Button>;
     case 'details':
-      return <Button size="small" intent="secondary" onClick={() => {
+      return <Button size="medium" intent="primary" onClick={() => {
         column.action(value);
       }}>{column.label}</Button>;
     case 'picture':
@@ -113,7 +113,7 @@ export const renderCell = (column, value: any) => {
         </div>
       );
     default:
-      return <span>{transformedValue}</span>;
+      return <span className={clsx(['size', 'date' ,'total_price', 'shop_name', 'name', 'unit_price', 'box_price', 'dozen_price'].includes(column.key)? 'font-bold' : 'text-gray-500')}>{transformedValue}</span>;
   }
 };
 export const RenderTableHead = ({ columns, onSorting, tHeadProps }) => {
@@ -132,27 +132,27 @@ export const RenderTableHead = ({ columns, onSorting, tHeadProps }) => {
       {columns.map((column) => (
         <th
           scope="col"
-          className="px-1 py-3"
+          className="px-1 py-3 "
           {...tHeadProps}
           key={`thead-${column.key as React.Key}-${column.label}`}
         >
           <div className="flex items-center gap-2 justify-start">
-            <span>{column.label}</span>
+            <span className=" text-white py-1 text-left text-xs font-medium  uppercase tracking-wider ">{column.label}</span>
             {column.sortable && (
               <Button
-                intent="none"
+                intent="primary"
                 size="small"
-                className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring focus:border-gray-50"
+                className="text-white hover:text-gray-700 focus:outline-none focus:ring focus:border-gray-50"
                 onClick={() => handleSort(column.key)}
               >
                 {params.sort === column.key ? (
                   params.direction === 'asc' ? (
-                    <ArrowUp size={16} />
+                    <ArrowUp size={16} color="#FFFFFF" />
                   ) : (
-                    <ArrowDown size={16} />
+                    <ArrowDown size={16} color="#FFFFFF" />
                   )
                 ) : (
-                  <ArrowDown size={16} />
+                  <ArrowDown size={16} color="#FFFFFF"/>
                 )}
               </Button>
             )}

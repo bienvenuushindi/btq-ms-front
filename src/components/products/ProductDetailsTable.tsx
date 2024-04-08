@@ -1,10 +1,10 @@
 'use client'
 import {useContext} from 'react';
-import {SidebarContext} from '@/components/sidebar/SidebarContainer';
+import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
 import {Edit, Trash2} from 'react-feather';
 import {useParams, useRouter} from 'next/navigation';
-import EntityTable from '@/components/EntityTable';
-import Badge from '@/components/Badge';
+import EntityTable from '@/components/table/EntityTable';
+import Badge from '@/components/utils/Badge';
 import DateDisplay from "@/components/DateDisplay";
 
 export const ProductDetailsTable = ({product, isLoading}) => {
@@ -15,8 +15,9 @@ export const ProductDetailsTable = ({product, isLoading}) => {
   const actions = [
     {
       label: 'Edit',
+      className: 'text-lightBlue-100',
       icon: (
-        <Edit size={20}/>
+        <Edit size={20} color="#2962FF"/>
       ),
       onClick: (rowIndex) => {
         router.push(`/products/${productID}/details/update/${rowIndex}`);
@@ -24,8 +25,9 @@ export const ProductDetailsTable = ({product, isLoading}) => {
     },
     {
       label: 'Delete',
+      className: 'text-red-600',
       icon: (
-        <Trash2 size={20}/>
+        <Trash2 size={20} color="#EF4444FF"/>
       ),
       onClick: (rowIndex) => {
         console.log(`Delete clicked for row ${rowIndex}`);
@@ -47,42 +49,42 @@ export const ProductDetailsTable = ({product, isLoading}) => {
     {
       key: 'size',
       type: 'text',
-      label: 'Size',
+      label: 'Variants',
       dataTransformation: (value: any) => <span>{product.name}<br/>{value.toUpperCase()}</span>,
     },
     {
       key: 'unit_price',
       type: 'text',
-      label: 'Price Unit',
+      label: 'Unit Prices',
       appendTransformation: (val1: any, val2: any) => isNaN(val1)? val1 : val1 +" "+ val2['currency']
     },
     {
       key: 'box_price',
       type: 'text',
-      label: 'Price Box',
+      label: 'Box Prices',
       appendTransformation: (val1: any, val2: any) => isNaN(val1)? val1 : val1 +" "+  val2['currency']
     },
     {
       key: 'dozen_price',
       type: 'text',
-      label: 'Price Dozen',
+      label: 'Group Prices',
       appendTransformation: (val1: any, val2: any) => isNaN(val1)? val1 : val1 +" "+  val2['currency']
     },
     {
       key: 'box_units',
       type: 'text',
-      label: 'Units Box',
+      label: 'Box Units',
       // dataTransformation: (value: any) => value.toUpperCase(),
     },
     {
       key: 'dozen_units',
       type: 'text',
-      label: 'Unit Dozen',
+      label: 'Group Units',
     },
     {
       key: 'expired_date',
       type: 'text',
-      label: 'Expiration',
+      label: 'Expired Dates',
       dataTransformation: (value: any) => <DateDisplay date={value} />
     },
     {
@@ -95,7 +97,7 @@ export const ProductDetailsTable = ({product, isLoading}) => {
     {
       key: 'button',
       type: 'details',
-      label: "Prices",
+      label: "Suppliers",
       action: (data) => {
         setOpenBar({state: true, target: 'price_details',title:  product.name + ' (' + data.size+ ')'});
         setSidebarData(data);

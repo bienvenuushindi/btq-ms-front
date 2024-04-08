@@ -1,10 +1,10 @@
 'use client';
 import React, {useContext, useState} from 'react';
 import {API_ENDPOINTS, send} from '@/lib/api';
-import Form from '@/components/Form';
+import Form from '@/components/forms/Form';
 import SuppliersSection from '@/components/requisitions/SuppliersSection';
-import Badge from '@/components/Badge';
-import Card from '@/components/Card';
+import Badge from '@/components/utils/Badge';
+import Card from '@/components/utils/wrappers/Card';
 import 'react-toastify/dist/ReactToastify.css';
 import {delay} from '@/lib/async';
 import toastShow from '@/components/toast/toast-selector';

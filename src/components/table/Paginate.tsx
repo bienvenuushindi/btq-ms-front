@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@/components/Button';
+import Button from '@/components/utils/Button';
 import {ArrowLeft, ArrowRight, ChevronsLeft, ChevronsRight} from 'react-feather';
 
 

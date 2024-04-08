@@ -1,10 +1,10 @@
 'use client';
 import {API_ENDPOINTS, API_URL} from '@/lib/api';
-import Badge from '@/components/Badge';
+import Badge from '@/components/utils/Badge';
 import {useRouter} from 'next/navigation';
 import React, {useState} from 'react';
 import ProductsTableLoader from '@/components/banners/ProductsTableLoader';
-import EntityTable from '@/components/EntityTable';
+import EntityTable from '@/components/table/EntityTable';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import {Edit, Trash2} from 'react-feather';
 import FilterCheckbox from '@/components/table/filter/FilterCheckbox';
@@ -59,8 +59,9 @@ export default function ProductsTable() {
   const actions = [
     {
       label: 'Edit',
+      className: 'text-lightBlue-100',
       icon: (
-        <Edit size={20}/>
+        <Edit size={20} color="#2962FF"/>
       ),
       onClick: (rowIndex) => {
         router.push(`/products/update/${rowIndex}`);
@@ -68,8 +69,9 @@ export default function ProductsTable() {
     },
     {
       label: 'Delete',
+      className: 'text-red-600',
       icon: (
-        <Trash2 size={20}/>
+        <Trash2 size={20} color="#EF4444FF"/>
       ),
       onClick: (rowIndex) => {
         console.log(`Delete clicked for row ${rowIndex}`);
@@ -106,7 +108,7 @@ export default function ProductsTable() {
 
     return (
       <div className="flex space-x-2">
-        <h2 className="font-bold">Status</h2>
+        <h2 className="font-bold text-gray-500">Status</h2>
         <FilterCheckbox field={field}/>
       </div>
     );

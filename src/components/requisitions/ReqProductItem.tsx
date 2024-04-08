@@ -1,6 +1,6 @@
 import Accordion from '@/components/Accordion';
 import ReqProductItemInfo from '@/components/requisitions/ReqProductItemInfo';
-import Button from '@/components/Button';
+import Button from '@/components/utils/Button';
 import React, {useContext} from 'react';
 import Text from '@/components/Text';
 import {XCircle, Trash} from 'react-feather';
@@ -9,16 +9,16 @@ import clsx from 'clsx';
 import {RequisitionContext} from "@/components/requisitions/RequisitionContext";
 
 export default function ReqProductItem({row, removeItem, openAccordion, toggleAccordion}) {
-  const isOpened = row.product_detail_id === openAccordion;
+  const isOpen = row.product_detail_id === openAccordion;
   return (
     <>
       <Accordion
-        title={isOpened || <Title name={row.name} size={row.size} image_url={row.image_urls[0]}/>}
+        title={isOpen || <Title name={row.name} size={row.size} image_url={row.image_urls[0]}/>}
         content={<ReqProductItemInfo productDetails={row}/>}
-        isOpen={isOpened}
+        isOpen={isOpen}
         toggleAccordion={toggleAccordion}
         id={row.product_detail_id}
-        className={clsx((isOpened || 'border-l-4'), (row.status || 'border-red-800'), (row.status && 'border-green-800'))}
+        className={clsx((isOpen || 'border-l-4'), (row.status || 'border-red-800'), (row.status && 'border-green-800'))}
       />
       <Button size="small" intent="danger" className="text-sm mx-1 mt-1" onClick={async () => {
         await removeItem(row.product_detail_id);

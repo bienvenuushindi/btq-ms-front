@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {SidebarContext} from '@/components/sidebar/SidebarContainer';
+import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
 import ShowImages from '@/components/ShowImages';
 
 export default function RequisitionDetails(){
@@ -21,10 +21,10 @@ export default function RequisitionDetails(){
             </ul>
           </li>
           <li>
-            <h4>Dozen</h4>
+            <h4>Group</h4>
             <ul>
-              <li>Dozen Price:{sidebarData.dozen_price} </li>
-              <li>Quantity In Dozen: {sidebarData.dozen_units}</li>
+              <li>Group Price:{sidebarData.dozen_price} </li>
+              <li>Quantity In Group: {sidebarData.dozen_units}</li>
             </ul>
           </li>
           <li>

@@ -14,11 +14,10 @@ const Card = ({ children }:{
 const SupplierInformation = ({ shopName, country, city, address1, address2, tel1, tel2, imageUrl }) => {
   return (
     <>
-      <div className="flex items-center gap-4">
-        <div className="flex-grow">
-          <h2 className="text-xl font-bold text-gray-800 mb-2">{shopName}</h2>
-          <div className="border-b border-gray-300 mb-4"></div>
-          <div className="text-gray-600">
+      <div className="flex items-center gap-4 ">
+        <div className="flex-grow border border-gray-100 rounded-lg  ">
+          <div className="text-xl font-bold  bg-lightBlue-100 text-white rounded-t-lg p-2">{shopName}</div>
+          <div className="text-gray-600 p-2">
             <div className="flex items-center mb-2">
               <MapPin className="mr-2" size={16} color={tagColors.primary} />
               <span className="font-light">
@@ -38,15 +37,15 @@ const SupplierInformation = ({ shopName, country, city, address1, address2, tel1
             </div>
           </div>
         </div>
-        <div className="relative w-20 h-20">
-          <Image
-            src={imageUrl}
-            alt={shopName}
-            className="rounded-md border border-gray-300 object-cover"
-            layout="fill"
-            loading="lazy"
-          />
-        </div>
+        {/*<div className="relative w-20 h-20">*/}
+        {/*  <Image*/}
+        {/*    src={imageUrl}*/}
+        {/*    alt={shopName}*/}
+        {/*    className="rounded-md border border-gray-300 object-cover"*/}
+        {/*    layout="fill"*/}
+        {/*    loading="lazy"*/}
+        {/*  />*/}
+        {/*</div>*/}
       </div>
     </>
   );
@@ -54,10 +53,10 @@ const SupplierInformation = ({ shopName, country, city, address1, address2, tel1
 
 const VerticalSupplierInformation = ({ shopName, country, city, address1, address2, tel1, tel2, tags }) => {
   return (
-    <>
-      <div className="text-xl font-bold mb-2">{shopName}</div>
-      <div className="border-b border-gray-300 mb-4"></div>
-      <div className="text-gray-600">
+    <div className="border border-gray-100 rounded-lg shadow-sm ">
+      <div className="text-xl font-bold  bg-lightBlue-100 text-white rounded-t-lg p-2">{shopName}</div>
+      {/*<div className="border-b border-gray-300 mb-4"></div>*/}
+      <div className="text-gray-600 p-2">
         <div className="flex items-center mb-2">
           <MapPin className="mr-2" size={16} color={tagColors.primary} />
           <span className="font-semibold">
@@ -83,7 +82,7 @@ const VerticalSupplierInformation = ({ shopName, country, city, address1, addres
         </InfoItem>
         <TagsSection tags={tags} />
       </div>
-    </>
+    </div>
   );
 };
 

@@ -2,9 +2,9 @@
 import React, {useState} from 'react';
 import {send} from '@/lib/api';
 import {useRouter} from 'next/navigation';
-import Form from '@/components/Form';
+import Form from '@/components/forms/Form';
 import SearchTagBox from '@/components/tags/SearchTag';
-import ContainerOne from '@/components/ContainerOne';
+import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
 
 export const SupplierForm = ({supplier}: {supplier?: any}) => {

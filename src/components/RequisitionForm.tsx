@@ -3,7 +3,7 @@ import React, {useContext} from 'react';
 import {Plus} from 'react-feather';
 import {useModal, useRequisitionForm} from '@/components/requisitions/hooks';
 import RequisitionModal from "@/components/requisitions/RequisitionModal";
-import Button from "@/components/Button";
+import Button from "@/components/utils/Button";
 import {RequisitionContext} from "@/components/requisitions/RequisitionContext";
 
 export default function RequisitionForm({requisitionID, revalidate}) {

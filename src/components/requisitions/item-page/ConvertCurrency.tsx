@@ -1,4 +1,4 @@
-import Form from '@/components/Form';
+import Form from '@/components/forms/Form';
 import React, {useCallback, useEffect, useState} from 'react';
 import clsx from 'clsx';
 import {delay} from '@/lib/async';

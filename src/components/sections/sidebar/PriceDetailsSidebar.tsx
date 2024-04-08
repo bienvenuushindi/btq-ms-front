@@ -1,13 +1,13 @@
 import React, {useContext} from 'react';
-import {SidebarContext} from '@/components/sidebar/SidebarContainer';
-import PriceList from '@/components/sidebar/price-details/PriceList';
+import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
+import PriceList from '@/components/sections/sidebar/price-details/PriceList';
 import AddSupplier from '@/components/pages/products/details/AddSuppliers';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import ShowImages from '@/components/ShowImages';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
 import DataLoading from "@/components/state/Loading";
-import DataWrapper from "@/components/utils/DataWrapper";
+import DataWrapper from "@/components/utils/wrappers/DataWrapper";
 
 export default function PriceDetailsSidebar() {
   const {sidebarData} = useContext(SidebarContext);

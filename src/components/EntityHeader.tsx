@@ -1,7 +1,7 @@
 import React from 'react';
 import {PlusCircle} from 'react-feather';
-import ButtonLink from '@/components/ButtonLink';
-import Button from '@/components/Button';
+import ButtonLink from '@/components/utils/ButtonLink';
+import Button from '@/components/utils/Button';
 
 const EntityHeader = ({title, actions, addAction,children}:any) => {
   return (

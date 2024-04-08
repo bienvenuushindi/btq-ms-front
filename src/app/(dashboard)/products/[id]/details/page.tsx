@@ -4,7 +4,7 @@ import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
 import DataLoading from "@/components/state/Loading";
 import React from "react";
-import DataWrapper from "@/components/utils/DataWrapper";
+import DataWrapper from "@/components/utils/wrappers/DataWrapper";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function Products() {

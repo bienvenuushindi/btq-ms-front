@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import DataLoading from "@/components/state/Loading";
 import React from "react";
-import DataWrapper from "@/components/utils/DataWrapper";
+import DataWrapper from "@/components/utils/wrappers/DataWrapper";
 
 export default function RequisitionProductSearchResults({url, setItems, oldItems}) {
   const {data: products = [], meta, links, error, isLoading} = useFetcher(url)

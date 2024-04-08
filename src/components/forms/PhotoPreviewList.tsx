@@ -1,5 +1,5 @@
 import React from 'react';
-import PhotoPreviewItem from '@/components/PhotoPreviewItem';
+import PhotoPreviewItem from '@/components/forms/PhotoPreviewItem';
 
 export default function PhotoPreviewList({photos}) {
   return (

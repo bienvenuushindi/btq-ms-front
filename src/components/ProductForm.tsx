@@ -3,9 +3,9 @@ import React, {useState} from 'react';
 import {countries} from '@/styles/data/countries';
 import {send} from '@/lib/api';
 import {useParams, useRouter} from 'next/navigation';
-import Form from '@/components/Form';
+import Form from '@/components/forms/Form';
 import SearchTagBox from '@/components/tags/SearchTag';
-import ContainerOne from '@/components/ContainerOne';
+import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
 
 export const ProductForm = ({product}: {product?: any}) => {

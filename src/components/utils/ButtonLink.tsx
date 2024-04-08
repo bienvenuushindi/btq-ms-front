@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {VariantProps} from 'class-variance-authority';
-import {buttonClasses} from '@/components/Button';
+import {buttonClasses} from '@/components/utils/Button';
 import Link from 'next/link';
 
 export interface ButtonLinkProps

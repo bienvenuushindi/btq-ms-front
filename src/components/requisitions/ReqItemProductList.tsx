@@ -2,9 +2,9 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {deleteItem} from '@/lib/api';
 import DeleteAlert from '@/components/DeleteAlert';
-import ContainerOne from '@/components/ContainerOne';
+import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import ReqProductItem from '@/components/requisitions/ReqProductItem';
-import Card from '@/components/Card';
+import Card from '@/components/utils/wrappers/Card';
 import Text from "@/components/Text";
 import {RequisitionContext} from "@/components/requisitions/RequisitionContext";
 

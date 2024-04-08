@@ -1,4 +1,4 @@
-import PriceItem from '@/components/sidebar/price-details/PriceItem';
+import PriceItem from '@/components/sections/sidebar/price-details/PriceItem';
 
 export default function PriceList({prices}) {
   return (

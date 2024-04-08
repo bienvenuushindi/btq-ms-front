@@ -1,10 +1,10 @@
-import Textarea from '@/components/Textarea';
+import Textarea from '@/components/forms/Textarea';
 import React, {createContext} from 'react';
 import clsx from 'clsx';
-import Input from '@/components/Input';
-import SelectInput from '@/components/SelectInput';
-import InputFileImage from '@/components/InputFileImage';
-import Button from '@/components/Button';
+import Input from '@/components/forms/Input';
+import SelectInput from '@/components/forms/SelectInput';
+import InputFileImage from '@/components/forms/InputFileImage';
+import Button from '@/components/utils/Button';
 import TagInput from '@/components/forms/TagInput';
 import Toggle from '@/components/forms/Toggle';
 

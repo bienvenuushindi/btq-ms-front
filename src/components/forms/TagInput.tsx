@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import '@/styles/form/tag-input.css';
 import clsx from 'clsx';
 import {XCircle} from 'react-feather';
-import Badge from '@/components/Badge';
+import Badge from '@/components/utils/Badge';
 
 export default function TagInput({action, defaultTags, children}:any) {
   const [tags, setTags] = useState( defaultTags ? defaultTags.split(',') : []);

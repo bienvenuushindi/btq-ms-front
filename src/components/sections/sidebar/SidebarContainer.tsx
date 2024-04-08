@@ -2,7 +2,7 @@
 import {createContext, useContext} from 'react';
 import {ArrowLeftCircle} from 'react-feather';
 import clsx from 'clsx';
-import Button from '@/components/Button';
+import Button from '@/components/utils/Button';
 
 export const SidebarContext = createContext(null);
 

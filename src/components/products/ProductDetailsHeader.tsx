@@ -2,7 +2,7 @@ import React from 'react';
 import EntityHeader from '@/components/EntityHeader';
 import {useParams} from 'next/navigation';
 import {PlusCircle} from 'react-feather';
-import ButtonLink from '@/components/ButtonLink';
+import ButtonLink from '@/components/utils/ButtonLink';
 import SelectProductVariant from '@/components/pages/products/details/SelectProductVariant';
 
 

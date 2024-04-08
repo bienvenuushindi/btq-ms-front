@@ -1,7 +1,7 @@
 import Text from '@/components/Text';
 import React from 'react';
 import {RequisitionInfo} from "@/components/requisitions/home-page/RequisitionInfo";
-import Card from "@/components/Card";
+import Card from "@/components/utils/wrappers/Card";
 import Dot from "@/components/utils/Dot";
 
 export function RequisitionItemCard({title, requisition, className = ''}) {

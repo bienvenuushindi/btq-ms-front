@@ -1,5 +1,5 @@
 'use client';
-import Input from '@/components/Input';
+import Input from '@/components/forms/Input';
 import {useEffect, useRef, useState} from 'react';
 import {useDebounce} from '@/app/hooks/useDebounce';
 import {Search} from 'react-feather';

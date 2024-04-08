@@ -1,12 +1,12 @@
 'use client';
 
-import ContainerOne from '@/components/ContainerOne';
-import Container from '@/components/Container';
+import ContainerOne from '@/components/utils/wrappers/ContainerOne';
+import Container from '@/components/utils/wrappers/Container';
 import RequisitionsHeader from '@/components/requisitions/RequisitionsHeader';
 import React, {useState} from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import Card from '@/components/Card';
+import Card from '@/components/utils/wrappers/Card';
 import ExpiredProductContainer from '@/components/requisitions/ExpiredProductContainer';
 import {RequisitionInfoWrapper} from "@/components/requisitions/home-page/sections/RequisitionInfoWrapper";
 import {RequisitionItemByDate} from "@/components/requisitions/home-page/RequisitionItemByDate";

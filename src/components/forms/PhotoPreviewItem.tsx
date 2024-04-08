@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React, {useContext} from 'react';
-import {InputImageContext} from '@/components/Form';
+import {InputImageContext} from '@/components/forms/Form';
 import {X} from 'react-feather';
 
 

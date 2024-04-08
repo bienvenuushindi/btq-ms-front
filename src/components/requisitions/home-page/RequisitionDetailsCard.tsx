@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '@/components/Card';
+import Card from '@/components/utils/wrappers/Card';
 import {tagColors} from "@/lib/utils";
 
 const RequisitionDetailsCard = ({ label, icon, value }) => {

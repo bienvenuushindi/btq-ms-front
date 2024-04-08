@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {send} from '@/lib/api';
 import {useRouter} from 'next/navigation';
-import ContainerOne from '@/components/ContainerOne';
-import Form from '@/components/Form';
+import ContainerOne from '@/components/utils/wrappers/ContainerOne';
+import Form from '@/components/forms/Form';
 import CategoryTree from '@/components/categories/CategoryTree';
 
 export default function CategoryForm() {

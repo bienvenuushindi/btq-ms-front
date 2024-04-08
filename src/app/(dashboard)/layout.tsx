@@ -1,8 +1,8 @@
 import '@/styles/global.css';
 import GlassPane from '@/components/GlassPane';
-import Sidebar from '@/components/Sidebar';
+import Sidebar from '@/components/sections/menu-sidebar/Sidebar';
 import AppBar from '@/components/AppBar';
-import PageContainer from '@/components/PageContainer';
+import PageContainer from '@/components/sections/sidebar/PageContainer';
 import {ToastContainer} from 'react-toastify';
 import {Suspense} from "react";
 import Loading from "@/app/(dashboard)/loading";
@@ -20,7 +20,7 @@ export default function DashboardRootLayout({children}: {
                             <AppBar/>
                             <Sidebar/>
                             <ToastContainer/>
-                            <div className="lg:pl-72 pt-12 flex-grow flex-1 flex-col ">
+                            <div className="lg:pl-60 pt-12 flex-grow flex-1 flex-col ">
                                 <div className="py-4">
                                     <Suspense fallback={<Loading />}>
                                         {children}

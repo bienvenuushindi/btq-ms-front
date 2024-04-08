@@ -14,7 +14,7 @@ const TableLoader = ({columnLength}) => {
   };
 
   return (
-    <div className="sticky top-0 bg-white p-4 shadow-lg">
+    <div className="sticky top-0 bg-white p-4 ">
       <table className="w-full">
         <tbody>{generatePlaceholderRows()}</tbody>
       </table>

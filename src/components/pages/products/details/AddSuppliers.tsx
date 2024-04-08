@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Button from '@/components/Button';
+import Button from '@/components/utils/Button';
 import ModalContainer from '@/components/modal/ModalContainer';
 import ModalContent from '@/components/modal/ModalContent';
 import ModalHeader from '@/components/modal/ModalHeader';

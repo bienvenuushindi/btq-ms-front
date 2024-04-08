@@ -1,8 +1,8 @@
-import PriceDetailsSidebar from '@/components/sidebar/PriceDetailsSidebar';
+import PriceDetailsSidebar from '@/components/sections/sidebar/PriceDetailsSidebar';
 import {PriceDetailForm} from '@/components/PriceDetailForm';
 import {useContext} from 'react';
-import {SidebarContainer, SidebarContext} from '@/components/sidebar/SidebarContainer';
-import RequisitionDetails from '@/components/sidebar/RequisitionDetails';
+import {SidebarContainer, SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
+import RequisitionDetails from '@/components/sections/sidebar/RequisitionDetails';
 import SupplierDetails from '@/components/suppliers/SupplierDetails';
 
 export default function SidebarContentSelector({target}) {

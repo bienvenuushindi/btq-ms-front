@@ -1,5 +1,5 @@
 import {ProductForm} from '@/components/ProductForm';
-import Container from '@/components/Container';
+import Container from '@/components/utils/wrappers/Container';
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function CreateSupplier() {

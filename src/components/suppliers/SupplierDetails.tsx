@@ -1,11 +1,11 @@
 import ShowImages from '@/components/ShowImages';
 import React from 'react';
 import {VerticalSupplierInformation} from '@/components/suppliers/SupplierInformation';
-import Card from '@/components/Card';
+import Card from '@/components/utils/wrappers/Card';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
 import DataLoading from "@/components/state/Loading";
-import DataWrapper from "@/components/utils/DataWrapper";
+import DataWrapper from "@/components/utils/wrappers/DataWrapper";
 
 export default function SupplierDetails({supplierId}) {
     const {data: supplier = {}, isLoading, error} = useFetcher(API_ENDPOINTS.SUPPLIER_BY_ID(supplierId))
@@ -29,7 +29,7 @@ export default function SupplierDetails({supplierId}) {
                 <DataWrapper isLoading={isLoading} error={error} loadingComponent={<DataLoading/>}>
                     <Card className="mx-2 space-y-3">
                         <ShowImages imagesUrls={supplier?.image_urls}/>
-                        <Card>
+                        {/*<Card>*/}
                             <VerticalSupplierInformation
                                 shopName={shop_name}
                                 city={city}
@@ -40,7 +40,7 @@ export default function SupplierDetails({supplierId}) {
                                 tel2={tel2}
                                 tags={tags}
                             />
-                        </Card>
+                        {/*</Card>*/}
                     </Card>
                 </DataWrapper>
             </div>

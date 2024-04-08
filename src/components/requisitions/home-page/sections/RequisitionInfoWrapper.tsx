@@ -1,6 +1,6 @@
 import React from "react";
 import {useFetcher} from "@/app/hooks/useFetcher";
-import DataWrapper from "@/components/utils/DataWrapper";
+import DataWrapper from "@/components/utils/wrappers/DataWrapper";
 import DataLoading from "@/components/state/Loading";
 import {RequisitionItemCard} from "@/components/requisitions/home-page/RequisitionItemCard";
 import {API_ENDPOINTS} from "@/lib/api";

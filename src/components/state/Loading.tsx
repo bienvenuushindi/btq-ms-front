@@ -1,6 +1,6 @@
 import Text from '@/components/Text';
 import React from 'react';
-import Card from '@/components/Card';
+import Card from '@/components/utils/wrappers/Card';
 
 export default function DataLoading(){
   return(

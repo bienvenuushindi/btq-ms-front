@@ -2,14 +2,14 @@
 import {API_ENDPOINTS, send} from '@/lib/api';
 import React, {useCallback, useState} from 'react';
 import {useRouter} from 'next/navigation';
-import Button from '@/components/Button';
+import Button from '@/components/utils/Button';
 import ModalHeader from '@/components/modal/ModalHeader';
 import ModalBody from '@/components/modal/ModalBody';
 import ModalContent from '@/components/modal/ModalContent';
 import ModalFooter from '@/components/modal/ModalFooter';
 import ModalContainer from '@/components/modal/ModalContainer';
-import Form from '@/components/Form';
-import Badge from '@/components/Badge';
+import Form from '@/components/forms/Form';
+import Badge from '@/components/utils/Badge';
 import {format} from 'date-fns';
 import {useFetcher} from "@/app/hooks/useFetcher";
 

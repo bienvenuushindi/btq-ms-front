@@ -1,8 +1,8 @@
 import InfoItem from '@/components/InfoItem';
-import Card from '@/components/Card';
+import Card from '@/components/utils/wrappers/Card';
 import React from 'react';
 import {getImageUrls} from '@/lib/utils';
-import Divider from '@/components/Divider';
+import Divider from '@/components/utils/Divider';
 import Carousel from '@/components/carousel/Carousel';
 import DateDisplay from "@/components/DateDisplay";
 import Text from "@/components/Text";
@@ -29,7 +29,7 @@ export default function RequisitionProduct({product}) {
                     <Text intent="primary" size="medium" className="font-extrabold">Prices</Text>
                     <div className="flex gap-3">
                         {renderCard('Box Price', product.box_price, 'Quantity', product.box_units)}
-                        {renderCard('Dozen Price', product.dozen_price, 'Quantity', product.dozen_units)}
+                        {renderCard('Group Price', product.dozen_price, 'Quantity', product.dozen_units)}
                         {renderCard('Unit Price', product.unit_price, 'Quantity', 1)}
                     </div>
                 </div>

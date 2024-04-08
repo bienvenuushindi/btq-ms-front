@@ -1,13 +1,13 @@
 'use client';
 import {useContext, useState} from 'react';
 import {API_ENDPOINTS, API_URL} from '@/lib/api';
-import {SidebarContext} from '@/components/sidebar/SidebarContainer';
-import SidebarContentSelector from '@/components/SidebarContentSelector';
+import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
+import SidebarContentSelector from '@/components/sections/sidebar/SidebarContentSelector';
 import SuppliersHeader from '@/components/suppliers/SuppliersHeader';
-import ContainerOne from '@/components/ContainerOne';
-import Container from '@/components/Container';
+import ContainerOne from '@/components/utils/wrappers/ContainerOne';
+import Container from '@/components/utils/wrappers/Container';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import EntityTable from '@/components/EntityTable';
+import EntityTable from '@/components/table/EntityTable';
 import {Edit, Trash2} from 'react-feather';
 import {useRouter} from 'next/navigation';
 import {useFetcher} from "@/app/hooks/useFetcher";
@@ -49,8 +49,9 @@ export default function Suppliers() {
   const actions = [
     {
       label: 'Edit',
+      className: 'text-lightBlue-100',
       icon: (
-        <Edit size={20}/>
+        <Edit size={20} color="#2962FF"/>
       ),
       onClick: (rowIndex) => {
         router.push(`/suppliers/update/${rowIndex}`);
@@ -58,8 +59,9 @@ export default function Suppliers() {
     },
     {
       label: 'Delete',
+      className: 'text-red-600',
       icon: (
-        <Trash2 size={20}/>
+        <Trash2 size={20} color="#EF4444FF"/>
       ),
       onClick: (rowIndex) => {
         console.log(`Delete clicked for row ${rowIndex}`);

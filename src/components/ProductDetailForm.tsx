@@ -2,9 +2,9 @@
 import React, {useState} from 'react';
 import {useRouter, useParams} from 'next/navigation';
 import {send} from '@/lib/api';
-import Form from '@/components/Form';
+import Form from '@/components/forms/Form';
 import SearchTagBox from '@/components/tags/SearchTag';
-import ContainerOne from '@/components/ContainerOne';
+import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
 
 export const ProductDetailForm = ({variant=null}:{variant?: any}) => {
@@ -155,9 +155,9 @@ export const ProductDetailForm = ({variant=null}:{variant?: any}) => {
     ],
     [
       {
-        label: 'Dozen Price',
+        label: 'Group Price',
         required: false,
-        placeholder: 'Dozen Price',
+        placeholder: 'Group Price',
         value: formState.dozen_price,
         name: 'dozen-price',
         input_type: 'number',
@@ -168,9 +168,9 @@ export const ProductDetailForm = ({variant=null}:{variant?: any}) => {
         },
       },
       {
-        label: 'Unit Qty in Dozen',
+        label: 'Unit Qty in Group',
         required: false,
-        placeholder: 'Dozen units',
+        placeholder: 'Group units',
         value: formState.dozen_units,
         name: 'dozen-units',
         input_type: 'number',

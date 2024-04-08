@@ -7,7 +7,7 @@ import ModalHeader from '@/components/modal/ModalHeader';
 import ModalBody from '@/components/modal/ModalBody';
 import ModalFooter from '@/components/modal/ModalFooter';
 import {SearchBar} from "@/components/SearchBar";
-import Button from "@/components/Button";
+import Button from "@/components/utils/Button";
 import RequisitionProductSearchResults from "@/components/requisitions/RequisitionProductSearchResults";
 import {RequisitionContext} from "@/components/requisitions/RequisitionContext";
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { send } from '@/lib/api';
-import Form from '@/components/Form';
-import ContainerOne from '@/components/ContainerOne';
+import Form from '@/components/forms/Form';
+import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import SelectSupplier from '@/components/requisitions/SelectSupplier';
 import clsx from 'clsx';
 import Toggle from '@/components/forms/Toggle';
@@ -9,7 +9,7 @@ import Toggle from '@/components/forms/Toggle';
 export const PriceDetailForm = ({ productDetailID }) => {
   const sizes = [
     { code: 'box', name: 'Box' },
-    { code: 'dozen', name: 'Dozen' },
+    { code: 'dozen', name: 'Group' },
     { code: 'unit', name: 'Unit' },
   ];
 

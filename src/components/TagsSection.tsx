@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tag } from 'react-feather';
-import Badge from '@/components/Badge';
+import Badge from '@/components/utils/Badge';
 import Text from '@/components/Text';
 import {tagColors} from '@/lib/utils';
 

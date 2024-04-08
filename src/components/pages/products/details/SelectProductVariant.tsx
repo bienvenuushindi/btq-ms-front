@@ -1,12 +1,12 @@
 'use client';
 import React, {useState} from 'react';
-import Button from '@/components/Button';
+import Button from '@/components/utils/Button';
 import ModalContainer from '@/components/modal/ModalContainer';
 import ModalContent from '@/components/modal/ModalContent';
 import ModalHeader from '@/components/modal/ModalHeader';
 import ModalBody from '@/components/modal/ModalBody';
 import {PlusCircle} from 'react-feather';
-import Card from '@/components/Card';
+import Card from '@/components/utils/wrappers/Card';
 import ModalFooter from '@/components/modal/ModalFooter';
 import AddSupplier from '@/components/pages/products/details/AddSuppliers';
 

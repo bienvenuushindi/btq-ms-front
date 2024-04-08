@@ -1,11 +1,11 @@
 'use client';
-import ContainerOne from '@/components/ContainerOne';
-import Container from '@/components/Container';
+import ContainerOne from '@/components/utils/wrappers/ContainerOne';
+import Container from '@/components/utils/wrappers/Container';
 import CategoriesHeader from '@/components/categories/CategoriesHeader';
 import {useState} from 'react';
-import EntityTable from '@/components/EntityTable';
+import EntityTable from '@/components/table/EntityTable';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import Badge from '@/components/Badge';
+import Badge from '@/components/utils/Badge';
 import {Edit, Trash2} from 'react-feather';
 import {API_ENDPOINTS} from '@/lib/api';
 import {useFetcher} from "@/app/hooks/useFetcher";
@@ -18,7 +18,7 @@ export default function Categories() {
         {
             key: 'name',
             type: 'text',
-            label: 'Category Name',
+            label: 'Name',
             sortable: true,
         }, {
             key: 'description',
@@ -47,8 +47,9 @@ export default function Categories() {
     const actions = [
         {
             label: 'Edit',
+            className: 'text-lightBlue-100',
             icon: (
-                <Edit size={20}/>
+                <Edit size={20} color="#2962FF"/>
             ),
             onClick: (rowIndex: any) => {
                 console.log(`Edit clicked for row ${rowIndex}`);
@@ -56,8 +57,9 @@ export default function Categories() {
         },
         {
             label: 'Delete',
+            className: 'text-red-600',
             icon: (
-                <Trash2 size={20}/>
+                <Trash2 size={20} color="#EF4444FF"/>
             ),
             onClick: (rowIndex: any) => {
                 console.log(`Delete clicked for row ${rowIndex}`);

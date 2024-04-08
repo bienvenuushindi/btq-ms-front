@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import Card from '@/components/Card';
+import Card from '@/components/utils/wrappers/Card';
 import React from 'react';
 import {SupplierInformation} from '@/components/suppliers/SupplierInformation';
 import {getImageUrls} from '@/lib/utils';
-import Badge from '@/components/Badge';
+import Badge from '@/components/utils/Badge';
 
 const QuantityTypeClass={
   unit: "bg-[#FF6F61] text-white",
@@ -33,7 +33,7 @@ export default function PriceItem({details, supplier}) {
     tel2
   } = supplierAddress
   return (
-    <Card className="border-2 my-4 ">
+    <Card className="border-2 my-4 border-gray-300">
       <div className="m-2 flex flex-col gap-2" key={'supplier-price-details' + id}>
         <SupplierInformation
           shopName={shop_name}
@@ -48,7 +48,7 @@ export default function PriceItem({details, supplier}) {
         <ul className="flex gap-2 mt-4">
           {
             details.map((item, index) => <li key={'price-detail' + index}>
-              <Card className="flex flex-col">
+              <Card className="flex flex-col border-1 border-gray-100">
                 <Badge variant={QuantityTypeVariant[item.quantity_type]} className={clsx("small px-1 rounded font-extrabold")}>
                   {item.quantity_type}
                 </Badge>

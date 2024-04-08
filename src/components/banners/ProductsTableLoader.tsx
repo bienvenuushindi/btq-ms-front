@@ -27,7 +27,7 @@ const ProductsTableLoader = () => {
   };
 
   return (
-    <div className="sticky top-0 bg-white p-4 shadow-lg">
+    <div className="sticky top-0 bg-white p-4 ">
       {/*<div className="font-bold text-xl mb-4">Loading...</div>*/}
       <table className="w-full  table-">
         <tbody>{generatePlaceholderRows()}</tbody>

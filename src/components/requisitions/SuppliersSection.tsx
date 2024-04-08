@@ -1,8 +1,8 @@
 import SelectSupplier from '@/components/requisitions/SelectSupplier';
 import PreviousSuppliers from '@/components/requisitions/PreviousSuppliers';
 import React from 'react';
-import Card from '@/components/Card';
-import Divider from '@/components/Divider';
+import Card from '@/components/utils/wrappers/Card';
+import Divider from '@/components/utils/Divider';
 
 export default function SuppliersSection({action, productId, supplierId}){
   return (

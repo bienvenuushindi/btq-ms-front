@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useDebounce} from '@/app/hooks/useDebounce';
 import {useFetcher} from '@/app/hooks/useFetcher';
 import DataLoading from "@/components/state/Loading";
-import DataWrapper from "@/components/utils/DataWrapper";
+import DataWrapper from "@/components/utils/wrappers/DataWrapper";
 
 
 export default function SearchTagBox(props) {

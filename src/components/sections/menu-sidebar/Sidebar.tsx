@@ -1,5 +1,5 @@
 'use client'
-import SidebarLink from "@/components/SidebarLink";
+import SidebarLink from "@/components/sections/menu-sidebar/SidebarLink";
 
 const links = [
   {label: 'Home', icon: 'Home', link: '/home'},
@@ -15,7 +15,7 @@ const Sidebar = ({open}: {open?: any}) => {
   const lgUp = true; // Example media query breakpoint
 
   const content = (
-      <div className="h-full bg-darkBlue-300">
+      <div className="h-full bg-gray-100">
         <div className="h-full overflow-auto ">
           <div className="py-3 flex justify-center">
             <div className="inline-flex h-32 w-32 bg-white ">
@@ -23,15 +23,15 @@ const Sidebar = ({open}: {open?: any}) => {
             </div>
             {/* Rest of the header content */}
           </div>
-          <div className="h-px bg-neutral-700"/>
+          <div className=" bg-neutral-700"/>
           <nav className="flex-grow  py-3">
-            <ul className="list-none p-0 m-0">
+            <ul className="list-none px-3 m-0">
               {links.map((link,index) => (
                 <SidebarLink key={"sidebar-"+index} link={link}/>
               ))}
             </ul>
           </nav>
-          <div className="h-px bg-neutral-700"/>
+          <div className="bg-neutral-700"/>
           <div
             className="px-2 py-3"
           >
@@ -46,7 +46,7 @@ const Sidebar = ({open}: {open?: any}) => {
   if (lgUp) {
     return (
       <div
-        className="fixed left-0 top-0 h-full w-72  z-50  bg-darkBlue-500 text-white"
+        className="fixed left-0 top-0 h-full w-60 z-50 "
       >
         {content}
       </div>
@@ -55,7 +55,7 @@ const Sidebar = ({open}: {open?: any}) => {
 
   return (
     <div
-      className={`fixed left-0 top-0 h-full w-280 bg-neutral-800 text-white ${open ? '' : 'hidden'}`}
+      className={`fixed left-0 top-0 h-full w-280  ${open ? '' : 'hidden'}`}
     >
       {content}
     </div>

@@ -1,4 +1,4 @@
-import Card from '@/components/Card';
+import Card from '@/components/utils/wrappers/Card';
 import InfoItem from '@/components/InfoItem';
 import {countries} from '@/styles/data/countries';
 import {Info, AlignLeft, FileText, Clock, MapPin} from 'react-feather';

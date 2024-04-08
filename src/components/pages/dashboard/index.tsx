@@ -1,7 +1,7 @@
 import ProtectedRoute from '@/components/ProtectedRoute';
 import AppBar from '@/components/AppBar';
-import Sidebar from '@/components/Sidebar';
-import PageContainer from '@/components/PageContainer';
+import Sidebar from '@/components/sections/menu-sidebar/Sidebar';
+import PageContainer from '@/components/sections/sidebar/PageContainer';
 import { ToastContainer } from 'react-toastify';
 
 export default function DashboardPage({ children }) {

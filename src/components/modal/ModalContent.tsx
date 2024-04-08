@@ -1,4 +1,4 @@
-import Button from '@/components/Button';
+import Button from '@/components/utils/Button';
 import React from 'react';
 
 export default function ModalContent({children}:{

@@ -3,8 +3,8 @@ import {useContext, useState} from 'react';
 import Link from 'next/link';
 import {Settings, User, Grid, Book, BookOpen, Truck, Home} from 'react-feather';
 import {usePathname} from 'next/navigation';
-import {SidebarContext} from '@/components/sidebar/SidebarContainer';
-import {sidebarInitial} from '@/components/PageContainer';
+import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
+import {sidebarInitial} from '@/components/sections/sidebar/PageContainer';
 import {useRouter} from 'next/navigation';
 
 const icons = {Settings, User, Grid, Book, BookOpen, Truck, Home};
@@ -41,17 +41,17 @@ const SidebarLink = ({link}) => {
   return (
     <li>
       <Link href={link.link}
-            className={`flex items-center  ${isActive ? 'bg-lightBlue-100' : 'hover:bg-white-4'} px-2 py-2 my-3 text-left w-full`}
+            className={`flex items-center  ${isActive ? 'bg-lightBlue-100 rounded' : 'hover:bg-white-4'} px-2 py-3 my-3 text-left w-full`}
             onClick={onClick}>
         <div
           className={`mr-2 font-bold`}>
           <Icon
             size={20}
-            color={'#FFFFFF'}
+            color={`${isActive ? '#FFFFFF' : '#848a94'}`}
           />
         </div>
         <span
-          className={`flex-grow font-semibold text-white ${isActive ? 'text-white' : ''} ${isActive ? 'text-neutral-100' : ''}`}>{link.label}</span>
+          className={`flex-grow font-semibold text-gray-500 ${isActive ? 'text-white' : ''} ${isActive ? 'text-neutral-100' : ''}`}>{link.label}</span>
       </Link>
     </li>
 

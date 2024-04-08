@@ -1,19 +1,20 @@
 import React from 'react';
 import TableLoader from '@/components/banners/TableLoader';
 import clsx from 'clsx';
-import {renderCell, RenderTableHead} from '@/components/DataGrid';
+import {renderCell, RenderTableHead} from '@/components/table/DataGrid';
 import {MoreVertical} from 'react-feather';
-import Button from '@/components/Button';
+import Button from '@/components/utils/Button';
 import CustomPopover from "@/components/popover/CustomPopover";
+import {className} from "postcss-selector-parser";
 
 const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, actions, onSorting}) => {
     return (
-        <div className="w-full relative">
-            <table className="w-full text-sm text-left text-gray-500 -dark:text-gray-40 shadow-md ">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 -dark:bg-gray-700 -dark:text-gray-400">
+        <div className="w-full relative ">
+            <table className="w-full text-sm text-left  -dark:text-gray-40">
+                <thead className="text-xs bg-lightBlue-100 uppercase -dark:bg-gray-700 -dark:text-gray-400">
                 <tr>
                     <RenderTableHead tHeadProps={tHeadProps} columns={columns} onSorting={onSorting}/>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sr-only">
+                    <th className=" py-2  text-left text-xs font-medium text-white uppercase tracking-wider ">
                         Actions
                     </th>
                 </tr>
@@ -45,27 +46,27 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
                             <td className="px-6 py-4 whitespace-nowrap text-start text-sm font-medium">
                                 <CustomPopover title={<MoreVertical size={20}/>}>
                                     <div
-                                        className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5">
+                                        className="overflow-hidden rounded-lg shadow-md ring-1 ring-black/5">
                                         <div
                                             className="relative grid gap-1 bg-white p-1">
-                                            <span className="text-lg font-semibold">Actions</span>
-                                            <ul className="mt-2 space-y-2">
+                                            <span className="text-lg text-gray-500 pl-2">Actions</span>
+                                            <ul className="mt-1 space-y-2 ">
                                                 {actions.map((action, index) => (
                                                     <li key={'action' + index}
-                                                        className="flex items-center space-x-2">
+                                                        className="flex items-center space-x-2 border-t border-gray-200 px-2">
                                                         <Button
                                                             size="small"
                                                             intent="text"
-                                                            className="text-gray-600 hover:text-gray-800 flex items-center w-full"
+                                                            className="text-gray-500 hover:text-gray-800 flex items-center w-full px-2 mt-1"
                                                             onClick={() => {
                                                                 action.onClick(row.id);
                                                             }}
                                                         >
                                                             {action.icon && (
                                                                 <span
-                                                                    className="text-gray-500">{action.icon}</span>
+                                                                    className="mr-2">{action.icon}</span>
                                                             )}
-                                                            {action.label}
+                                                            <span className={clsx(action.className || '')}>{action.label}</span>
                                                         </Button>
                                                     </li>))}
                                             </ul>

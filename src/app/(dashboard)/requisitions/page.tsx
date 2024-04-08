@@ -1,11 +1,11 @@
 'use client';
-import ContainerOne from '@/components/ContainerOne';
-import Container from '@/components/Container';
+import ContainerOne from '@/components/utils/wrappers/ContainerOne';
+import Container from '@/components/utils/wrappers/Container';
 import RequisitionsHeader from '@/components/requisitions/RequisitionsHeader';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import EntityTable from '@/components/EntityTable';
+import EntityTable from '@/components/table/EntityTable';
 import {useRouter} from 'next/navigation';
-import Badge from '@/components/Badge';
+import Badge from '@/components/utils/Badge';
 import {useState} from 'react';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
@@ -24,12 +24,8 @@ export default function Requisitions() {
     {
       key: 'total_price',
       label: 'Total Amount',
-      type: 'text'
-    },
-    {
-      key: 'price_currency',
-      label: 'Currency',
-      type: 'text'
+      type: 'text',
+      appendTransformation: (val1: any, val2: any) => isNaN(val1)? val1 : val1 +" "+ val2['price_currency']
     },
     {
       key: 'count_products',

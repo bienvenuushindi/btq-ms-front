@@ -1,4 +1,4 @@
-import Button from '@/components/Button';
+import Button from '@/components/utils/Button';
 import clsx from 'clsx';
 
 const Accordion = ({id,title, content, isOpen, toggleAccordion, className}) => {

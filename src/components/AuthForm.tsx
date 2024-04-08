@@ -1,9 +1,9 @@
 'use client';
 import {register, signin} from '@/lib/api';
 import {useRouter} from 'next/navigation';
-import Button from '@/components/Button';
-import Card from '@/components/Card';
-import Input from '@/components/Input';
+import Button from '@/components/utils/Button';
+import Card from '@/components/utils/wrappers/Card';
+import Input from '@/components/forms/Input';
 import {useCallback, useState} from 'react';
 import Link from 'next/link';
 

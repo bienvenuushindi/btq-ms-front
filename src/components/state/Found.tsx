@@ -1,4 +1,4 @@
-import Card from '@/components/Card';
+import Card from '@/components/utils/wrappers/Card';
 import Text from '@/components/Text';
 import React from 'react';
 

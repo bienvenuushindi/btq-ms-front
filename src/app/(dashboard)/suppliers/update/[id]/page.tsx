@@ -1,12 +1,12 @@
 'use client';
 import {SupplierForm} from '@/components/suppliers/SupplierForm';
-import Container from '@/components/Container';
+import Container from '@/components/utils/wrappers/Container';
 import {useParams} from 'next/navigation';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
 import DataLoading from "@/components/state/Loading";
 import React from "react";
-import DataWrapper from "@/components/utils/DataWrapper";
+import DataWrapper from "@/components/utils/wrappers/DataWrapper";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 

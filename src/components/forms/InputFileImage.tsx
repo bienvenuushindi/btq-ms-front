@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import clsx from 'clsx';
-import PhotoPreviewList from '@/components/PhotoPreviewList';
-import {InputImageContext} from '@/components/Form';
+import PhotoPreviewList from '@/components/forms/PhotoPreviewList';
+import {InputImageContext} from '@/components/forms/Form';
 import {Camera} from 'react-feather';
 import '@/styles/animation/style.css';
 

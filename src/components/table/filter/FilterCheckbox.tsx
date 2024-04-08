@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import Input from '@/components/Input';
+import Input from '@/components/forms/Input';
 import clsx from 'clsx';
 
 const FilterCheckbox = ({field}) => {
   return (
     <div className="flex gap-2">
       {field.options.map((option) =>
-        <label key={option} className="flex items-center justify-center gap-1">
+        <label key={option} className="flex items-center font-bold justify-center gap-1">
           <Input
             key={option}
             type="radio"
@@ -15,9 +15,9 @@ const FilterCheckbox = ({field}) => {
             value={option}
             onChange={field.action}
             className={
-              clsx('w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600', field.className)
+              clsx('w-4 h-4 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600', field.className)
             }
-          />{option.toUpperCase()}</label>)
+          />{option}</label>)
       }
     </div>
   );

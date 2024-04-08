@@ -1,8 +1,8 @@
 'use client'
 import React from 'react';
-import ContainerOne from '@/components/ContainerOne';
-import Container from '@/components/Container';
-import Card from '@/components/Card';
+import ContainerOne from '@/components/utils/wrappers/ContainerOne';
+import Container from '@/components/utils/wrappers/Container';
+import Card from '@/components/utils/wrappers/Card';
 import {useFetcher} from '@/app/hooks/useFetcher';
 import ProtectedRoute from "@/components/ProtectedRoute";
 

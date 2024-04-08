@@ -1,4 +1,4 @@
-import Button from '@/components/Button';
+import Button from '@/components/utils/Button';
 import {X} from 'react-feather'
 import React from 'react';
 import clsx from 'clsx';
