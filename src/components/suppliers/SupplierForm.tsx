@@ -1,9 +1,8 @@
 'use client';
 import React, {useState} from 'react';
-import {send} from '@/lib/api';
+import {API_ENDPOINTS, send} from '@/lib/api';
 import {useRouter} from 'next/navigation';
 import Form from '@/components/forms/Form';
-import SearchTagBox from '@/components/tags/SearchTag';
 import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
 
@@ -180,7 +179,7 @@ export const SupplierForm = ({supplier}: {supplier?: any}) => {
       required: false,
       placeholder: 'Add tag',
       tags: formState.tags,
-      suggestion: <SearchTagBox path="/tags/search"/>,
+      suggestion_url: API_ENDPOINTS.SEARCH_TAGS,
       input_type: 'tag',
       className: '',
       action: (tags) => {
