@@ -66,3 +66,19 @@ form, input, textarea{
 table thead tr{
     border-radius: 15px;
 }
+
+.ql-editor, .ql-container{
+    @apply h-full flex-grow
+}
+
+/*.ease-in-out {*/
+/*    transition-timing-function: ease-in-out;*/
+/*}*/
+
+/*.delay-150 {*/
+/*    transition-delay: 150ms;*/
+/*}*/
+
+/*.duration-1000 {*/
+/*    transition-duration: 1000ms;*/
+/*}*/
