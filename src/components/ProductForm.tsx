@@ -1,10 +1,9 @@
 'use client';
 import React, {useState} from 'react';
 import {countries} from '@/styles/data/countries';
-import {send} from '@/lib/api';
+import {API_ENDPOINTS, send} from '@/lib/api';
 import {useParams, useRouter} from 'next/navigation';
 import Form from '@/components/forms/Form';
-import SearchTagBox from '@/components/tags/SearchTag';
 import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
 
@@ -30,8 +29,6 @@ export const ProductForm = ({product}: {product?: any}) => {
   const [formState, setFormState] = useState({...initial});
   const [error, setError] = useState('');
   const [photos, setPhotos] = useState(getImageUrls());
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -98,10 +95,10 @@ export const ProductForm = ({product}: {product?: any}) => {
       placeholder: 'Description',
       value: formState.description,
       name: 'description',
-      input_type: 'text-area',
+      input_type: 'rich-text-area',
       className: '',
-      action: (e) => {
-        setFormState((s) => ({...s, description: e.target.value}));
+      action: (content) => {
+        setFormState((s) => ({...s, description:content}));
       },
     },
     {
@@ -112,7 +109,7 @@ export const ProductForm = ({product}: {product?: any}) => {
       input_type: 'select',
       value: formState.country_origin,
       className: '',
-      options: countries,
+      options: Object.keys(countries).map(code => ({ code, name: countries[code] })),
       action: (e) => {
         setFormState((s) => ({...s, country_origin: e.target.value}));
       }
@@ -123,7 +120,7 @@ export const ProductForm = ({product}: {product?: any}) => {
       name: 'tag_list',
       placeholder: 'Add tag',
       tags: formState.tags,
-      suggestion: <SearchTagBox path='/tags/search'/> ,
+      suggestion_url: API_ENDPOINTS.SEARCH_TAGS,
       input_type: 'tag',
       className: '',
       action: (tags) => {

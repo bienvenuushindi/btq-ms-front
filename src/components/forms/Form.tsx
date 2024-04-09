@@ -7,6 +7,7 @@ import InputFileImage from '@/components/forms/InputFileImage';
 import Button from '@/components/utils/Button';
 import TagInput from '@/components/forms/TagInput';
 import Toggle from '@/components/forms/Toggle';
+import RichEditor from "@/components/forms/RichEditor";
 
 export const InputImageContext = createContext(null);
 
@@ -68,6 +69,10 @@ const renderField = (field) => {
         }
         onChange={field.action}
       />);
+    case 'rich-text-area':
+      return (
+        <RichEditor action={field.action} content={field.value}/>
+      );
     case 'select':
       return (
         <SelectInput
@@ -132,9 +137,7 @@ const renderField = (field) => {
       );
     case 'tag':
       return (
-        <TagInput defaultTags={field.tags} action={field.action}>
-          {field.suggestion}
-        </TagInput>
+        <TagInput defaultTags={field.tags} action={field.action} suggestionUrl={field.suggestion_url}/>
       );
     case 'button':
       return (
