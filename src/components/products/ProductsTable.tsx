@@ -36,6 +36,7 @@ export default function ProductsTable() {
     }, {
       key: 'short_description',
       label: 'Description',
+      type: 'description'
     }, {
       key: 'active',
       sortable: true,
@@ -45,7 +46,7 @@ export default function ProductsTable() {
     }, {
       key: 'created_at',
       sortable: true,
-      label: 'Created At',
+      label: 'Created',
     }, {
       key: 'View',
       type: 'button',

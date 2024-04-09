@@ -84,7 +84,7 @@ export const ProductDetailsTable = ({product, isLoading}) => {
     {
       key: 'expired_date',
       type: 'text',
-      label: 'Expired Dates',
+      label: 'Expired',
       dataTransformation: (value: any) => <DateDisplay date={value} />
     },
     {
