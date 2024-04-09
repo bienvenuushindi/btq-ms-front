@@ -28,10 +28,9 @@ const fetcher = async ({url, method, body}) => {
 
     const token = res.headers.get('Authorization'); // Get token from response headers
     setToken(JSON.stringify(jsonData), token); // Assuming setToken function accepts parsed JSON data and token separately
-    localStorage.setItem('token', token); // Set token in local storage
     return jsonData; // Return parsed JSON data
 };
-export const signin = async (user) => {
+export const signin = async (user: { user: { email: string; password: string}; }) => {
     return fetcher({
         url: BASE_URL + '/login',
         method: 'POST',
@@ -40,7 +39,7 @@ export const signin = async (user) => {
 };
 
 
-export const register = async (user) => {
+export const register = async (user: { user: { email: string; password: string; name: string; phone_number: string; role_id: number; }; }) => {
     return fetcher({
         url: BASE_URL + '/signup',
         method: 'POST',
@@ -52,7 +51,7 @@ export async function authFetcher(url) {
     return fetch(url, {
         headers: {
             Accept: 'application/json',
-            Authorization: typeof window !== 'undefined' ? getTokenFromCookie() : '',
+            Authorization: getTokenFromCookie(),
             'Content-Type': 'application/json',
         },
     }).then(response => response.json()).then(result => {
@@ -66,7 +65,7 @@ export function send(path, body, method = 'POST') {
         method: method,
         body: body,
         headers: {
-            Authorization: typeof window !== 'undefined' ? getTokenFromCookie() : '',
+            Authorization:getTokenFromCookie(),
         },
     }).then(response => response.json()).then(result => {
         return result.data;
@@ -78,7 +77,7 @@ export function deleteItem(path) {
     return fetch(API_URL + path, {
         method: 'DELETE',
         headers: {
-            Authorization: typeof window !== 'undefined' ? getTokenFromCookie() : '',
+            Authorization: getTokenFromCookie(),
         },
     });
 }
