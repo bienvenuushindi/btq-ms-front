@@ -39,7 +39,7 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
                             key={`row-${index}`}>
                             {columns.map((column) => (
                                 <td key={`row-cell-${column.key as React.Key}-${column.label}`}
-                                    className={clsx('px-1 py-3', column.key ? 'table-cell' : 'flex justify-start')}>
+                                    className={clsx('px-1 py-3 overflow-ellipsis', column.type=='description' && 'w-80', column.key ? 'table-cell' : 'flex justify-start')}>
                                     {column.key ? renderCell(column, row) : renderCell(column, column.customKey)}
                                 </td>
                             ))}

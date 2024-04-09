@@ -5,6 +5,7 @@ import Button from '@/components/utils/Button';
 import Image from 'next/image';
 import TableLoader from '@/components/banners/TableLoader';
 import { ArrowDown, ArrowUp } from 'react-feather';
+import {truncateDescription} from "@/lib/utils";
 
 const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: { data:any, columns:any, tHeadProps:any, isLoading:any, loader?:any, onSorting?:any }) => {
   return (
@@ -112,6 +113,12 @@ export const renderCell = (column, value: any) => {
           {/*<span>{column.label}</span>*/}
         </div>
       );
+    case 'description':
+      return (
+          <span className="text-gray-500">
+             {truncateDescription(transformedValue,100)}
+          </span>
+      )
     default:
       return <span className={clsx(['size', 'date' ,'total_price', 'shop_name', 'name', 'unit_price', 'box_price', 'dozen_price'].includes(column.key)? 'font-bold' : 'text-gray-500')}>{transformedValue}</span>;
   }
