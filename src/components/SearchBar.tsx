@@ -10,12 +10,12 @@ export function SearchBar({onSearch, containerClassName}: {onSearch: any, contai
   const debouncedSearchTerm = useDebounce(query, 1000);
   const active = useRef(false);
   useEffect(() => {
-    if (query || active.current) {
-      onSearch({ q: query });
+    if (debouncedSearchTerm || active.current) {
+      onSearch({ q: debouncedSearchTerm});
       // eslint-disable-next-line react-hooks/exhaustive-deps
       active.current = true;
     }
-  }, [debouncedSearchTerm, onSearch, query]);
+  }, [debouncedSearchTerm, onSearch]);
   return (
     <div className={containerClassName || 'relative w-full'}>
       <Input type="text" placeholder="Search"
