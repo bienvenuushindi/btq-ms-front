@@ -1,9 +1,8 @@
 'use client';
 import React, {useState} from 'react';
 import {useRouter, useParams} from 'next/navigation';
-import {send} from '@/lib/api';
+import {API_ENDPOINTS, send} from '@/lib/api';
 import Form from '@/components/forms/Form';
-import SearchTagBox from '@/components/tags/SearchTag';
 import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
 
@@ -74,7 +73,7 @@ export const ProductDetailForm = ({variant=null}:{variant?: any}) => {
       if(isAddMode){
         //submit promise
         await send('/products/' + path.id + '/product_details', formData);
-        toastShow('success','Supplier created successfully')
+        toastShow('success','Product created successfully')
         router.push('/products/' + path.id);
       }else{
         await send('/products/' + path.id + '/product_details/'+path.variant, formData, "PUT");
@@ -104,7 +103,7 @@ export const ProductDetailForm = ({variant=null}:{variant?: any}) => {
     {
       label: 'Expiration date',
       required: true,
-      placeholder: 'Expired Date',
+      placeholder: 'Expired On',
       value: formState.expired_date,
       name: 'expired_date',
       input_type: 'date',
@@ -199,7 +198,7 @@ export const ProductDetailForm = ({variant=null}:{variant?: any}) => {
       required: false,
       placeholder: 'Add tag',
       tags: formState.tags,
-      suggestion: <SearchTagBox path='/tags/search'/> ,
+      suggestion_url: API_ENDPOINTS.SEARCH_TAGS,
       input_type: 'tag',
       name: 'tags',
       className: '',
