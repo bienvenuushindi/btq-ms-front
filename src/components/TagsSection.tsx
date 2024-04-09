@@ -7,7 +7,7 @@ import {tagColors} from '@/lib/utils';
 
 const TagsSection = ({ tags, label=null }) => {
   return (
-    <>
+    <div>
       {tags && tags.length > 0 && (
         <>
           <div className="flex items-center mb-2">
@@ -27,7 +27,7 @@ const TagsSection = ({ tags, label=null }) => {
           </ul>
         </>
       )}
-    </>
+    </div>
   );
 };
 
