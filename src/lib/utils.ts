@@ -44,7 +44,7 @@ export function truncateDescription(description, maxLength = 200) {
     return description;
   }
 
-  return description.substring(0, maxLength) + '...';
+  return description.substring(0, maxLength) + '......';
 }
 
 // urlUtils.js
