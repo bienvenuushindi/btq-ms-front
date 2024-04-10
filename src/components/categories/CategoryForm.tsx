@@ -18,7 +18,7 @@ export default function CategoryForm() {
     });
 
     try {
-      const result = await send('/categories', formData);
+      await send('/categories', formData);
       router.push('/categories');
     } catch (e) {
       console.log(`Could not create category`);
@@ -68,10 +68,7 @@ export default function CategoryForm() {
     },
     {
       label: 'Status ',
-      input_type: 'checkbox',
-      className: '',
-      labelClassName: 'sr-only',
-      name: 'active',
+      input_type: 'toggle',
       checked: formState.active,
       action: () => {
         setFormState((s) => ({...s, active: !formState.active}));

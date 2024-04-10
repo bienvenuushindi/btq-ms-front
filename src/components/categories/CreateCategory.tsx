@@ -25,7 +25,7 @@ export default function CreateCategory({revalidate}) {
         <ModalContent>
           <ModalHeader closeModal={closeModal} title={'Create Category'}/>
           <ModalBody>
-            <CategoryForm/>
+            <CategoryForm />
           </ModalBody>
         </ModalContent>
 
