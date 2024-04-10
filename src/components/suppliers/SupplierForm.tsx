@@ -94,9 +94,9 @@ export const SupplierForm = ({supplier}: {supplier?: any}) => {
       },
     },
     {
-      label: 'Select Origin Country',
+      label: 'Made in',
       required: true,
-      placeholder: 'Select Country',
+      placeholder: 'Made in',
       name: 'country_id',
       value: formState.country_name,
       input_type: 'select',

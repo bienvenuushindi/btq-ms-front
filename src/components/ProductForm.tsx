@@ -102,9 +102,9 @@ export const ProductForm = ({product}: {product?: any}) => {
       },
     },
     {
-      label: 'Select Origin Country',
+      label: 'Made in',
       required: true,
-      placeholder: 'Select Country',
+      placeholder: 'Made in',
       name: 'country',
       input_type: 'select',
       value: formState.country_origin,
