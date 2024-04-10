@@ -15,7 +15,7 @@ const AppBar = (props) => {
   return (
     <>
         <header
-          className="fixed  h-12 bg-opacity-80 backdrop-blur-sm top-0 fixed left-0 w-full"
+          className="fixed  h-12 bg-opacity-80 backdrop-blur-sm top-0 fixed left-0 w-full  text-white"
           style={{
             backgroundColor: 'rgba(255, 255, 255, 0.8)',
             // width: 'calc(100% - 280px)', // Update this value according to your design

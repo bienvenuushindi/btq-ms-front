@@ -61,24 +61,24 @@ export default function AuthForm({mode}: { mode: 'register' | 'signin' }) {
   const content = mode === 'register' ? registerContent : signinContent;
 
   return (
-    <Card>
+    <Card className="shadow-lg bg-white">
       <div className="w-full">
         <div className="text-center">
-          <h2 className="text-3xl mb-2 text-black">{content.header}</h2>
+          <h2 className="text-3xl  text-lightBlue-100">{content.header}</h2>
           <p className="tex-lg text-black/25">{content.subheader}</p>
         </div>
-        <form onSubmit={handleSubmit} className="py-10 w-full">
+        <form onSubmit={handleSubmit} className="py-6 w-full">
           {mode === 'register' && (
             <div className="flex mb-8 justify-between">
               <div className="pr-2">
-                <div className="text-lg mb-4 ml-2 text-black/50">
+                <div className="text-lg mb-2 ml-2 text-black/50">
                   Full Name
                 </div>
                 <Input
                   required
                   placeholder="Full Name"
                   value={formState.name}
-                  className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
+                  className="border-solid border-gray-400 border-2 px-6 py-2 text-lg rounded-3xl w-full"
                   onChange={(e) =>
                     setFormState((s) => ({...s, name: e.target.value}))
                   }
@@ -86,43 +86,43 @@ export default function AuthForm({mode}: { mode: 'register' | 'signin' }) {
               </div>
 
               <div className="mb-8">
-                <div className="text-lg mb-4 ml-2 text-black/50">Phone number</div>
+                <div className="text-lg mb-2 ml-2 text-black/50">Phone number</div>
                 <Input
                   required
                   type="tel"
                   placeholder="Phone"
                   value={formState.phone_number}
-                  className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
+                  className="border-solid border-gray-400 border-2 px-6 py-2 text-lg rounded-3xl w-full"
                   onChange={(e) =>
                     setFormState((s) => ({...s, phone_number: e.target.value}))
                   }
                  />
               </div>
-              
+
             </div>
-            
+
           )}
           <div className="mb-8">
-            <div className="text-lg mb-4 ml-2 text-black/50">Email</div>
+            <div className="text-lg mb-2 ml-2 text-black/50">Email</div>
             <Input
               required
               type="email"
               placeholder="Email"
               value={formState.email}
-              className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
+              className="border-solid border-gray-400 border-2 px-6 py-2 text-lg rounded-3xl w-full"
               onChange={(e) =>
                 setFormState((s) => ({...s, email: e.target.value}))
               }
             />
           </div>
           <div className="mb-8">
-            <div className="text-lg mb-4 ml-2 text-black/50">Password</div>
+            <div className="text-lg mb-2 ml-2 text-black/50">Password</div>
             <Input
               required
               value={formState.password}
               type="password"
               placeholder="Password"
-              className="border-solid border-gray border-2 px-6 py-2 text-lg rounded-3xl w-full"
+              className="border-solid border-gray-400 border-2 px-6 py-2 text-lg rounded-3xl w-full"
               onChange={(e) =>
                 setFormState((s) => ({...s, password: e.target.value}))
               }
@@ -140,7 +140,7 @@ export default function AuthForm({mode}: { mode: 'register' | 'signin' }) {
               </span>
             </div>
             <div>
-              <Button intent="secondary">
+              <Button intent="primary">
                 {content.buttonText}
               </Button>
             </div>
