@@ -35,7 +35,7 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
     {
       key: 'expired_date',
       type: 'text',
-      label: 'Expired Date',
+      label: 'Expired On',
       dataTransformation: (value: any) => (
         <Badge size="small" variant={type === 'expired' ? 'danger' : 'success'}>
           {value}

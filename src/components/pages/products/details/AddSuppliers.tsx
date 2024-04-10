@@ -23,14 +23,14 @@ export default function AddSupplier({productDetailID = null, closeExternalModal 
               intent={'primary'}
               className="py-1 rounded-md flex items-center gap-1 text-sm">
         <PlusCircle color="#FFFFFF" size={20}/>
-        <span className="text-neutral-50 ">Add Price</span>
+        <span className="text-neutral-50 ">Add Supplier</span>
       </Button>
       <ModalContainer
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
       >
         <ModalContent>
-          <ModalHeader closeModal={closeModal} title={'Add Price'}/>
+          <ModalHeader closeModal={closeModal} title={'Add Supplier'}/>
           <ModalBody>
              <PriceDetailForm productDetailID={productDetailID}/>
           </ModalBody>

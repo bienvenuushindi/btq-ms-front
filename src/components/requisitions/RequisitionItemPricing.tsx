@@ -148,8 +148,8 @@ export default function RequisitionItemPricing({productDetails}) {
         value: clsx((formState.price * formState.quantity) || '0', formState.currency),
         disabled: true,
       }], {
-      label: 'Expired date',
-      placeholder: 'Expired Date',
+      label: 'Expired On',
+      placeholder: 'Expired On',
       value: formState.expired_date,
       name: 'expired_date',
       type: 'date',

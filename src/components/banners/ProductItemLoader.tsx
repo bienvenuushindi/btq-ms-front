@@ -33,12 +33,12 @@ const ProductItemLoader = () => {
         </div>
 
         <div className="mb-2">
-          <div className="text-gray-600 animate-pulse">Created At:</div>
+          <div className="text-gray-600 animate-pulse">Created:</div>
           <div className="h-6 bg-gray-200 animate-pulse rounded-lg"></div>
         </div>
 
         <div className="mb-2">
-          <div className="text-gray-600 animate-pulse">Country of Origin:</div>
+          <div className="text-gray-600 animate-pulse">Made in:</div>
           <div className="h-6 bg-gray-200 animate-pulse rounded-lg"></div>
         </div>
 
