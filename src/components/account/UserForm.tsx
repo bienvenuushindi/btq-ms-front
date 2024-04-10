@@ -1,4 +1,3 @@
-import SearchTagBox from '@/components/tags/SearchTag';
 import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import Form from '@/components/forms/Form';
 import React, {useCallback, useState} from 'react';
