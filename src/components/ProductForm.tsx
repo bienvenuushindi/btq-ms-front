@@ -6,163 +6,181 @@ import {useParams, useRouter} from 'next/navigation';
 import Form from '@/components/forms/Form';
 import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
+import CategoryTreeMultipleSelection from "@/components/categories/CategoryTreeMultipleSelection";
 
-export const ProductForm = ({product}: {product?: any}) => {
-  const isAddMode = !product;
-  const params = useParams();
-  const router = useRouter();
-  let initial = {name: '', short_description: '', description: '', active: false, country_origin: '', tags: ''};
-  if (!isAddMode) {
-    initial = {
-      name: product.name, short_description: product.short_description,
-      description: product.description, active: product.active,
-      country_origin: product.country_origin,
-      tags: product.tags.join(',')
+export const ProductForm = ({product}: { product?: any }) => {
+    const isAddMode = !product;
+    const params = useParams();
+    const router = useRouter();
+    let initial = {name: '', short_description: '', description: '', active: false, country_origin: '', tags: '', categories: []};
+    if (!isAddMode) {
+        initial = {
+            name: product.name, short_description: product.short_description,
+            description: product.description, active: product.active,
+            country_origin: product.country_origin,
+            tags: product.tags.join(','),
+            categories: product?.categories ? product.categories.map(item => item.id) : []
+        };
+    }
+    const getImageUrls = () => {
+        if (isAddMode) return [];
+        return (product.image_urls).map((image_path) => (
+            image_path
+        ));
     };
-  }
-  const getImageUrls = () => {
-    if (isAddMode) return [];
-    return (product.image_urls).map((image_path) => (
-      image_path
-    ));
-  };
-  const [formState, setFormState] = useState({...initial});
-  const [error, setError] = useState('');
-  const [photos, setPhotos] = useState(getImageUrls());
+    const [formState, setFormState] = useState({...initial});
+    const [error, setError] = useState('');
+    const [photos, setPhotos] = useState(getImageUrls());
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    Object.keys(formState).forEach((key) => {
-      formData.append(`product[${key}]`, formState[key]);
-    });
-    for (let i = 0; i < photos.length; i++) {
-      formData.append('product[images][]', photos[i]);
+    function updateCategory(ids: any[]) {
+        setFormState((s) => ({...s, categories: [...ids]}));
     }
-    try {
-      if(isAddMode){
-        await send('/products', formData);
-        toastShow('success','Supplier created successfully')
-        router.push('/products');
-      }else{
 
-        const productID = params.id;
-        await send(`/products/${productID}`, formData, 'PUT');
-        toastShow('success','Supplier updated successfully')
-      }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        Object.keys(formState).forEach((key) => {
+            formData.append(`product[${key}]`, formState[key]);
+        });
+        for (let i = 0; i < photos.length; i++) {
+            formData.append('product[images][]', photos[i]);
+        }
+        try {
+            if (isAddMode) {
+                await send('/products', formData);
+                toastShow('success', 'Product created successfully')
+                router.push('/products');
+            } else {
+                const productID = params.id;
+                await send(`/products/${productID}`, formData, 'PUT');
+                toastShow('success', 'Product updated successfully')
+                router.push(`/products/${productID}`);
+            }
 
-    } catch (e) {
-      setError(`Could not create product`);
-    } finally {
-      // setFormState({...initial});
+        } catch (e) {
+            setError(`Could not create product`);
+        } finally {
+            // setFormState({...initial});
+        }
+    };
+
+    const content = {
+        header: 'Create a product',
+        subheader: '',
+        buttonText: 'Create'
+    };
+    const productForm = [
+        {
+            label: 'Name',
+            required: true,
+            placeholder: 'Product Name',
+            value: formState.name,
+            name: 'name',
+            type: 'text',
+            input_type: 'text',
+            className: '',
+            action: (e) => {
+                setFormState((s) => ({...s, name: e.target.value}));
+            },
+        },
+        {
+            label: 'Short Description',
+            required: true,
+            placeholder: 'Product Bio',
+            value: formState.short_description,
+            name: 'short_description',
+            input_type: 'text-area',
+            className: '',
+            action: (e) => {
+                setFormState((s) => ({...s, short_description: e.target.value}));
+            },
+        },
+        {
+            label: 'Description',
+            required: true,
+            placeholder: 'Description',
+            value: formState.description,
+            name: 'description',
+            input_type: 'rich-text-area',
+            className: '',
+            action: (content) => {
+                setFormState((s) => ({...s, description: content}));
+            },
+        },
+        {
+            label: 'Made in',
+            required: true,
+            placeholder: 'Made in',
+            name: 'country',
+            input_type: 'select',
+            value: formState.country_origin,
+            className: '',
+            options: Object.keys(countries).map(code => ({code, name: countries[code]})),
+            action: (e) => {
+                setFormState((s) => ({...s, country_origin: e.target.value}));
+            }
+        },
+        {
+            label: 'Enter Some Tags ...',
+            required: false,
+            name: 'tag_list',
+            placeholder: 'Add tag',
+            tags: formState.tags,
+            suggestion_url: API_ENDPOINTS.SEARCH_TAGS,
+            input_type: 'tag',
+            className: '',
+            action: (tags) => {
+                setFormState((s) => ({...s, tags: tags.join(',')}));
+            },
+        },
+        {
+            label: 'Photos',
+            input_type: 'image-file',
+            name: 'photos',
+            image_props: {photos, setPhotos}
+        },
+        {
+            label: 'Status ',
+            input_type: 'checkbox',
+            className: '',
+            labelClassName: 'sr-only',
+            name: 'active',
+            checked: formState.active,
+            action: () => {
+                setFormState((s) => ({...s, active: !formState.active}));
+            }
+        },
+        {
+            input_type: 'button',
+            className: '',
+            type: 'submit',
+            placeholder: 'Submit'
+        }
+    ]
+
+    const productFormCategory = [
+        {
+            input_type: 'custom',
+            component: <CategoryTreeMultipleSelection action={updateCategory} initialSelectionIds={formState.categories}/>,
+        }
+    ];
+
+    const fields= {
+        left: productForm,
+        right:productFormCategory
     }
-  };
 
-  const content = {
-    header: 'Create a product',
-    subheader: '',
-    buttonText: 'Create'
-  };
-  const productForm = [
-    {
-      label: 'Name',
-      required: true,
-      placeholder: 'Product Name',
-      value: formState.name,
-      name: 'name',
-      type: 'text',
-      input_type: 'text',
-      className: '',
-      action: (e) => {
-        setFormState((s) => ({...s, name: e.target.value}));
-      },
-    },
-    {
-      label: 'Short Description',
-      required: true,
-      placeholder: 'Product Bio',
-      value: formState.short_description,
-      name: 'short_description',
-      input_type: 'text-area',
-      className: '',
-      action: (e) => {
-        setFormState((s) => ({...s, short_description: e.target.value}));
-      },
-    },
-    {
-      label: 'Description',
-      required: true,
-      placeholder: 'Description',
-      value: formState.description,
-      name: 'description',
-      input_type: 'rich-text-area',
-      className: '',
-      action: (content) => {
-        setFormState((s) => ({...s, description:content}));
-      },
-    },
-    {
-      label: 'Made in',
-      required: true,
-      placeholder: 'Made in',
-      name: 'country',
-      input_type: 'select',
-      value: formState.country_origin,
-      className: '',
-      options: Object.keys(countries).map(code => ({ code, name: countries[code] })),
-      action: (e) => {
-        setFormState((s) => ({...s, country_origin: e.target.value}));
-      }
-    },
-    {
-      label: 'Enter Some Tags ...',
-      required: false,
-      name: 'tag_list',
-      placeholder: 'Add tag',
-      tags: formState.tags,
-      suggestion_url: API_ENDPOINTS.SEARCH_TAGS,
-      input_type: 'tag',
-      className: '',
-      action: (tags) => {
-        setFormState((s) => ({...s, tags: tags.join(',')}));
-      },
-    },
-    {
-      label: 'Photos',
-      input_type: 'image-file',
-      name: 'photos',
-      image_props: {photos, setPhotos}
-    },
-    {
-      label: 'Status ',
-      input_type: 'checkbox',
-      className: '',
-      labelClassName:'sr-only',
-      name: 'active',
-      checked: formState.active,
-      action: () => {
-        setFormState((s) => ({...s, active: !formState.active}));
-      }
-    },
-    {
-      input_type: 'button',
-      className: '',
-      type: 'submit',
-      placeholder: 'Submit'
-    }
-  ];
-
-  return (
-    <ContainerOne>
-      <div className="w-full lg:w-2/4 mx-auto">
-        <div className="text-center">
-          <h2 className="text-3xl mb-2 text-black">{content.header}</h2>
-          <p className="tex-lg text-black/25">{content.subheader}</p>
-          <div className="mx-auto">
-            <Form handleSubmit={handleSubmit} fields={productForm}/>
-          </div>
-        </div>
-      </div>
-    </ContainerOne>
-  );
+    return (
+        <ContainerOne>
+            <div className="w-full  mx-auto">
+                <div className="text-center">
+                    <h2 className="text-3xl mb-2 text-black">{content.header}</h2>
+                    <p className="tex-lg text-black/25">{content.subheader}</p>
+                    <div className="mx-auto">
+                        <Form handleSubmit={handleSubmit} fields={fields}/>
+                    </div>
+                </div>
+            </div>
+        </ContainerOne>
+    );
 };

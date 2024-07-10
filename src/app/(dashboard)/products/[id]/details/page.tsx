@@ -24,5 +24,5 @@ export default function Products() {
                 </div>
             </DataWrapper>
         </ProtectedRoute>
-       );
+    );
 }

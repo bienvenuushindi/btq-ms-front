@@ -24,6 +24,7 @@ export default function PhotoPreviewItem({photo, index}) {
           className="w-full h-full"
           src={isUrl ? photo : URL.createObjectURL(photo)}
           alt="Upload file"
+          priority={true}
         />
       </div>
     </li>

@@ -77,7 +77,7 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
                 router.push('/products/' + path.id);
             } else {
                 await send('/products/' + path.id + '/product_details/' + path.variant, formData, "PUT");
-                toastShow('success', 'Supplier updated successfully')
+                toastShow('success', 'Product updated successfully')
             }
         } catch (e) {
             setError(`Could not create product`);

@@ -4,10 +4,26 @@ import {useRouter} from 'next/navigation';
 import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import Form from '@/components/forms/Form';
 import CategoryTree from '@/components/categories/CategoryTree';
+import toastShow from "@/components/toast/toast-selector";
 
-export default function CategoryForm() {
+export default function CategoryForm({category = null}: { category?: any }) {
   const router = useRouter();
-  const initial = {name: '', description: '', active: false, parent_category_id: null};
+  const isAddMode = !category
+  let initial = {name: '', description: '', active: false, parent_category_id: null};
+  let content = {
+    header: 'Create a category',
+    subheader: '',
+    buttonText: 'Create'
+  };
+
+  if (!isAddMode) {
+    initial = {name: category.name, description: category.description, active: category.active, parent_category_id: category.parent_category_id}
+    content = {
+      header: 'Update Category',
+      subheader: '',
+      buttonText: 'Update'
+    };
+  }
   const [formState, setFormState] = useState({...initial});
   const [error, setError] = useState('');
   const createCategory = async () => {
@@ -18,8 +34,16 @@ export default function CategoryForm() {
     });
 
     try {
-      await send('/categories', formData);
-      router.push('/categories');
+      if (isAddMode) {
+        //submit promise
+        await send('/categories', formData);
+        toastShow('success', 'Category created successfully')
+        router.push('/categories');
+      } else {
+        await send('/categories/' + category.id, formData, "PUT");
+        toastShow('success', 'Category updated successfully')
+      }
+
     } catch (e) {
       console.log(`Could not create category`);
     } finally {
@@ -30,11 +54,6 @@ export default function CategoryForm() {
     setFormState((s) => ({...s, parent_category_id: id}));
   }
 
-  const content = {
-    header: 'Create a category',
-    subheader: '',
-    buttonText: 'Create'
-  };
 
   const productForm = [
     {

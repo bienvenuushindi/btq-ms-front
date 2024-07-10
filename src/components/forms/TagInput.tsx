@@ -1,3 +1,4 @@
+'use client'
 import React, { useState, useEffect, useRef } from 'react';
 import '@/styles/form/tag-input.css';
 import clsx from 'clsx';
