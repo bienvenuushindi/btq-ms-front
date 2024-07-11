@@ -1,3 +1,5 @@
+'use client'
+
 import {useState} from "react";
 import {API_ENDPOINTS} from "@/lib/api";
 import {useFetcher} from "@/app/hooks/useFetcher";
