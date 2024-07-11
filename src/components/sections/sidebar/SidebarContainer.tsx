@@ -1,5 +1,5 @@
 'use client'
-import {createContext, useContext} from 'react';
+import {createContext, useContext, useEffect, useState} from 'react';
 import {ArrowLeftCircle} from 'react-feather';
 import clsx from 'clsx';
 import Button from '@/components/utils/Button';
@@ -8,10 +8,11 @@ export const SidebarContext = createContext(null);
 
 export const SidebarContainer = ({title, children}:any) => {
   const {openBar, setOpenBar, setSidebarData} = useContext(SidebarContext);
+  const [maxHeight, setMaxHeight] =  useState(0);
     // Calculate the maximum height of the overlay
-    const maxHeight = typeof window !== 'undefined'
-      ? Math.max(window.innerHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)
-      : 0;
+    useEffect(()=>{
+       if(typeof window !== 'undefined') setMaxHeight(Math.max(window.innerHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight))
+    }, [])
 
   return (
     <>
