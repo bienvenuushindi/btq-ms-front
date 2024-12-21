@@ -4,7 +4,7 @@ import {useFetcher} from '@/app/hooks/useFetcher';
 import DataLoading from "@/components/state/Loading";
 import DataWrapper from "@/components/utils/wrappers/DataWrapper";
 import {useDebounce} from "@/app/hooks/useDebounce";
-import {updateUrl} from "@/lib/utils";
+import {updateUrl} from "@/lib/helper";
 
 export default function TagResultBox({searchUrl, query, action}) {
     const [url, setUrl] = useState(searchUrl);

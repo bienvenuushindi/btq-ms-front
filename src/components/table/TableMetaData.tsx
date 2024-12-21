@@ -1,5 +1,5 @@
 import React from 'react';
-import {capitalizeFirstLetter} from '@/lib/utils';
+import {capitalizeFirstLetter} from '@/lib/helper';
 
 const TableMetaData = ({ meta }) => {
   return (

@@ -3,7 +3,7 @@ import Card from '@/components/utils/wrappers/Card';
 import Text from '@/components/Text';
 import {AlignLeft, Clock, FileText, Info, MapPin} from 'react-feather';
 import Carousel from '@/components/carousel/Carousel';
-import {getImageUrls, tagColors} from '@/lib/utils';
+import {getImageUrls, tagColors} from '@/lib/helper';
 import TagsSection from '@/components/TagsSection';
 import React from 'react';
 import {createMarkup} from "@/components/forms/RichEditor";

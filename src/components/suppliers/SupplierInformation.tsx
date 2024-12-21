@@ -3,7 +3,7 @@ import { MapPin, Phone, Tag } from 'react-feather';
 import TagsSection from '@/components/TagsSection';
 import Image from 'next/image';
 import InfoItem from '@/components/InfoItem';
-import { tagColors } from '@/lib/utils';
+import { tagColors } from '@/lib/helper';
 
 const Card = ({ children }:{
   children: React.ReactNode

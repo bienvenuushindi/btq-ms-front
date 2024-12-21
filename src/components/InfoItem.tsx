@@ -1,7 +1,7 @@
 import Text from '@/components/Text';
 import clsx from 'clsx';
 import {MapPin} from 'react-feather';
-import {tagColors} from '@/lib/utils';
+import {tagColors} from '@/lib/helper';
 import React from 'react';
 
 export default function InfoItem({label, value, children, classValue, classLabel, row = false, icon = null}:any) {

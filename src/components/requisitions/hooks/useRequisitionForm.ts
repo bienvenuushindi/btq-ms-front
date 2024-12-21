@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {API_ENDPOINTS, send} from '@/lib/api';
-import { updateUrl } from '@/lib/utils';
+import { updateUrl } from '@/lib/helper';
 
 export function useRequisitionForm({ requisitionID, revalidate, closeModal }) {
     const [items, setItems] = useState([]);

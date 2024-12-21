@@ -6,7 +6,7 @@ import Paginate from '@/components/table/Paginate';
 import DataGridWithActions from '@/components/table/DataGridWIthActions';
 import Card from '@/components/utils/wrappers/Card';
 import {ShowRow} from '@/components/table/filter/ShowRow';
-import {updateUrl} from '@/lib/utils';
+import {updateUrl} from '@/lib/helper';
 
 const EntityTable = ({
                          updateList,

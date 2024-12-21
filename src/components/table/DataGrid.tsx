@@ -5,7 +5,7 @@ import Button from '@/components/utils/Button';
 import Image from 'next/image';
 import TableLoader from '@/components/banners/TableLoader';
 import { ArrowDown, ArrowUp } from 'react-feather';
-import {truncateDescription} from "@/lib/utils";
+import {truncateDescription} from "@/lib/helper";
 
 const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: { data:any, columns:any, tHeadProps:any, isLoading:any, loader?:any, onSorting?:any }) => {
   return (

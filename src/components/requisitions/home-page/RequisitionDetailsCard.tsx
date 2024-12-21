@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from '@/components/utils/wrappers/Card';
-import {tagColors} from "@/lib/utils";
+import {tagColors} from "@/lib/helper";
 
 const RequisitionDetailsCard = ({ label, icon, value }) => {
     return (

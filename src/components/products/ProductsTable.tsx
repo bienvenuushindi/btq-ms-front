@@ -8,7 +8,7 @@ import EntityTable from '@/components/table/EntityTable';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import {Edit, Trash2} from 'react-feather';
 import FilterCheckbox from '@/components/table/filter/FilterCheckbox';
-import {updateUrl} from '@/lib/utils';
+import {updateUrl} from '@/lib/helper';
 import {useFetcher} from "@/app/hooks/useFetcher";
 
 export default function ProductsTable() {

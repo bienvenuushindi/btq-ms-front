@@ -3,7 +3,7 @@ import {useFetcher} from '@/app/hooks/useFetcher';
 import React, {useCallback, useState} from 'react';
 import {API_ENDPOINTS} from "@/lib/api";
 import {FolderMinus, FolderPlus} from 'react-feather';
-import {toggle} from "@/lib/utils"; // Import icons
+import {toggle} from "@/lib/helper"; // Import icons
 
 export default function CategoryTree({action}) {
     const {data: categories = [], mutate, error, isLoading} = useFetcher(API_ENDPOINTS.CATEGORY_TREE_STRUCTURE);

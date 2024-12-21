@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import Card from '@/components/utils/wrappers/Card';
 import React from 'react';
 import {SupplierInformation} from '@/components/suppliers/SupplierInformation';
-import {getImageUrls} from '@/lib/utils';
+import {getImageUrls} from '@/lib/helper';
 import Badge from '@/components/utils/Badge';
 
 const QuantityTypeClass={

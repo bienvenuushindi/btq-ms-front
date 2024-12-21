@@ -2,7 +2,7 @@ import {SearchBar} from '@/components/SearchBar';
 import {API_ENDPOINTS} from '@/lib/api';
 import React, {useState} from 'react';
 import SearchSupplierResults from '@/components/requisitions/SearchSupplierResults';
-import {updateUrl} from '@/lib/utils';
+import {updateUrl} from '@/lib/helper';
 
 export default function SelectSupplier({action, productId, supplierId}) {
   const [url, setUrl] = useState(API_ENDPOINTS.SEARCH_SUPPLIERS());
