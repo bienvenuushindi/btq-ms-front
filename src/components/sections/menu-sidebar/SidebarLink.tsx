@@ -41,7 +41,7 @@ const SidebarLink = ({link}) => {
   return (
     <li>
       <Link href={link.link}
-            className={`flex items-center  ${isActive ? 'bg-lightBlue-100 rounded' : 'hover:bg-white-4'} px-2 py-3 my-3 text-left w-full`}
+            className={`flex items-center bg-primary text-primary-foreground  ${isActive ? 'rounded' : 'hover:bg-white-4'} px-2 py-3 my-3 text-left w-full`}
             onClick={onClick}>
         <div
           className={`mr-2 font-bold`}>

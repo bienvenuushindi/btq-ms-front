@@ -1,13 +1,14 @@
 import React from 'react';
 import clsx from 'clsx';
-import { ArrowRight } from 'react-feather';
+import {ArrowRight, Edit, Trash2} from 'react-feather';
 import Badge from '@/components/utils/Badge';
 import Card from '@/components/utils/wrappers/Card';
 import DataGrid from '@/components/table/DataGrid';
 import Button from '@/components/utils/Button';
 import { useFetcher } from '@/app/hooks/useFetcher';
 import { useRouter } from 'next/navigation';
-import {API_ENDPOINTS, API_URL} from "@/lib/api";
+import {API_URL} from "@/lib/api";
+import DataGridWithActions from "@/components/table/DataGridWIthActions";
 
 export default function ExpiredProductContainer({ title, type, limit }: {title: any, type: any, limit?: any}) {
   const router = useRouter();
@@ -43,11 +44,33 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
       ),
     },
   ];
-
+  const actions = [
+    {
+      label: 'Edit',
+      className: 'text-lightBlue-100',
+      icon: (
+          <Edit size={20} color="#2962FF"/>
+      ),
+      onClick: (row) => {
+        console.log(row)
+        router.push(`/products/${row.product_id}/details/update/${row.id}`);
+      },
+    },
+    {
+      label: 'Delete',
+      className: 'text-red-600',
+      icon: (
+          <Trash2 size={20} color="#EF4444FF"/>
+      ),
+      onClick: (row) => {
+        console.log(`Delete clicked for row ${row.id}`);
+      },
+    },
+  ];
   const shouldDisplayViewAllButton = meta && meta.total > 5 && limit;
 
   return (
-    <Card className="h-96 flex flex-col">
+    <Card className="flex flex-col">
       <div className="flex w-full justify-between items-center py-3">
         <h3 className="font-semibold text-md">{title}</h3>
         <div className="flex items-center gap-1">
@@ -64,12 +87,15 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
       </div>
 
       <div className="flex-grow bg-gray-50">
-        <DataGrid
-          columns={columns}
-          data={expired_products}
-          tHeadProps={{ color: 'primary' }}
-          isLoading={isLoading}
-      />
+        <DataGridWithActions
+            columns={columns}
+            data={expired_products}
+            tHeadProps={{color: 'primary'}}
+            isLoading={isLoading}
+            actions={actions}
+            loader={undefined}
+            onSorting={undefined}
+        />
       </div>
 
       {shouldDisplayViewAllButton && (

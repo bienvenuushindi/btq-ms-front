@@ -64,8 +64,8 @@ export default function ProductsTable() {
       icon: (
         <Edit size={20} color="#2962FF"/>
       ),
-      onClick: (rowIndex) => {
-        router.push(`/products/update/${rowIndex}`);
+      onClick: (row) => {
+        router.push(`/products/update/${row.id}`);
       },
     },
     {
@@ -74,8 +74,8 @@ export default function ProductsTable() {
       icon: (
         <Trash2 size={20} color="#EF4444FF"/>
       ),
-      onClick: (rowIndex) => {
-        console.log(`Delete clicked for row ${rowIndex}`);
+      onClick: (row) => {
+        console.log(`Delete clicked for row ${row.id}`);
       },
     },
   ];

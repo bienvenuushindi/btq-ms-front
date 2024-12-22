@@ -15,7 +15,7 @@ const Sidebar = ({open}: {open?: any}) => {
   const lgUp = true; // Example media query breakpoint
 
   const content = (
-      <div className="h-full bg-gray-100">
+      <div className="h-full bg-primary">
         <div className="h-full overflow-auto ">
           <div className="py-3 flex justify-center">
             <div className="inline-flex h-32 w-32 bg-white ">
@@ -23,7 +23,7 @@ const Sidebar = ({open}: {open?: any}) => {
             </div>
             {/* Rest of the header content */}
           </div>
-          <div className=" bg-neutral-700"/>
+          <div className="bg-primary"/>
           <nav className="flex-grow  py-3">
             <ul className="list-none px-3 m-0">
               {links.map((link,index) => (

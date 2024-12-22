@@ -37,15 +37,6 @@ const SupplierInformation = ({ shopName, country, city, address1, address2, tel1
             </div>
           </div>
         </div>
-        {/*<div className="relative w-20 h-20">*/}
-        {/*  <Image*/}
-        {/*    src={imageUrl}*/}
-        {/*    alt={shopName}*/}
-        {/*    className="rounded-md border border-gray-300 object-cover"*/}
-        {/*    layout="fill"*/}
-        {/*    loading="lazy"*/}
-        {/*  />*/}
-        {/*</div>*/}
       </div>
     </>
   );
@@ -54,7 +45,7 @@ const SupplierInformation = ({ shopName, country, city, address1, address2, tel1
 const VerticalSupplierInformation = ({ shopName, country, city, address1, address2, tel1, tel2, tags }) => {
   return (
     <div className="border border-gray-100 rounded-lg shadow-sm ">
-      <div className="text-xl font-bold  bg-lightBlue-100 text-white rounded-t-lg p-2">{shopName}</div>
+      <div className="text-xl font-bold text-primary-foreground bg-primary rounded-t-lg p-2">{shopName}</div>
       {/*<div className="border-b border-gray-300 mb-4"></div>*/}
       <div className="text-gray-600 p-2">
         <div className="flex items-center mb-2">

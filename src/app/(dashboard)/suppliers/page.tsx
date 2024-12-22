@@ -53,8 +53,8 @@ export default function Suppliers() {
       icon: (
         <Edit size={20} color="#2962FF"/>
       ),
-      onClick: (rowIndex) => {
-        router.push(`/suppliers/update/${rowIndex}`);
+      onClick: (row) => {
+        router.push(`/suppliers/update/${row.id}`);
       },
     },
     {
@@ -63,8 +63,8 @@ export default function Suppliers() {
       icon: (
         <Trash2 size={20} color="#EF4444FF"/>
       ),
-      onClick: (rowIndex) => {
-        console.log(`Delete clicked for row ${rowIndex}`);
+      onClick: (row) => {
+        console.log(`Delete clicked for row ${row.id}`);
       },
     },
   ];

@@ -16,22 +16,14 @@ export const buttonClasses = cva(
       intent: {
         text: ['bg-transparent', 'text-gray-800', 'hover:bg-gray-100'],
         primary: [
-          'bg-lightBlue-100',
-          'text-white',
-          'border-transparent',
-          'hover:bg-lightBlue-200',
+          'bg-primary text-primary-foreground ',
+          'hover:bg-primary/90',
         ],
         danger:[
-         "text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800"
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90"
         ],
         secondary: [
-          'bg-white',
-          'text-black',
-          'border-gray-400',
-          'hover:bg-gray-100',
-          'border-solid',
-          'border',
-          'border-gray-100',
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80"
         ],
         tertiary: [
           'text-white',
@@ -46,7 +38,7 @@ export const buttonClasses = cva(
           'dark:focus:ring-blue-800'
         ],
         default:[
-          "text-gray-800 hover:text-white bg-gray-200 hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:focus:ring-gray-800"
+          "bg-primary text-primary-foreground hover:bg-primary/90",
         ],
         none: [
           'bg-transparent',
@@ -60,7 +52,7 @@ export const buttonClasses = cva(
     },
     defaultVariants: {
       intent: 'default',
-      size: 'medium',
+      size: 'small',
     },
   }
 );

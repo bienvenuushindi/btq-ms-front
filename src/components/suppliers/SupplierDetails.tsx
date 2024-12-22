@@ -29,7 +29,6 @@ export default function SupplierDetails({supplierId}) {
                 <DataWrapper isLoading={isLoading} error={error} loadingComponent={<DataLoading/>}>
                     <Card className="mx-2 space-y-3">
                         <ShowImages imagesUrls={supplier?.image_urls}/>
-                        {/*<Card>*/}
                             <VerticalSupplierInformation
                                 shopName={shop_name}
                                 city={city}
@@ -40,7 +39,6 @@ export default function SupplierDetails({supplierId}) {
                                 tel2={tel2}
                                 tags={tags}
                             />
-                        {/*</Card>*/}
                     </Card>
                 </DataWrapper>
             </div>

@@ -52,8 +52,8 @@ export default function CategoriesTable(){
             icon: (
                 <Edit size={20} color="#2962FF"/>
             ),
-            onClick: (rowIndex: any) => {
-                console.log(`Edit clicked for row ${rowIndex}`);
+            onClick: (row: any) => {
+                console.log(`Edit clicked for row ${row.id}`);
             },
         },
         {
@@ -62,8 +62,8 @@ export default function CategoriesTable(){
             icon: (
                 <Trash2 size={20} color="#EF4444FF"/>
             ),
-            onClick: (rowIndex: any) => {
-                console.log(`Delete clicked for row ${rowIndex}`);
+            onClick: (row: any) => {
+                console.log(`Delete clicked for row ${row.id}`);
             },
         },
     ];

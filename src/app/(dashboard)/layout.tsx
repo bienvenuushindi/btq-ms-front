@@ -14,8 +14,8 @@ export default function DashboardRootLayout({children}: {
         <html lang="en">
         <head/>
         <body suppressHydrationWarning={true}>
-        <div className="min-h-screen w-screen bg-neutral-50  overflow-x-hidden overflow-y-auto">
-            <GlassPane className="w-full h-full flex">
+        <div className="w-screen bg-neutral-50">
+            <GlassPane className="w-full flex">
                 <PageContainer>
                             <AppBar/>
                             <Sidebar/>

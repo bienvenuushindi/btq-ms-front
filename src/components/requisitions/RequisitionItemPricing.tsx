@@ -92,9 +92,7 @@ export default function RequisitionItemPricing({productDetails}) {
         disabled: true,
         name: 'currency',
         value: formState.currency || '',
-        // input_type: 'select',
         className: '',
-        // options: Object.keys(currencies).map((c) => ({code: c, name: c.toUpperCase()})),
         action: (e) => {
           setFormState((s) => ({...s, currency: e.target.value}));
           productDetails.currency = e.target.value;

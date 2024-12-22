@@ -1,7 +1,7 @@
 import React from 'react';
 import {PlusCircle} from 'react-feather';
 import ButtonLink from '@/components/utils/ButtonLink';
-import Button from '@/components/utils/Button';
+import {Button} from '@/components/ui/button';
 
 const EntityHeader = ({title, actions, addAction,children}:any) => {
   return (
@@ -13,9 +13,9 @@ const EntityHeader = ({title, actions, addAction,children}:any) => {
             <div className="flex items-center space-x-1">
               {actions.map((action, index) => (
                 <Button
-                  intent="text"
+                  variant="link"
                   key={index}
-                  size="small"
+                  size="sm"
                   onClick={action.onClick}
                   className="flex items-center space-x-1"
                 >
@@ -30,7 +30,7 @@ const EntityHeader = ({title, actions, addAction,children}:any) => {
               href={addAction}
               size="small"
               intent={'primary'}
-              className="px-3 py-2 rounded-md flex items-center space-x-1"
+              className="px-3 py-2 rounded-md flex items-center space-x-1 bg-primary text-primary-foreground "
             >
               <PlusCircle color="#FFFFFF" size={20}/>
               <span className="text-neutral-50 px-1">Add</span>

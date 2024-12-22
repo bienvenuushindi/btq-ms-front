@@ -1,9 +1,19 @@
 'use client';
 import {register, signin} from '@/lib/api';
 import {useRouter} from 'next/navigation';
-import Button from '@/components/utils/Button';
-import Card from '@/components/utils/wrappers/Card';
-import Input from '@/components/forms/Input';
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+
+// import Card from '@/components/utils/wrappers/Card';
 import {useCallback, useState} from 'react';
 import Link from 'next/link';
 
@@ -61,92 +71,87 @@ export default function AuthForm({mode}: { mode: 'register' | 'signin' }) {
   const content = mode === 'register' ? registerContent : signinContent;
 
   return (
-    <Card className="shadow-lg bg-white">
-      <div className="w-full">
-        <div className="text-center">
-          <h2 className="text-3xl  text-lightBlue-100">{content.header}</h2>
-          <p className="tex-lg text-black/25">{content.subheader}</p>
-        </div>
-        <form onSubmit={handleSubmit} className="py-6 w-full">
-          {mode === 'register' && (
-            <div className="flex mb-8 justify-between">
-              <div className="pr-2">
-                <div className="text-lg mb-2 ml-2 text-black/50">
-                  Full Name
+      <Card>
+        <CardHeader>
+          <CardTitle>{content.header}</CardTitle>
+          <CardDescription>{content.subheader}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="py-6 w-full">
+            {mode === 'register' && (
+                <div className="flex mb-8 justify-between">
+                  <div className="pr-2">
+                    <Label htmlFor="full-name">Full Name</Label>
+                    <Input
+                        required
+                        placeholder="Full Name"
+                        id="full-name"
+                        value={formState.name}
+                        onChange={(e) =>
+                            setFormState((s) => ({...s, name: e.target.value}))
+                        }
+                    />
+                  </div>
+
+                  <div className="mb-8">
+                    <Label htmlFor="tel">Phone number</Label>
+                    <Input
+                        required
+                        type="tel"
+                        id="tel"
+                        placeholder="Phone"
+                        value={formState.phone_number}
+                        onChange={(e) =>
+                            setFormState((s) => ({...s, phone_number: e.target.value}))
+                        }
+                    />
+                  </div>
+
                 </div>
-                <Input
-                  required
-                  placeholder="Full Name"
-                  value={formState.name}
-                  className="border-solid border-gray-400 border-2 px-6 py-2 text-lg rounded-3xl w-full"
-                  onChange={(e) =>
-                    setFormState((s) => ({...s, name: e.target.value}))
-                  }
-                />
-              </div>
 
-              <div className="mb-8">
-                <div className="text-lg mb-2 ml-2 text-black/50">Phone number</div>
-                <Input
+            )}
+            <div className="mb-8">
+              <Label htmlFor="email">Email</Label>
+              <Input
                   required
-                  type="tel"
-                  placeholder="Phone"
-                  value={formState.phone_number}
-                  className="border-solid border-gray-400 border-2 px-6 py-2 text-lg rounded-3xl w-full"
+                  type="email"
+                  id="email"
+                  placeholder="Email"
+                  value={formState.email}
                   onChange={(e) =>
-                    setFormState((s) => ({...s, phone_number: e.target.value}))
+                      setFormState((s) => ({...s, email: e.target.value}))
                   }
-                 />
-              </div>
-
+              />
             </div>
-
-          )}
-          <div className="mb-8">
-            <div className="text-lg mb-2 ml-2 text-black/50">Email</div>
-            <Input
-              required
-              type="email"
-              placeholder="Email"
-              value={formState.email}
-              className="border-solid border-gray-400 border-2 px-6 py-2 text-lg rounded-3xl w-full"
-              onChange={(e) =>
-                setFormState((s) => ({...s, email: e.target.value}))
-              }
-            />
-          </div>
-          <div className="mb-8">
-            <div className="text-lg mb-2 ml-2 text-black/50">Password</div>
-            <Input
-              required
-              value={formState.password}
-              type="password"
-              placeholder="Password"
-              className="border-solid border-gray-400 border-2 px-6 py-2 text-lg rounded-3xl w-full"
-              onChange={(e) =>
-                setFormState((s) => ({...s, password: e.target.value}))
-              }
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <div>
+            <div className="mb-8">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                  required
+                  value={formState.password}
+                  type="password"
+                  id="password"
+                  placeholder="Password"
+                  onChange={(e) =>
+                      setFormState((s) => ({...s, password: e.target.value}))
+                  }
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
               <span>
                 <Link
-                  href={content.linkUrl}
-                  className="text-blue-600 font-bold"
+                    href={content.linkUrl}
+                    className="text-blue-600 font-bold"
                 >
                   {content.linkText}
                 </Link>
               </span>
+              </div>
+              <div>
+                <Button variant="secondary">{content.buttonText}</Button>
+              </div>
             </div>
-            <div>
-              <Button intent="primary">
-                {content.buttonText}
-              </Button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </Card>
-  );
+          </form>
+        </CardContent>
+      </Card>);
 }

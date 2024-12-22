@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Input from '@/components/forms/Input';
-import Button from '@/components/utils/Button';
 import Image from 'next/image';
 import TableLoader from '@/components/banners/TableLoader';
 import { ArrowDown, ArrowUp } from 'react-feather';
 import {truncateDescription} from "@/lib/helper";
+import {Button} from "@/components/ui/button";
 
 const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: { data:any, columns:any, tHeadProps:any, isLoading:any, loader?:any, onSorting?:any }) => {
   return (
     <div className="w-full  h-full ">
       <table className="w-full text-sm">
-        <thead className="text-xs text-white bg-lightBlue-100 uppercase  -dark:bg-gray-700 -dark:text-gray-400">
+        <thead className="text-xs bg-primary text-primary-foreground uppercase ">
         <tr>
           <RenderTableHead tHeadProps={tHeadProps} columns={columns} onSorting={onSorting} />
         </tr>
         </thead>
         <tbody>
         {isLoading && (
-          <tr className="bg-white border-b border-gray-50 -dark:bg-gray-800 -dark:border-gray-700 hover:bg-gray-50 -dark:hover:bg-gray-600">
+          <tr>
             <td colSpan={columns.length} className="text-center">
               {loader || <TableLoader columnLength={columns.length} />}
             </td>
@@ -26,7 +26,7 @@ const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: {
         )}
         {isLoading ||
           (data.length === 0 ? (
-            <tr className="bg-white -dark:bg-gray-800 -dark:border-gray-700 hover:bg-gray-50 -dark:hover:bg-gray-600">
+            <tr>
               <td colSpan={columns.length} className="text-center h-40">
                 No Data Found
               </td>
@@ -34,7 +34,7 @@ const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: {
           ) : (
             data.map((row, index) => (
               <tr
-                className="bg-white border-b  -dark:bg-gray-800 -dark:border-gray-700 hover:bg-gray-50 -dark:hover:bg-gray-600"
+                className=" border-b"
                 key={`row-${index}`}
               >
                 {columns.map((column) => (
@@ -94,9 +94,9 @@ export const renderCell = (column, value: any) => {
         }
         onChange={column.action}/>;
     case 'button':
-      return <Button size="medium" intent="primary" onClick={() => column.action(value)}>{column.label}</Button>;
+      return <Button size="sm" variant="secondary" onClick={() => column.action(value)}>{column.label}</Button>;
     case 'details':
-      return <Button size="medium" intent="primary" onClick={() => {
+      return <Button size="sm" variant="secondary" onClick={() => {
         column.action(value);
       }}>{column.label}</Button>;
     case 'picture':
@@ -147,9 +147,8 @@ export const RenderTableHead = ({ columns, onSorting, tHeadProps }) => {
             <span className=" text-white py-1 text-left text-xs font-medium  uppercase tracking-wider ">{column.label}</span>
             {column.sortable && (
               <Button
-                intent="primary"
-                size="small"
-                className="text-white hover:text-gray-700 focus:outline-none focus:ring focus:border-gray-50"
+                variant="default"
+                size="sm"
                 onClick={() => handleSort(column.key)}
               >
                 {params.sort === column.key ? (

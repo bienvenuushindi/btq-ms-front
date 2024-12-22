@@ -7,9 +7,9 @@ import ModalHeader from '@/components/modal/ModalHeader';
 import ModalBody from '@/components/modal/ModalBody';
 import ModalFooter from '@/components/modal/ModalFooter';
 import {SearchBar} from "@/components/SearchBar";
-import Button from "@/components/utils/Button";
 import RequisitionProductSearchResults from "@/components/requisitions/RequisitionProductSearchResults";
 import {RequisitionContext} from "@/components/requisitions/RequisitionContext";
+import {Button} from "@/components/ui/button";
 
 const RequisitionModal = ({
                               modalIsOpen,
@@ -51,15 +51,17 @@ const RequisitionModal = ({
                             <span>Enter your query</span>}</div>
                     </div>
                     {items.length > 0 && (
-                        <div>
-                            <span>{items.length} item(s)</span>
-                            <ul>{itemsList}</ul>
+                        <div className="space-y-4 p-4 bg-gray-100 rounded-lg shadow-md">
+                            <span className="block text-sm font-medium text-gray-700">
+                                  {items.length} item(s)
+                            </span>
+                            <ul className="space-y-2 list-decimal list-inside">{itemsList}</ul>
                         </div>
                     )}
                 </ModalBody>
                 <ModalFooter closeModal={reInitializeState}>
                     <div className="flex items-center">
-                        <Button type="button" onClick={handleSubmit}>
+                        <Button type="button" variant="default" size="sm" onClick={handleSubmit}>
                             Add
                         </Button>
                     </div>

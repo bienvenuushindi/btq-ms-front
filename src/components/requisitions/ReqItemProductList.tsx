@@ -15,7 +15,7 @@ export default function ReqItemProductList({details}) {
     const [showDeleteAlert, setShowDeleteAlert] = useState(false);
     const [itemToDelete, setItemToDelete] = useState(null);
     const [openAccordion, setOpenAccordion] = useState(null);
-    const toggleAccordion = (id) => {
+    const toggleAccordion = (id: any) => {
         setOpenAccordion(id === openAccordion ? null : id);
     };
     useEffect(() => {

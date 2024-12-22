@@ -16,7 +16,7 @@ export const dotClasses = cva(
     {
         variants: {
             variant: {
-                primary: ['bg-blue-500'],
+                primary: ['bg-primary'],
                 secondary: ['bg-gray-500'],
                 success: ['bg-green-800'],
                 danger: ['bg-red-800'],

@@ -22,28 +22,47 @@ export default function RequisitionProductSearchResults({url, setItems, oldItems
   return (
     <>
       <DataWrapper isLoading={isLoading} error={error} loadingComponent={<DataLoading/>}>
-        { products.map((product, index) => <div key={"product-"+product.id}>{index})
-              {product.name}
-              <ul className="ml-3">
-                {product.details.map(item => <li key={clsx(item.id)}>
-                  <div className={"flex"}>
-                    {
-                      (oldItems.indexOf(item.id) !== -1) ?
-                          <>
-                            <input type="checkbox" checked={true} disabled={true} value={JSON.stringify(item)}/>
-                            <label> {item.name}</label>
-                            <span>(already included)</span>
-                          </>
-                          :
-                          <>
-                            <input type="checkbox" onChange={handleChange} value={JSON.stringify(item)}/>
-                            <label> {item.name}</label>
-                          </>
-                    }
+        { products.map((product, index) => <div key={"product-" + product.id} className="p-2">
+          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+            <span className="text-gray-500">{index})</span>
+            {product.name}
+          </h3>
+          <ul className="space-y-2">
+            {product.details.map((item) => (
+                <li
+                    key={item.id}
+                    className="flex items-center justify-between p-2 bg-white rounded-lg transition-shadow"
+                >
+                  {/* Checkbox and Item */}
+                  <div className="flex items-center space-x-2">
+                    {oldItems.indexOf(item.id) !== -1 ? (
+                        <>
+                          <input
+                              type="checkbox"
+                              className="form-checkbox text-gray-400 cursor-not-allowed"
+                              checked={true}
+                              disabled={true}
+                              value={JSON.stringify(item)}
+                          />
+                          <label className="text-gray-400">{item.name}</label>
+                          <span className="text-xs text-gray-500">(already included)</span>
+                        </>
+                    ) : (
+                        <>
+                          <input
+                              type="checkbox"
+                              className="form-checkbox text-blue-500 focus:ring focus:ring-blue-300"
+                              onChange={handleChange}
+                              value={JSON.stringify(item)}
+                          />
+                          <label className="text-gray-800">{item.name}</label>
+                        </>
+                    )}
                   </div>
-                </li>)}
-              </ul>
-            </div>)
+                </li>
+            ))}
+          </ul>
+        </div>)
         }
       </DataWrapper>
     </>

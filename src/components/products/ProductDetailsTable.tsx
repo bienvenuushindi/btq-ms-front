@@ -19,8 +19,8 @@ export const ProductDetailsTable = ({product, isLoading}) => {
       icon: (
         <Edit size={20} color="#2962FF"/>
       ),
-      onClick: (rowIndex) => {
-        router.push(`/products/${productID}/details/update/${rowIndex}`);
+      onClick: (row) => {
+        router.push(`/products/${productID}/details/update/${row.id}`);
       },
     },
     {
@@ -29,8 +29,8 @@ export const ProductDetailsTable = ({product, isLoading}) => {
       icon: (
         <Trash2 size={20} color="#EF4444FF"/>
       ),
-      onClick: (rowIndex) => {
-        console.log(`Delete clicked for row ${rowIndex}`);
+      onClick: (row) => {
+        console.log(`Delete clicked for row ${row.id}`);
       },
     },
   ];

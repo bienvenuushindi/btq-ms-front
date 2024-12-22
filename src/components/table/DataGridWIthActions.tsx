@@ -11,7 +11,7 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
     return (
         <div className="w-full relative ">
             <table className="w-full text-sm text-left  -dark:text-gray-40">
-                <thead className="text-xs bg-lightBlue-100 uppercase -dark:bg-gray-700 -dark:text-gray-400">
+                <thead className="text-xs bg-primary text-primary-foreground  uppercase">
                 <tr>
                     <RenderTableHead tHeadProps={tHeadProps} columns={columns} onSorting={onSorting}/>
                     <th className=" py-2  text-left text-xs font-medium text-white uppercase tracking-wider ">
@@ -59,7 +59,7 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
                                                             intent="text"
                                                             className="text-gray-500 hover:text-gray-800 flex items-center w-full px-2 mt-1"
                                                             onClick={() => {
-                                                                action.onClick(row.id);
+                                                                action.onClick(row);
                                                             }}
                                                         >
                                                             {action.icon && (

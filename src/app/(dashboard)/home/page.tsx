@@ -4,17 +4,16 @@ import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import Container from '@/components/utils/wrappers/Container';
 import RequisitionsHeader from '@/components/requisitions/RequisitionsHeader';
 import React, {useState} from 'react';
-import Calendar from 'react-calendar';
+import { Calendar } from "@/components/ui/calendar"
 import 'react-calendar/dist/Calendar.css';
-import Card from '@/components/utils/wrappers/Card';
 import ExpiredProductContainer from '@/components/requisitions/ExpiredProductContainer';
 import {RequisitionInfoWrapper} from "@/components/requisitions/home-page/sections/RequisitionInfoWrapper";
 import {RequisitionItemByDate} from "@/components/requisitions/home-page/RequisitionItemByDate";
-import Text from "@/components/Text";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 
 export default function Home() {
-    const [date, setDate] = useState<Date>(null);
+    const [date, setDate] = useState<Date | undefined>(new Date())
 
     const onChange = (newDate: any) => {
         setDate(newDate);
@@ -25,11 +24,19 @@ export default function Home() {
                 <RequisitionsHeader/>
                 <ContainerOne>
                     <div className="flex w-full gap-4 items-stretch bg-gray-100 py-4 px-2 rounded">
-                        <Card className="w-1/4 bg-white flex-col flex gap-4">
-                            <Text intent="secondary" size="small" className="font-semibold text-center">
-                                Please select date to view requisitions for that day.
-                            </Text>
-                            <Calendar value={date} onChange={onChange} className="border-none border-0"/>
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Choose Day</CardTitle>
+                                <CardDescription>Please select date to view requisitions for that day.</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <Calendar
+                                    mode="single"
+                                    selected={date}
+                                    onSelect={onChange}
+                                    className="rounded-md border"
+                                />
+                            </CardContent>
                         </Card>
                         <div className="w-3/4 flex flex-col gap-2">
                             {date && <RequisitionItemByDate date={date}/>}
