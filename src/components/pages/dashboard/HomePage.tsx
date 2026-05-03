@@ -5,12 +5,11 @@ import Container from '@/components/utils/wrappers/Container';
 import React, { useState } from 'react';
 import { Calendar } from '@/components/ui/calendar';
 import ExpiredProductContainer from '@/components/requisitions/ExpiredProductContainer';
-import { RequisitionInfoWrapper } from '@/components/requisitions/home-page/sections/RequisitionInfoWrapper';
 import { RequisitionItemByDate } from '@/components/requisitions/home-page/RequisitionItemByDate';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import ProductStats from '@/components/products/ProductStats';
 import TransitionLink from '@/components/navigation/TransitionLink';
+import DashboardStats from '@/components/pages/dashboard/DashboardStats';
 
 export default function HomePage() {
   const [date, setDate] = useState<Date | undefined>(undefined);
@@ -19,27 +18,42 @@ export default function HomePage() {
     <ProtectedRoute>
       <Container>
         <ContainerOne>
-          <Card className="w-full rounded-[30px] border-slate-200/90 bg-white">
-            <CardHeader className="pb-3">
+          <Card className="w-full rounded-[22px] border-slate-200/90 bg-white">
+            <CardHeader className="pb-2">
               <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Overview</p>
-              <CardTitle className="font-display text-4xl font-bold text-slate-900">OasisMarket Snapshot</CardTitle>
+              <CardTitle className="font-display text-[1.8rem] font-bold text-slate-900 md:text-[1.95rem]">OasisMarket Snapshot</CardTitle>
               <CardDescription>
                 A clean view of stock health, recent requisition activity, and the items that need attention first.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ProductStats />
+              <DashboardStats />
             </CardContent>
           </Card>
         </ContainerOne>
         <ContainerOne>
-          <div className="grid w-full gap-4 xl:grid-cols-[1.4fr_0.8fr]">
-            <Card className="rounded-[30px] border-slate-200/90 bg-white">
+          <Card className="w-full rounded-[26px] border-slate-200/90 bg-white">
+            <CardHeader>
+              <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Shelf life</p>
+              <CardTitle className="font-display text-xl font-bold text-slate-900 md:text-[1.55rem]">Shelf-Life Watch</CardTitle>
+              <CardDescription>Up to 10 visible items per list, with in-card scrolling whenever the list overflows.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4 xl:grid-cols-2">
+                <ExpiredProductContainer title="Expired Soon" type="expiring_soon" limit={10} />
+                <ExpiredProductContainer title="Expired" type="expired" limit={10} />
+              </div>
+            </CardContent>
+          </Card>
+        </ContainerOne>
+        <ContainerOne>
+          <div className="grid w-full gap-4 xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
+            <Card className="min-w-0 rounded-[22px] border-slate-200/90 bg-white">
               <CardHeader>
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                   <div>
                     <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Quick links</p>
-                    <CardTitle className="font-display text-3xl font-bold text-slate-900">Operations Hub</CardTitle>
+                    <CardTitle className="font-display text-xl font-bold text-slate-900 md:text-[1.55rem]">Operations Hub</CardTitle>
                     <CardDescription>Jump into the busiest areas of the admin workspace.</CardDescription>
                   </div>
                   <div className="flex flex-wrap gap-3">
@@ -49,31 +63,20 @@ export default function HomePage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div className="rounded-[26px] border border-slate-200 bg-slate-50 p-6">
-                    <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Requisition pulse</p>
-                    <h3 className="mt-3 font-display text-3xl font-bold text-slate-900">Latest activity</h3>
-                    <p className="mt-2 text-sm text-slate-500">Track the newest active and archived requisitions without leaving the dashboard.</p>
-                    <div className="mt-5">
-                      <RequisitionInfoWrapper />
-                    </div>
-                  </div>
-                  <div className="rounded-[26px] border border-slate-200 bg-slate-50 p-6">
-                    <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Stock watch</p>
-                    <h3 className="mt-3 font-display text-3xl font-bold text-slate-900">Attention needed</h3>
-                    <p className="mt-2 text-sm text-slate-500">Expiring inventory stays visible so your next actions are obvious.</p>
-                    <div className="mt-5 grid gap-4">
-                      <ExpiredProductContainer title="Expired Soon" type="expiring_soon" limit={4} />
-                      <ExpiredProductContainer title="Expired" type="expired" limit={4} />
-                    </div>
+                <div className="min-w-0 rounded-[18px] border border-slate-200 bg-slate-50 p-3.5 md:p-4">
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Requisition summary</p>
+                  <h3 className="mt-2.5 font-display text-xl font-bold text-slate-900 md:text-[1.55rem]">Calendar-driven details</h3>
+                  <p className="mt-2 text-sm text-slate-500">Use the calendar to inspect the requisition summary for a selected day, including date, items, total, and currency.</p>
+                  <div className="mt-5">
+                    <RequisitionItemByDate date={date} />
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="rounded-[30px] border-slate-200/90 bg-white">
+            <Card className="min-w-0 rounded-[22px] border-slate-200/90 bg-white">
               <CardHeader>
                 <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Calendar view</p>
-                <CardTitle className="font-display text-3xl font-bold text-slate-900">Choose Day</CardTitle>
+                <CardTitle className="font-display text-xl font-bold text-slate-900 md:text-[1.55rem]">Choose Day</CardTitle>
                 <CardDescription>Select a date to inspect requisitions for that day.</CardDescription>
               </CardHeader>
               <CardContent>
@@ -81,23 +84,12 @@ export default function HomePage() {
                   mode="single"
                   selected={date}
                   onSelect={setDate}
-                  className="rounded-[24px] border border-slate-200 bg-slate-50 p-3"
+                  className="max-w-full rounded-[18px] border border-slate-200 bg-slate-50 p-2"
                 />
               </CardContent>
             </Card>
           </div>
         </ContainerOne>
-        {date && (
-          <ContainerOne>
-            <div className="w-full rounded-[30px] border border-slate-200/90 bg-white p-6 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
-              <div className="mb-5">
-                <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Selected day</p>
-                <h3 className="font-display text-3xl font-bold text-slate-900">Requisitions by date</h3>
-              </div>
-              <RequisitionItemByDate date={date} />
-            </div>
-          </ContainerOne>
-        )}
       </Container>
     </ProtectedRoute>
   );

@@ -1,24 +1,45 @@
 'use client';
 import {API_ENDPOINTS} from '@/lib/api';
-import {useRouter} from 'next/navigation';
+import {useRouter, useSearchParams} from 'next/navigation';
 import React, {useState} from 'react';
 import ProductsTableLoader from '@/components/banners/ProductsTableLoader';
 import EntityTable from '@/components/table/EntityTable';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import {Edit, Trash2} from 'react-feather';
+import {Archive, Edit, RotateCcw} from 'react-feather';
 import FilterCheckbox from '@/components/table/filter/FilterCheckbox';
 import {updateUrl} from '@/lib/helper';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import Dot from "@/components/utils/Dot";
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
+import {send} from '@/lib/api';
+import toastShow from '@/components/toast/toast-selector';
 
 export default function ProductsTable() {
-    const [url, setUrl] = useState(API_ENDPOINTS.PRODUCTS);
-    const {data: products = [], meta, links, error, isLoading} = useFetcher(url)
-    const [selectedFilter, setSelectedFilter] = React.useState('all');
+    const searchParams = useSearchParams();
+    const statusParam = searchParams.get('status');
+    const initialStatusValue = statusParam === 'active' ? 'true' : statusParam === 'inactive' ? 'false' : null;
+    const [url, setUrl] = useState(() => updateUrl(API_ENDPOINTS.PRODUCTS, {status: initialStatusValue}));
+    const {data: products = [], meta, links, error, isLoading, mutate} = useFetcher(url)
+    const [selectedFilter, setSelectedFilter] = React.useState(
+        statusParam === 'active' || statusParam === 'inactive' ? statusParam : 'all'
+    );
 
     const router = useRouter();
     const {startNavigation} = useRouteTransition();
+
+    const toggleArchiveStatus = async (row) => {
+        const formData = new FormData();
+        formData.append('product[active]', String(!row.active));
+
+        try {
+            await send(`/products/${row.id}`, formData, 'PUT');
+            await mutate();
+            toastShow('success', row.active ? 'Product archived successfully' : 'Product restored successfully');
+        } catch (error) {
+            toastShow('error', 'Could not update product status');
+        }
+    };
+
     const columns = [
         {
             key: 'active',
@@ -90,14 +111,12 @@ export default function ProductsTable() {
             },
         },
         {
-            label: 'Delete',
-            className: 'text-rose-700',
-            icon: (
-                <Trash2 size={20} color="#be123c"/>
+            label: (row) => row.active ? 'Archive' : 'Restore',
+            className: (row) => row.active ? 'text-amber-700' : 'text-emerald-700',
+            icon: (row) => (
+                row.active ? <Archive size={20} color="#b45309"/> : <RotateCcw size={20} color="#15803d"/>
             ),
-            onClick: (row) => {
-                console.log(`Delete clicked for row ${row.id}`);
-            },
+            onClick: toggleArchiveStatus,
         },
     ];
 

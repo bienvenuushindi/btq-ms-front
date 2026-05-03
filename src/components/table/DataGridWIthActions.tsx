@@ -6,6 +6,10 @@ import {MoreVertical} from 'react-feather';
 import Button from '@/components/utils/Button';
 import CustomPopover from "@/components/popover/CustomPopover";
 
+const resolveActionValue = (value, row) => (
+    typeof value === 'function' ? value(row) : value
+);
+
 const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, actions, onSorting}) => {
     return (
         <div className="w-full relative ">
@@ -50,7 +54,12 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
                                             className="relative grid gap-1 bg-white p-2">
                                             <span className="pl-2 text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">Actions</span>
                                             <ul className="mt-1 space-y-1">
-                                                {actions.map((action, index) => (
+                                                {actions.map((action, index) => {
+                                                    const actionLabel = resolveActionValue(action.label, row);
+                                                    const actionClassName = resolveActionValue(action.className, row);
+                                                    const actionIcon = resolveActionValue(action.icon, row);
+
+                                                    return (
                                                     <li key={'action' + index}
                                                         className="border-t border-slate-100 first:border-t-0">
                                                         <Button
@@ -61,13 +70,14 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
                                                                 action.onClick(row);
                                                             }}
                                                         >
-                                                            {action.icon && (
+                                                            {actionIcon && (
                                                                 <span
-                                                                    className="mr-2">{action.icon}</span>
+                                                                    className="mr-2">{actionIcon}</span>
                                                             )}
-                                                            <span className={clsx('font-medium', action.className || '')}>{action.label}</span>
+                                                            <span className={clsx('font-medium', actionClassName || '')}>{actionLabel}</span>
                                                         </Button>
-                                                    </li>))}
+                                                    </li>)
+                                                })}
                                             </ul>
                                         </div>
                                     </div>

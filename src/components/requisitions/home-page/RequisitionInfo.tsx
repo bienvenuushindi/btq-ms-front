@@ -23,14 +23,14 @@ export function RequisitionInfo({requisition, className = '', withLink = true}) 
     ];
 
     return (
-        <ul className={clsx(className || "grid grid-cols-2", "items-stretch gap-2 my-2")}>
+        <ul className={clsx(className || "grid grid-cols-1 gap-2 md:grid-cols-2", "min-w-0 items-stretch gap-2 my-2")}>
             {details.map((detail, index) => (
-                <li key={`requisition-detail-${index}`} className="justify-self-stretch flex">
+                <li key={`requisition-detail-${index}`} className="min-w-0 justify-self-stretch flex">
                     <RequisitionDetailsCard {...detail} />
                 </li>
             ))}
             {withLink && (
-                <li className="justify-self-stretch col-start-2 flex">
+                <li className="justify-self-stretch md:col-start-2 flex">
                     <div className="h-full w-full flex items-center justify-end py-2">
                         <ViewMore requisitionID={requisition.id}/>
                     </div>

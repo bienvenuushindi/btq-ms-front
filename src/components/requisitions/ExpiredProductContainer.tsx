@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import {ArrowRight, Edit, Trash2} from 'react-feather';
 import Badge from '@/components/utils/Badge';
 import Card from '@/components/utils/wrappers/Card';
-import DataGrid from '@/components/table/DataGrid';
 import Button from '@/components/utils/Button';
 import { useFetcher } from '@/app/hooks/useFetcher';
 import { useRouter } from 'next/navigation';
@@ -69,7 +68,7 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
       },
     },
   ];
-  const shouldDisplayViewAllButton = meta && meta.total > 5 && limit;
+  const shouldDisplayViewAllButton = meta && meta.total > Number(limit || 10);
 
   return (
     <Card className="flex flex-col border-slate-200/70 bg-white/95">
@@ -90,8 +89,9 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
         </div>
       </div>
 
-      <div className="flex-grow rounded-2xl bg-slate-50/80 p-1">
-        <DataGridWithActions
+      <div className="flex-grow overflow-hidden rounded-2xl bg-slate-50/80">
+        <div className="max-h-[620px] overflow-y-auto p-1">
+          <DataGridWithActions
             columns={columns}
             data={expired_products}
             tHeadProps={{color: 'primary'}}
@@ -99,7 +99,8 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
             actions={actions}
             loader={undefined}
             onSorting={undefined}
-        />
+          />
+        </div>
       </div>
 
       {shouldDisplayViewAllButton && (
