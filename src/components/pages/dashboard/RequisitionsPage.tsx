@@ -45,7 +45,7 @@ export default function RequisitionsPage() {
       label: 'Archived',
       type: 'text',
       dataTransformation: (value: boolean) =>
-        value ? <Badge variant="success">Archived</Badge> : <Badge variant="danger">No</Badge>
+        value ? <Badge variant="secondary">Archived</Badge> : <Badge variant="success">No</Badge>
     },
     {
       key: 'Show',

@@ -65,6 +65,14 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
     const [error, setError] = useState('');
     const [photos, setPhotos] = useState([...getImageUrls()]);
 
+    const isPlaceholderImage = (photo: any) => (
+        typeof photo === 'string' && (
+            photo.includes('supplier-placeholder.png') ||
+            photo.includes('product-placeholder.png') ||
+            photo.includes('no-img.png')
+        )
+    );
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
@@ -72,8 +80,8 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
             formData.append(`supplier[${key}]`, formState[key]);
         });
         for (let i = 0; i < photos.length; i++) {
-            if (typeof photos[i] === "string" && photos[i].includes('no-img.png')) {
-                continue
+            if (isPlaceholderImage(photos[i])) {
+                continue;
             }
             formData.append('supplier[images][]', photos[i]);
         }

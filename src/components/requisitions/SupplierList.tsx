@@ -10,7 +10,12 @@ function SupplierList({isLoading, suppliers, selected, onUpdateSelected, title})
                 <SelectSupplierLoader/>
             ) : (
                 <>
-                    <h5 className="font-light my-2 text-sm">{title}</h5>
+                    <h5 className="my-2 text-sm font-semibold text-slate-700">{title}</h5>
+                    {suppliers.length === 0 ? (
+                        <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-3 py-4 text-sm text-slate-500">
+                            No suppliers available for this search yet.
+                        </div>
+                    ) : (
                     <RadioGroup value={selected} onChange={onUpdateSelected}>
                         <RadioGroup.Label className="sr-only">{title}</RadioGroup.Label>
                         <div className="w-full flex justify-start flex-col items-start">
@@ -127,6 +132,7 @@ function SupplierList({isLoading, suppliers, selected, onUpdateSelected, title})
                             </div>
                         </div>
                     </RadioGroup>
+                    )}
                 </>
             )}
         </div>

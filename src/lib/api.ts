@@ -107,6 +107,7 @@ export const API_ENDPOINTS = {
     PRODUCT_DETAIL_BY_ID: (productId: any, productDetailId: any) =>
         `${API_URL}/products/${productId}/product_details/${productDetailId}`,
     PRODUCT_DETAIL_SUPPLIERS: (productDetailId: any) => `${API_URL}/product_details/${productDetailId}/suppliers`,
+    PRODUCT_SHELF_LIFE_STATS: `${API_URL}/product_details/shelf_life_stats`,
     // Suppliers
     SUPPLIERS: `${API_URL}/suppliers`,
     SUPPLIER_BY_ID: (supplierId: any) => `${API_URL}/suppliers/${supplierId}`,

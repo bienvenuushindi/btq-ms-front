@@ -9,10 +9,11 @@ import {Archive, Edit, RotateCcw} from 'react-feather';
 import FilterCheckbox from '@/components/table/filter/FilterCheckbox';
 import {updateUrl} from '@/lib/helper';
 import {useFetcher} from "@/app/hooks/useFetcher";
-import Dot from "@/components/utils/Dot";
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 import {send} from '@/lib/api';
 import toastShow from '@/components/toast/toast-selector';
+import StatusIndicator from '@/components/utils/StatusIndicator';
+import Badge from '@/components/utils/Badge';
 
 export default function ProductsTable() {
     const searchParams = useSearchParams();
@@ -26,6 +27,29 @@ export default function ProductsTable() {
 
     const router = useRouter();
     const {startNavigation} = useRouteTransition();
+
+    const getExpiryVariant = (expiredDate?: string) => {
+        if (!expiredDate) return 'secondary';
+
+        const expiry = new Date(expiredDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const diffInMs = expiry.getTime() - today.getTime();
+        const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+
+        if (diffInDays < 0) return 'danger';
+        if (diffInDays <= 30) return 'warning';
+        return 'success';
+    };
+
+    const formatUnitPrice = (detail: any) => {
+        if (detail.unit_price === null || detail.unit_price === undefined || detail.unit_price === '') {
+            return 'No unit price';
+        }
+
+        return `${detail.unit_price} ${detail.currency || ''}`.trim();
+    };
 
     const toggleArchiveStatus = async (row) => {
         const formData = new FormData();
@@ -46,10 +70,7 @@ export default function ProductsTable() {
             sortable: true,
             label: 'Status',
             dataTransformation: (value: any) => (
-                <div className="flex items-center gap-2">
-                    <Dot variant={value ? 'success' : 'danger'}/>
-                    <span className="text-sm font-semibold text-slate-700">{value ? 'Active' : 'Inactive'}</span>
-                </div>
+                <StatusIndicator active={value}/>
             )
         },
         {
@@ -78,10 +99,17 @@ export default function ProductsTable() {
                         >
                             <div className="flex flex-wrap items-center gap-2">
                                 <span className="font-semibold text-slate-900">{detail.size}</span>
-                                <span className="text-slate-400">/</span>
-                                <span className="text-slate-600">Shelf life:</span>
-                                <span className="font-medium text-slate-700">{detail.expired_date || 'N/A'}</span>
+                                <Badge
+                                    variant={getExpiryVariant(detail.expired_date)}
+                                    size="small"
+                                    className="px-2 py-0.5 normal-case tracking-normal"
+                                >
+                                    {detail.expired_date ? `Expired ${detail.expired_date}` : 'No expiry date'}
+                                </Badge>
                             </div>
+                            <p className="mt-1 text-xs font-medium text-slate-600">
+                                Unit price: <span className="text-slate-900">{formatUnitPrice(detail)}</span>
+                            </p>
                         </div>
                     ))}
                 </div>

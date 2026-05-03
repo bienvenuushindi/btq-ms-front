@@ -3,14 +3,14 @@ import { cva, VariantProps } from 'class-variance-authority';
 
 export const textClasses = cva(
   [
-    "text-md  py-0.5"
+    "py-0.5"
   ],
   {
     variants: {
       size: {
-        small: ['text-sm'],
-        medium: ['text-base'],
-        large: ['text-lg'],
+        small: ['text-xs md:text-sm'],
+        medium: ['text-sm md:text-[15px]'],
+        large: ['text-base md:text-lg'],
       },
       intent: {
         primary: ['text-blue-700'],

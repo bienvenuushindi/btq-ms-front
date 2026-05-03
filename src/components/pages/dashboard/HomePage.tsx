@@ -21,7 +21,7 @@ export default function HomePage() {
           <Card className="w-full rounded-[22px] border-slate-200/90 bg-white">
             <CardHeader className="pb-2">
               <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Overview</p>
-              <CardTitle className="font-display text-[1.8rem] font-bold text-slate-900 md:text-[1.95rem]">OasisMarket Snapshot</CardTitle>
+              <CardTitle className="font-display text-[1.6rem] font-bold text-slate-900 md:text-[1.75rem]">OasisMarket Snapshot</CardTitle>
               <CardDescription>
                 A clean view of stock health, recent requisition activity, and the items that need attention first.
               </CardDescription>
@@ -35,7 +35,7 @@ export default function HomePage() {
           <Card className="w-full rounded-[26px] border-slate-200/90 bg-white">
             <CardHeader>
               <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Shelf life</p>
-              <CardTitle className="font-display text-xl font-bold text-slate-900 md:text-[1.55rem]">Shelf-Life Watch</CardTitle>
+              <CardTitle className="font-display text-lg font-bold text-slate-900 md:text-[1.35rem]">Shelf-Life Watch</CardTitle>
               <CardDescription>Up to 10 visible items per list, with in-card scrolling whenever the list overflows.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -53,20 +53,20 @@ export default function HomePage() {
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                   <div>
                     <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Quick links</p>
-                    <CardTitle className="font-display text-xl font-bold text-slate-900 md:text-[1.55rem]">Operations Hub</CardTitle>
+                    <CardTitle className="font-display text-lg font-bold text-slate-900 md:text-[1.35rem]">Operations Hub</CardTitle>
                     <CardDescription>Jump into the busiest areas of the admin workspace.</CardDescription>
                   </div>
                   <div className="flex flex-wrap gap-3">
-                    <TransitionLink href="/products" loadingMessage="Opening products..." className="oasis-button rounded-2xl px-5 py-3 text-sm font-semibold text-white">View Products</TransitionLink>
-                    <TransitionLink href="/requisitions" loadingMessage="Opening requisitions..." className="rounded-2xl border border-slate-200 bg-slate-50 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">Open Requisitions</TransitionLink>
+                    <TransitionLink href="/products" loadingMessage="Opening products..." className="oasis-button rounded-2xl px-4 py-2 text-xs font-semibold text-white">View Products</TransitionLink>
+                    <TransitionLink href="/requisitions" loadingMessage="Opening requisitions..." className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100">Open Requisitions</TransitionLink>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="min-w-0 rounded-[18px] border border-slate-200 bg-slate-50 p-3.5 md:p-4">
                   <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Requisition summary</p>
-                  <h3 className="mt-2.5 font-display text-xl font-bold text-slate-900 md:text-[1.55rem]">Calendar-driven details</h3>
-                  <p className="mt-2 text-sm text-slate-500">Use the calendar to inspect the requisition summary for a selected day, including date, items, total, and currency.</p>
+                  <h3 className="mt-2.5 font-display text-lg font-bold text-slate-900 md:text-[1.35rem]">Calendar-driven details</h3>
+                  <p className="mt-2 text-xs text-slate-500 md:text-sm">Use the calendar to inspect the requisition summary for a selected day, including date, items, total, and currency.</p>
                   <div className="mt-5">
                     <RequisitionItemByDate date={date} />
                   </div>
@@ -76,7 +76,7 @@ export default function HomePage() {
             <Card className="min-w-0 rounded-[22px] border-slate-200/90 bg-white">
               <CardHeader>
                 <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Calendar view</p>
-                <CardTitle className="font-display text-xl font-bold text-slate-900 md:text-[1.55rem]">Choose Day</CardTitle>
+                <CardTitle className="font-display text-lg font-bold text-slate-900 md:text-[1.35rem]">Choose Day</CardTitle>
                 <CardDescription>Select a date to inspect requisitions for that day.</CardDescription>
               </CardHeader>
               <CardContent>

@@ -46,7 +46,7 @@ const AppBar = (props) => {
                 {isSidebarCollapsed ? <ChevronsRight className="h-5 w-5" /> : <ChevronsLeft className="h-5 w-5" />}
               </button>
               <div>
-                <p className="font-display text-4xl font-bold text-slate-900">{title}</p>
+                <p className="font-display text-[2rem] font-bold text-slate-900 md:text-[2.25rem]">{title}</p>
               </div>
             </div>
             <div className="hidden flex-1 px-8 lg:block" />

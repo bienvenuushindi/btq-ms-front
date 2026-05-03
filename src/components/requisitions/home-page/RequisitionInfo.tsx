@@ -23,7 +23,7 @@ export function RequisitionInfo({requisition, className = '', withLink = true}) 
     ];
 
     return (
-        <ul className={clsx(className || "grid grid-cols-1 gap-2 md:grid-cols-2", "min-w-0 items-stretch gap-2 my-2")}>
+        <ul className={clsx(className || "grid grid-cols-1 gap-2 md:grid-cols-2", "min-w-0 items-stretch gap-2 my-1.5")}>
             {details.map((detail, index) => (
                 <li key={`requisition-detail-${index}`} className="min-w-0 justify-self-stretch flex">
                     <RequisitionDetailsCard {...detail} />

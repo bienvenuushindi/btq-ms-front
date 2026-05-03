@@ -147,8 +147,9 @@ export const RenderTableHead = ({ columns, onSorting, tHeadProps }) => {
             <span className=" text-white py-1 text-left font-medium  uppercase tracking-wider ">{column.label}</span>
             {column.sortable && (
               <Button
-                variant="default"
+                variant="ghost"
                 size="sm"
+                className="h-6 w-6 rounded-none bg-transparent p-0 text-white shadow-none hover:bg-transparent focus-visible:bg-transparent"
                 onClick={() => handleSort(column.key)}
               >
                 {params.sort === column.key ? (

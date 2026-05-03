@@ -20,12 +20,12 @@ export default function Form({fields, handleSubmit}: {
             {Array.isArray(fields) ? renderFields(fields) :
                 <div className="grid gap-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.9fr)]">
                     {Object.keys(fields).map((key, index) => (
-                        <section key={key} className="oasis-panel w-full p-6 lg:p-8">
-                            <div className="mb-6">
+                        <section key={key} className="oasis-panel w-full p-4 lg:p-6">
+                            <div className="mb-5">
                                 <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
                                     {index === 0 ? 'Details' : 'Classification'}
                                 </p>
-                                <h3 className="mt-2 font-display text-2xl font-bold text-slate-900">
+                                <h3 className="mt-2 font-display text-xl font-bold text-slate-900 md:text-[1.35rem]">
                                     {index === 0 ? 'Core Information' : 'Categories & Metadata'}
                                 </h3>
                             </div>
@@ -40,7 +40,7 @@ export default function Form({fields, handleSubmit}: {
 
 const renderFields = (fields: any[], insidePanel = false) => (
     fields.map((field, index) => (
-        <div key={`form-group-${index}`} className={clsx('flex justify-between', insidePanel ? 'mb-5' : 'mb-4')}>
+        <div key={`form-group-${index}`} className={clsx('flex justify-between', insidePanel ? 'mb-4' : 'mb-3')}>
             <div className="w-full text-start">
                 {renderGroup(field)}
             </div>
@@ -64,7 +64,7 @@ const renderGroup = (field) => {
                     {field.name && (
                         <label
                             htmlFor={field.label}
-                            className={clsx('mb-2 block text-start text-sm font-semibold text-slate-700', field.labelClassName)}
+                            className={clsx('mb-1.5 block text-start text-xs font-semibold uppercase tracking-[0.08em] text-slate-600 md:text-sm md:normal-case md:tracking-normal', field.labelClassName)}
                         >
                             {field.label}
                         </label>
@@ -87,7 +87,7 @@ const renderField = (field) => {
                     value={field.value}
                     name={field.name}
                     type="text"
-                    className={clsx('oasis-field block min-h-[112px] w-full text-sm', field.className)}
+                    className={clsx('oasis-field block min-h-[104px] w-full text-xs md:text-sm', field.className)}
                     onChange={field.action}
                 />
             );
@@ -98,7 +98,7 @@ const renderField = (field) => {
                 <SelectInput
                     name={field.name}
                     value={field.value}
-                    className={clsx('oasis-field block w-full text-sm', field.className)}
+                    className={clsx('oasis-field block w-full text-xs md:text-sm', field.className)}
                     onChange={(e) => field.action(e)}
                     disabled={field.disabled || false}
                 >
@@ -120,7 +120,7 @@ const renderField = (field) => {
             return (
                 <div className="flex flex-wrap gap-3">
                     {field.options.map((option) => (
-                        <label key={option} className="flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700">
+                        <label key={option} className="flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-700 md:text-sm">
                             <Input
                                 key={option}
                                 type="radio"
@@ -143,14 +143,14 @@ const renderField = (field) => {
             );
         case 'checkbox':
             return (
-                <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+                <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5">
                     <Input
                         checked={field.checked}
                         type="checkbox"
                         className={clsx('h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-blue-500', field.className)}
                         onChange={field.action}
                     />
-                    <span className="text-sm font-medium text-slate-700">{field.label}</span>
+                    <span className="text-xs font-medium text-slate-700 md:text-sm">{field.label}</span>
                 </div>
             );
         case 'toggle':
@@ -164,7 +164,7 @@ const renderField = (field) => {
                     size="small"
                     intent={field.intent || 'primary'}
                     disabled={field.disabled || false}
-                    className={clsx('oasis-button mt-3 rounded-2xl px-5 py-3 text-sm font-semibold text-white', field.className)}
+                    className={clsx('oasis-button mt-3 rounded-2xl px-4 py-2 text-xs font-semibold text-white md:text-sm', field.className)}
                 >
                     {field.placeholder}
                 </Button>
@@ -179,7 +179,7 @@ const renderField = (field) => {
                     name={field.name}
                     disabled={field.disabled || false}
                     key={field.key || field.name}
-                    className={clsx('oasis-field block w-full text-sm', field.className)}
+                    className={clsx('oasis-field block w-full text-xs md:text-sm', field.className)}
                     onChange={field.action}
                     onBlur={field.onBlur}
                 />

@@ -9,25 +9,26 @@ import Text from "@/components/Text";
 
 export default function RequisitionProduct({product}) {
     return (
-        <Card className="flex gap-4 border-b py-2">
-            <div id="carousel" className="p-2 shadow w-1/3">
+        <Card className="flex flex-col gap-4 rounded-[22px] border border-slate-200/90 bg-white p-4 md:flex-row">
+            <div id="carousel" className="w-full rounded-[18px] border border-slate-200 bg-slate-50 p-2 shadow-sm md:w-[280px] md:shrink-0">
                 <Carousel images={getImageUrls(product.image_urls || [])}
-                          style={{height: 400, width: 400}}/>
+                          style={{height: 260, width: 260}}
+                          wrapperClassName="mb-0 w-full max-w-full"/>
             </div>
-            <div className="w-2/3 bg-gray-50 p-2 rounded">
+            <div className="w-full rounded-[18px] bg-slate-50 p-4">
                 <div>
                     <Text intent="primary" size="medium" className="font-extrabold">Details</Text>
                     <Divider/>
-                    <div className="flex justify-between">
+                    <div className="grid gap-3 md:grid-cols-3">
                         <InfoItem label="Name" value={product.name}/>
                         <InfoItem label="Size" value={product.size}/>
                         <InfoItem label="Expiration Date" value={<DateDisplay date={product.expired_date}/>}/>
                     </div>
 
                 </div>
-                <div>
+                <div className="mt-4">
                     <Text intent="primary" size="medium" className="font-extrabold">Prices</Text>
-                    <div className="flex gap-3">
+                    <div className="grid gap-3 md:grid-cols-3">
                         {renderCard('Box Price', product.box_price, 'Quantity', product.box_units)}
                         {renderCard('Group Price', product.dozen_price, 'Quantity', product.dozen_units)}
                         {renderCard('Unit Price', product.unit_price, 'Quantity', 1)}
@@ -40,7 +41,7 @@ export default function RequisitionProduct({product}) {
 
 const renderCard = (label1, value1, label2, value2) => {
     return (
-        <Card className="flex gap-1 justify-between border">
+        <Card className="flex min-w-0 items-start justify-between gap-2 rounded-[16px] border border-slate-200 bg-white p-3 shadow-none">
             <InfoItem label={label1} value={value1}/>
             <span className="font-bold text-sm"> / </span>
             <InfoItem label={label2}>

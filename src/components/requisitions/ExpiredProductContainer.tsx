@@ -6,7 +6,7 @@ import Card from '@/components/utils/wrappers/Card';
 import Button from '@/components/utils/Button';
 import { useFetcher } from '@/app/hooks/useFetcher';
 import { useRouter } from 'next/navigation';
-import {API_URL} from "@/lib/api";
+import {API_ENDPOINTS, API_URL} from "@/lib/api";
 import DataGridWithActions from "@/components/table/DataGridWIthActions";
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 
@@ -20,6 +20,8 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
     meta,
     isLoading,
   } = useFetcher(API_URL+endpoint);
+  const {data: shelfLifeStats = {}} = useFetcher(API_ENDPOINTS.PRODUCT_SHELF_LIFE_STATS);
+  const totalItems = type === 'expired' ? (shelfLifeStats.expired ?? 0) : (shelfLifeStats.expiring_soon ?? 0);
 
   const columns = [
     {
@@ -68,7 +70,7 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
       },
     },
   ];
-  const shouldDisplayViewAllButton = meta && meta.total > Number(limit || 10);
+  const shouldDisplayViewAllButton = totalItems > Number(limit || 10);
 
   return (
     <Card className="flex flex-col border-slate-200/70 bg-white/95">
@@ -84,7 +86,7 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
               type === 'expired' ? 'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-200' : 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200'
             )}
           >
-            {meta && meta.total}
+            {totalItems}
           </span>
         </div>
       </div>

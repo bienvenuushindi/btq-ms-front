@@ -5,7 +5,7 @@ import SearchSupplierResults from '@/components/requisitions/SearchSupplierResul
 import {updateUrl} from '@/lib/helper';
 
 export default function SelectSupplier({action, productId, supplierId}) {
-  const [url, setUrl] = useState(API_ENDPOINTS.SEARCH_SUPPLIERS());
+  const [url, setUrl] = useState(API_ENDPOINTS.SEARCH_SUPPLIERS(productId));
   const updateParams = (newFilters) => {
     setUrl((prevUrl) => {
       return  updateUrl(prevUrl, newFilters);

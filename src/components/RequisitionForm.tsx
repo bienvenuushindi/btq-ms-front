@@ -7,7 +7,8 @@ import {Button} from "@/components/ui/button";
 import {RequisitionContext} from "@/components/requisitions/RequisitionContext";
 
 export default function RequisitionForm({requisitionID, revalidate}) {
-    const {mutate} = useContext(RequisitionContext)
+    const {requisition} = useContext(RequisitionContext)
+    const isArchived = Boolean(requisition?.archived);
     const {modalIsOpen, openModal, closeModal} = useModal();
     const props = useRequisitionForm({
         requisitionID,
@@ -29,6 +30,8 @@ export default function RequisitionForm({requisitionID, revalidate}) {
             <div className="flex gap-2">
                 <Button onClick={() => openModal()} size="sm"
                         variant={'default'}
+                        disabled={isArchived}
+                        title={isArchived ? 'Archived requisitions are view only' : 'Add items'}
                         className="oasis-button flex items-center space-x-1 rounded-2xl px-4 py-3">
                     <Plus
                         size={20}

@@ -34,6 +34,14 @@ export const ProductForm = ({product}: { product?: any }) => {
     const [error, setError] = useState('');
     const [photos, setPhotos] = useState(getImageUrls());
 
+    const isPlaceholderImage = (photo: any) => (
+        typeof photo === 'string' && (
+            photo.includes('product-placeholder.png') ||
+            photo.includes('supplier-placeholder.png') ||
+            photo.includes('no-img.png')
+        )
+    );
+
     function updateCategory(ids: any[]) {
         setFormState((s) => ({...s, categories: [...ids]}));
     }
@@ -45,6 +53,9 @@ export const ProductForm = ({product}: { product?: any }) => {
             formData.append(`product[${key}]`, formState[key]);
         });
         for (let i = 0; i < photos.length; i++) {
+            if (isPlaceholderImage(photos[i])) {
+                continue;
+            }
             formData.append('product[images][]', photos[i]);
         }
         try {

@@ -4,9 +4,9 @@ import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
 import {Edit, Trash2} from 'react-feather';
 import {useParams, useRouter} from 'next/navigation';
 import EntityTable from '@/components/table/EntityTable';
-import Badge from '@/components/utils/Badge';
 import DateDisplay from "@/components/DateDisplay";
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
+import StatusIndicator from '@/components/utils/StatusIndicator';
 
 export const ProductDetailsTable = ({product, isLoading}) => {
   const {setOpenBar, setSidebarData} = useContext(SidebarContext);
@@ -94,8 +94,7 @@ export const ProductDetailsTable = ({product, isLoading}) => {
       key: 'status',
       type: 'text',
       label: ' Status',
-      dataTransformation: (value: any) => value ? <Badge variant="success">Active</Badge> :
-        <Badge variant="danger">Inactive</Badge>,
+      dataTransformation: (value: any) => <StatusIndicator active={value} />,
     },
     {
       key: 'button',

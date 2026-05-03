@@ -3,7 +3,6 @@
 import {useState} from "react";
 import {API_ENDPOINTS} from "@/lib/api";
 import {useFetcher} from "@/app/hooks/useFetcher";
-import Badge from "@/components/utils/Badge";
 import {Edit, Trash2} from "react-feather";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Container from "@/components/utils/wrappers/Container";
@@ -11,6 +10,7 @@ import CategoriesHeader from "@/components/categories/CategoriesHeader";
 import ContainerOne from "@/components/utils/wrappers/ContainerOne";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import EntityTable from "@/components/table/EntityTable";
+import StatusIndicator from '@/components/utils/StatusIndicator';
 
 export default function CategoriesTable(){
     const [url, setUrl] = useState(API_ENDPOINTS.CATEGORIES);
@@ -30,8 +30,7 @@ export default function CategoriesTable(){
             type: 'text',
             label: ' Status',
             sortable: true,
-            dataTransformation: (value: any) => value ? <Badge variant="success">Active</Badge> :
-                <Badge variant="danger">Inactive</Badge>,
+            dataTransformation: (value: any) => <StatusIndicator active={value}/>,
         }, {
             key: 'created_at',
             type: 'text',

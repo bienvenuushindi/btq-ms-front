@@ -4,6 +4,7 @@ import {useContext} from 'react';
 import {SidebarContainer, SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
 import RequisitionDetails from '@/components/sections/sidebar/RequisitionDetails';
 import SupplierDetails from '@/components/suppliers/SupplierDetails';
+import RequisitionItemSidebar from '@/components/sections/sidebar/RequisitionItemSidebar';
 
 export default function SidebarContentSelector({target}) {
   const {sidebarData, openBar} = useContext(SidebarContext);
@@ -17,6 +18,8 @@ export default function SidebarContentSelector({target}) {
         return <RequisitionDetails/>;
       case 'supplier_details':
         return <SupplierDetails supplierId={sidebarData.id}/>;
+      case 'requisition_item':
+        return <RequisitionItemSidebar/>;
       default:
         return 'no content';
     }

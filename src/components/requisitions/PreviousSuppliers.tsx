@@ -5,13 +5,20 @@ import SupplierList from '@/components/requisitions/SupplierList';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import {API_ENDPOINTS} from "@/lib/api";
 
-export default function PreviousSuppliers({action, supplierId, productId}) {
+export default function PreviousSuppliers({action, supplierId, productId, currentSupplier}) {
   const {data: productSuppliers = {}, error, isLoading} = useFetcher(API_ENDPOINTS.PRODUCT_DETAIL_SUPPLIERS(productId));
   const {suppliers: list = []} = productSuppliers;
+  const normalizedCurrentSupplier = currentSupplier?.id ? {
+    ...currentSupplier,
+    address: currentSupplier.address || {}
+  } : null;
+  const mergedList = normalizedCurrentSupplier && !list.some((supplier) => supplier.id === normalizedCurrentSupplier.id)
+    ? [normalizedCurrentSupplier, ...list]
+    : list;
   const [selected, setSelected] = useState(supplierId)
   const updateSelected = (id) => {
     setSelected(id)
-    action(list.find((supplier) => supplier.id === id))
+    action(mergedList.find((supplier) => supplier.id === id))
   }
 
   useEffect(()=>{
@@ -22,7 +29,7 @@ export default function PreviousSuppliers({action, supplierId, productId}) {
       <ErrorBoundary error={error}>
         <SupplierList
           title={'Previous Suppliers'}
-          suppliers={list}
+          suppliers={mergedList}
           isLoading={isLoading}
           selected={selected}
           onUpdateSelected={updateSelected}

@@ -10,7 +10,8 @@ export default function SearchSupplierResults({url, action, supplierId}) {
   const [selected, setSelected] = useState(supplierId);
   const updateSelected = (id) => {
     setSelected(id);
-    action({id: id, price: 0, quantity_type: ''});
+    const supplier = suppliers.find((item) => item.id === id);
+    action(supplier ? {...supplier, price: 0, quantity_type: ''} : {id: id, price: 0, quantity_type: ''});
   };
 
   useEffect(() => {

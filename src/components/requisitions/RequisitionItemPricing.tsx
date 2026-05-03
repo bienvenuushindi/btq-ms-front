@@ -13,11 +13,22 @@ import clsx from 'clsx';
 import SwitchCurrency from '@/components/requisitions/item-page/SwitchCurrency';
 import {useFetcher} from "@/app/hooks/useFetcher";
 
+const formatCurrencyValue = (value) => {
+  const numericValue = Number(value);
+  if (Number.isNaN(numericValue)) return value;
+
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(numericValue);
+};
+
 export default function RequisitionItemPricing({productDetails}) {
-  const {requisitionID} = useContext(RequisitionContext)
+  const {requisitionID, requisition} = useContext(RequisitionContext)
   const {data: quantityType = {}} = useFetcher(API_ENDPOINTS.QUANTITY_TYPES);
   const {data: currencies = {}} = useFetcher( API_ENDPOINTS.CURRENCIES);
   const {currency} = useContext(RequisitionContext);
+  const isArchived = Boolean(requisition?.archived);
   const [modalIsOpen, setIsOpen] = useState(false);
   const initial = {
     price: productDetails.price || 0,
@@ -35,6 +46,7 @@ export default function RequisitionItemPricing({productDetails}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     if (!supplierId) {
       setError('Please select a supplier');
       return;
@@ -143,7 +155,7 @@ export default function RequisitionItemPricing({productDetails}) {
       {
         label: 'Total Price',
         name: 'total_price',
-        value: clsx((formState.price * formState.quantity) || '0', formState.currency),
+        value: clsx(formatCurrencyValue((formState.price * formState.quantity) || 0), formState.currency),
         disabled: true,
       }], {
       label: 'Expired On',
@@ -187,22 +199,57 @@ export default function RequisitionItemPricing({productDetails}) {
     setSupplierId(supplier.id);
     if (supplier.id == productDetails.supplier_id) {
       setFormState({...initial});
+      productDetails.supplier_name = supplier.shop_name || productDetails.supplier_name;
       return;
     }
+    productDetails.supplier_name = supplier.shop_name || productDetails.supplier_name;
     setFormState((s) => ({...s, ...supplier, quantity: 0}));
   };
+
+  if (isArchived) {
+    return (
+      <Card className={'flex flex-col gap-4 rounded-[22px] border border-slate-200/90 bg-white p-4'}>
+        <div className="flex items-center justify-between rounded-[18px] border border-slate-200 bg-slate-50 px-4 py-3">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400">Requisition item</p>
+            <p className="mt-1 text-sm font-semibold text-slate-900">Archived requisition</p>
+          </div>
+          <Badge variant="secondary" size="small">View only</Badge>
+        </div>
+        <div className="grid gap-3 md:grid-cols-2">
+          <ReadOnlyField label="Supplier" value={productDetails.supplier_name || (productDetails.supplier_id ? 'Supplier selected' : 'Not selected')} />
+          <ReadOnlyField label="Status" value={productDetails.status ? 'Found' : 'Not found'} />
+          <ReadOnlyField label="Price" value={formState.price ? `${formatCurrencyValue(formState.price)} ${formState.currency || ''}` : 'Not set'} />
+          <ReadOnlyField label="Total price" value={formState.price && formState.quantity ? `${formatCurrencyValue(formState.price * formState.quantity)} ${formState.currency || ''}` : 'Not set'} />
+          <ReadOnlyField label="Quantity" value={formState.quantity ? `${formState.quantity} ${formState.quantity_type || 'units'}` : 'Not set'} />
+          <ReadOnlyField label="Expired on" value={formState.expired_date || 'Not set'} />
+        </div>
+        <ReadOnlyField label="Note" value={formState.note || 'No note'} className="min-h-[88px]" />
+      </Card>
+    );
+  }
+
   return (
-    <Card className={'flex justify-between gap-4 bg-gray-50'}>
+    <Card className={'flex flex-col gap-4 rounded-[22px] border border-slate-200/90 bg-white p-4 lg:flex-row'}>
       <SuppliersSection
         action={updateForm}
         productId={productDetails.product_detail_id}
         supplierId={supplierId}
+        currentSupplier={productDetails.supplier_id ? {
+          id: productDetails.supplier_id,
+          shop_name: productDetails.supplier_name,
+        } : null}
       />
-      <div className="flex flex-col grow border-gray-100 border p-2 rounded">
-        <div className="flex justify-end">
+      <div className="flex grow flex-col rounded-[18px] border border-slate-200 bg-slate-50 p-3">
+        <div className="mb-3 flex justify-end">
           {productDetails.status ? <Badge variant={'success'}>Found Status</Badge> :
             <Badge variant={'danger'}> Not Found</Badge>}
         </div>
+        {error ? (
+          <div className="mb-3 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+            {error}
+          </div>
+        ) : null}
         <Form
           handleSubmit={handleSubmit}
           fields={pricingForm}
@@ -218,5 +265,14 @@ export default function RequisitionItemPricing({productDetails}) {
         convertFunc={convertedPrice}
       />
     </Card>
+  );
+}
+
+function ReadOnlyField({label, value, className = ''}) {
+  return (
+    <div className={clsx('rounded-[16px] border border-slate-200 bg-slate-50 px-3 py-2.5', className)}>
+      <p className="text-[11px] uppercase tracking-[0.12em] text-slate-400">{label}</p>
+      <p className="mt-1 text-sm font-medium text-slate-900">{value}</p>
+    </div>
   );
 }

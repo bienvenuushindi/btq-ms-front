@@ -28,8 +28,8 @@ export const SidebarContainer = ({title, children}:any) => {
       ></div>
 
       <div
-        className={clsx('bg-white fixed top-0 right-0 bottom-0 border-gray-700   lg:w-100 lg:shadow z-50   ease-in-out delay-150 duration-300 ', openBar.state ? 'translate-x-0' : 'translate-x-full')}
-        style={{height: '100%', minWidth: '400px'}}
+        className={clsx('fixed top-0 right-0 bottom-0 z-50 w-full border-gray-700 bg-white shadow lg:w-[400px] ease-in-out delay-150 duration-300', openBar.state ? 'translate-x-0' : 'translate-x-full')}
+        style={{height: '100%'}}
       >
         <div className="shadow-sm p-1 gap-1  flex items-center">
           <Button size="small"

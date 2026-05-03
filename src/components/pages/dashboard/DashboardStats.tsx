@@ -3,7 +3,7 @@ import { AlertTriangle, Box, Calendar, Clock, Truck } from 'react-feather';
 import { format } from 'date-fns';
 import { Card, CardContent } from '@/components/ui/card';
 import { useFetcher } from '@/app/hooks/useFetcher';
-import { API_ENDPOINTS, API_URL } from '@/lib/api';
+import { API_ENDPOINTS } from '@/lib/api';
 import TransitionLink from '@/components/navigation/TransitionLink';
 
 const formatDashboardDate = (value) => {
@@ -26,22 +26,22 @@ function DashboardMetricCard({ icon, label, value, detail, tone = 'slate', href,
   const hasAction = Boolean(href);
 
   return (
-    <Card className={`rounded-[20px] border border-slate-200/90 shadow-[0_8px_20px_rgba(15,23,42,0.04)] ${toneClasses[tone]}`}>
-      <CardContent className="flex h-full flex-col gap-2.5 p-3.5">
+    <Card className={`rounded-[18px] border border-slate-200/90 shadow-[0_8px_18px_rgba(15,23,42,0.04)] ${toneClasses[tone]}`}>
+      <CardContent className="flex h-full flex-col gap-2 p-3">
         <div className="flex items-center justify-between gap-3">
-          <span className="text-[13px] font-semibold leading-snug text-slate-600">{label}</span>
+          <span className="text-xs font-semibold leading-snug text-slate-600">{label}</span>
           <span className="shrink-0 rounded-full bg-white/80 p-1.5 text-slate-600 ring-1 ring-inset ring-slate-200/80">
             {icon}
           </span>
         </div>
-        <div className="font-display text-[1.7rem] font-bold md:text-[1.85rem]">{value}</div>
-        <div className="min-h-[2.25rem] text-[13px] leading-5 text-slate-500">{detail}</div>
+        <div className="font-display text-[1.45rem] font-bold md:text-[1.6rem]">{value}</div>
+        <div className="min-h-[2rem] text-xs leading-5 text-slate-500">{detail}</div>
         {hasAction ? (
           <div className="pt-0.5">
             <TransitionLink
               href={href!}
               loadingMessage={loadingMessage || 'Opening page...'}
-              className="inline-flex w-fit max-w-full rounded-lg border border-slate-200 bg-white/80 px-2.5 py-1.5 text-[13px] font-semibold text-slate-700 transition hover:bg-slate-100"
+              className="inline-flex w-fit max-w-full rounded-lg border border-slate-200 bg-white/80 px-2.5 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-100"
             >
               {actionLabel}
             </TransitionLink>
@@ -55,16 +55,15 @@ function DashboardMetricCard({ icon, label, value, detail, tone = 'slate', href,
 export default function DashboardStats() {
   const { data: productStats = {} } = useFetcher(API_ENDPOINTS.PRODUCT_STATS);
   const { meta: supplierMeta } = useFetcher(API_ENDPOINTS.SUPPLIERS);
-  const { meta: expiringSoonMeta } = useFetcher(`${API_URL}/product_details/expiring_soon?limit=1`);
-  const { meta: expiredMeta } = useFetcher(`${API_URL}/product_details/expired?limit=1`);
+  const { data: shelfLifeStats = {} } = useFetcher(API_ENDPOINTS.PRODUCT_SHELF_LIFE_STATS);
   const { data: requisitions = [] } = useFetcher(API_ENDPOINTS.REQUISITIONS);
   const { data: recentRequisitions = {} } = useFetcher(API_ENDPOINTS.RECENT_REQUISITIONS);
 
   const activeProducts = productStats.active ?? 0;
   const inactiveProducts = productStats.inactive ?? 0;
   const suppliersTotal = supplierMeta?.total ?? 0;
-  const expiringSoonTotal = expiringSoonMeta?.total ?? 0;
-  const expiredTotal = expiredMeta?.total ?? 0;
+  const expiringSoonTotal = shelfLifeStats.expiring_soon ?? 0;
+  const expiredTotal = shelfLifeStats.expired ?? 0;
   const activeRequisition = recentRequisitions?.active;
   const latestRequisition = requisitions[0];
 
