@@ -118,7 +118,7 @@ const Sidebar = ({
       />
       <div
         className={clsx(
-          'fixed left-0 top-0 z-[60] h-full w-64 transition-transform duration-300 lg:hidden',
+          'fixed left-0 top-0 z-[60] h-full w-[85vw] max-w-xs transition-transform duration-300 lg:hidden',
           open ? 'translate-x-0' : '-translate-x-full'
         )}
       >

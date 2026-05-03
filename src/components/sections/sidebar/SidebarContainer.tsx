@@ -28,7 +28,11 @@ export const SidebarContainer = ({title, children}:any) => {
       ></div>
 
       <div
-        className={clsx('fixed top-0 right-0 bottom-0 z-50 w-full border-gray-700 bg-white shadow lg:w-[400px] ease-in-out delay-150 duration-300', openBar.state ? 'translate-x-0' : 'translate-x-full')}
+        className={clsx(
+          'fixed top-0 right-0 bottom-0 z-50 border-gray-700 bg-white shadow ease-in-out delay-150 duration-300',
+          openBar.panelClassName || 'w-full sm:w-[400px]',
+          openBar.state ? 'translate-x-0' : 'translate-x-full'
+        )}
         style={{height: '100%'}}
       >
         <div className="shadow-sm p-1 gap-1  flex items-center">

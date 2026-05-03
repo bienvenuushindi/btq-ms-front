@@ -9,8 +9,8 @@ import {Button} from "@/components/ui/button";
 
 const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: { data:any, columns:any, tHeadProps:any, isLoading:any, loader?:any, onSorting?:any }) => {
   return (
-    <div className="w-full  h-full ">
-      <table className="w-full text-sm">
+    <div className="h-full w-full overflow-x-auto">
+      <table className="min-w-[720px] w-full text-sm">
         <thead className="bg-[#1f4254] text-xs uppercase text-primary-foreground">
         <tr>
           <RenderTableHead tHeadProps={tHeadProps} columns={columns} onSorting={onSorting} />
@@ -41,7 +41,7 @@ const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: {
                   <td
                     key={`tr-${index}-td-${colIndex}-${column.key ? column.key : ''}`}
                     className={clsx(
-                      'px-1 py-3',
+                      'px-2 py-3 align-top text-xs sm:text-sm',
                       column.key ? 'table-cell' : 'flex justify-start '
                     )}
                   >
@@ -139,12 +139,12 @@ export const RenderTableHead = ({ columns, onSorting, tHeadProps }) => {
       {columns.map((column) => (
         <th
           scope="col"
-          className="p-1"
+          className="p-1.5 sm:p-2"
           {...tHeadProps}
           key={`thead-${column.key as React.Key}-${column.label}`}
         >
-          <div className="flex items-center justify-start">
-            <span className=" text-white py-1 text-left font-medium  uppercase tracking-wider ">{column.label}</span>
+          <div className="flex items-center justify-start gap-1">
+            <span className="py-1 text-left text-[11px] font-medium uppercase tracking-[0.18em] text-white sm:text-xs sm:tracking-wider">{column.label}</span>
             {column.sortable && (
               <Button
                 variant="ghost"

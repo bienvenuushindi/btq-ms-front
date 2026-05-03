@@ -1,7 +1,7 @@
 'use client';
 import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
 import {useState} from 'react';
-export const sidebarInitial = {state: false, target: ''};
+export const sidebarInitial = {state: false, target: '', panelClassName: ''};
 export default function PageContainer({children}:any) {
   const [openBar, setOpenBar] = useState({...sidebarInitial});
   const [sidebarData, setSidebarData] = useState({});

@@ -27,7 +27,7 @@ const Paginate = ({ meta, links, setUrl }) => {
   const totalPages = Number(meta?.pages || 1);
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-end sm:gap-3">
       <div className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600 md:text-sm">
         Page {currentPage} of {totalPages}
       </div>

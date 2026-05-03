@@ -29,6 +29,7 @@ export default function ReqProductItem({row, removeItem}) {
       state: true,
       target: 'requisition_item',
       title: `${row.name} (${row.size})`,
+      panelClassName: 'w-full',
     });
   };
 

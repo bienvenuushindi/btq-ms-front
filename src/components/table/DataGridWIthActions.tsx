@@ -12,12 +12,12 @@ const resolveActionValue = (value, row) => (
 
 const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, actions, onSorting}) => {
     return (
-        <div className="w-full relative ">
-            <table className="w-full text-sm text-left  -dark:text-gray-40">
+        <div className="relative w-full overflow-x-auto">
+            <table className="min-w-[780px] w-full text-left text-sm -dark:text-gray-40">
                 <thead className="bg-[#1f4254] text-xs uppercase text-primary-foreground">
                 <tr>
                     <RenderTableHead tHeadProps={tHeadProps} columns={columns} onSorting={onSorting}/>
-                    <th className=" py-2  text-left text-xs font-medium text-white uppercase tracking-wider ">
+                    <th className="py-2 pr-3 text-left text-[11px] font-medium uppercase tracking-[0.18em] text-white sm:text-xs sm:tracking-wider">
                         Actions
                     </th>
                 </tr>
@@ -42,11 +42,11 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
                             key={`row-${index}`}>
                             {columns.map((column) => (
                                 <td key={`row-cell-${column.key as React.Key}-${column.label}`}
-                                    className={clsx('px-1 py-3 overflow-ellipsis', column.type=='description' && 'w-80', column.key ? 'table-cell' : 'flex justify-start')}>
+                                    className={clsx('px-2 py-3 align-top text-xs overflow-ellipsis sm:text-sm', column.type=='description' && 'w-80', column.key ? 'table-cell' : 'flex justify-start')}>
                                     {column.key ? renderCell(column, row) : renderCell(column, column.customKey)}
                                 </td>
                             ))}
-                            <td className="px-6 py-4 whitespace-nowrap text-start text-sm font-medium">
+                            <td className="whitespace-nowrap px-4 py-4 text-start text-xs font-medium sm:px-6 sm:text-sm">
                                 <CustomPopover title={<MoreVertical size={20} color="#0f172a"/>}>
                                     <div
                                         className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_18px_34px_rgba(15,23,42,0.12)]">

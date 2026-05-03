@@ -31,20 +31,17 @@ const EntityTable = ({
         <>
             {searchable && (
                 <Card className="w-full relative justify-start my-2 border border-slate-200/70 bg-white/95">
-
-                    <div className="flex gap-2 items-center">
-                        <SearchBar onSearch={updateParams}/>
+                    <div className="flex flex-col gap-2 sm:gap-3 lg:flex-row lg:items-center">
+                        <SearchBar onSearch={updateParams} containerClassName="w-full lg:flex-1"/>
                         <ShowRow updateCount={updateParams}/>
-                        <div>
+                        <div className="w-full lg:w-auto">
                             {filters}
                         </div>
                     </div>
-
-
                 </Card>
             )}
             <Card className="w-full relative justify-start border border-slate-200/70 bg-white/95">
-                <div className="flex justify-end w-full my-2">
+                <div className="my-2 flex w-full justify-end overflow-x-auto">
                     {links && meta && <TableMetaData meta={meta}/>}
                 </div>
                 {actions ?
@@ -65,7 +62,7 @@ const EntityTable = ({
                         loader={loader}
                         onSorting={updateParams}
                     />}
-                <div className="flex justify-between w-full my-2">
+                <div className="my-2 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     {links && meta && (
                         <>
                             <TableMetaData meta={meta}/>

@@ -3,7 +3,6 @@ import Input from '@/components/forms/Input';
 import {useEffect, useRef, useState} from 'react';
 import {useDebounce} from '@/app/hooks/useDebounce';
 import {Search} from 'react-feather';
-import {className} from 'postcss-selector-parser';
 
 export function SearchBar({onSearch, containerClassName}: {onSearch: any, containerClassName?: any}) {
   const [query, setQuery] = useState('');
@@ -19,13 +18,13 @@ export function SearchBar({onSearch, containerClassName}: {onSearch: any, contai
   return (
     <div className={containerClassName || 'relative w-full'}>
       <Input type="text" placeholder="Search"
-             className="w-full py-2 pl-10 pr-3 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+             className="w-full rounded-xl border py-2 pl-9 pr-3 text-sm focus:outline-none focus:ring focus:border-blue-300"
              name="query" id="query" autoComplete="true" value={query}
              onChange={(e) => setQuery(e.target.value)}/>
-      <div className="absolute inset-y-0 left-0  pl-3 flex items-center pointer-events-none">
+      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 text-gray-200"
+          className="h-4 w-4 text-gray-300"
           viewBox="0 0 20 20"
           fill="currentColor"
         >
