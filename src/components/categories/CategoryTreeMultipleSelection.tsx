@@ -38,26 +38,27 @@ export default function CategoryTreeMultipleSelection({action, initialSelectionI
 
     const renderCategory = (category, parent_id = null) => (
         <li key={category.id}>
-            <div className="flex gap-2">
-                {category.children.length > 0 && (<span onClick={() => handleToggleCollapse(category.id)}>
-                        {collapsedItems.includes(category.id) ? <FolderPlus/> : <FolderMinus/>}
-                    </span>)
+            <div className="flex items-start gap-2 rounded-2xl px-2 py-1.5 hover:bg-slate-50">
+                {category.children.length > 0 && (<button type="button" className="mt-0.5 text-slate-500" onClick={() => handleToggleCollapse(category.id)}>
+                        {collapsedItems.includes(category.id) ? <FolderPlus size={16}/> : <FolderMinus size={16}/>}
+                    </button>)
                 }
-                <label>
+                <label className="flex items-start gap-2 text-sm text-slate-700">
                     <input
                         type="checkbox"
                         name="categorySelection"
                         value={category.id}
                         checked={selectedCategoryIds.includes(category.id)}
                         onChange={() => handleRadioChange(category.id, parent_id)}
+                        className="mt-1 h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary"
                     />
-                    {category.name}
+                    <span>{category.name}</span>
                 </label>
 
             </div>
             {category.children.length > 0 && (
                 <React.Fragment>
-                    <ul className={collapsedItems.includes(category.id) ? 'hidden' : 'ml-12'}>
+                    <ul className={collapsedItems.includes(category.id) ? 'hidden' : 'ml-6 border-l border-slate-200 pl-4'}>
                         {category.children.map((child) => renderCategory(child, category.id))}
                     </ul>
                 </React.Fragment>
@@ -66,23 +67,29 @@ export default function CategoryTreeMultipleSelection({action, initialSelectionI
     );
 
     return (
-        <div>
-            <h1>Select Category</h1>
-            <ul>
-                <li>
-                    <label>
+        <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
+            <div className="mb-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Category Tree</p>
+                <h4 className="mt-2 font-display text-2xl font-bold text-slate-900">Select Category</h4>
+                <p className="mt-2 text-sm text-slate-500">Choose the sections where this item should appear.</p>
+            </div>
+            <div className="max-h-[34rem] overflow-auto pr-2">
+            <ul className="space-y-2">
+                <li className="rounded-2xl bg-white px-3 py-2 shadow-sm">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
                         <input
                             type="checkbox"
                             name="categorySelection"
                             value={0}
                             defaultChecked={true}
+                            className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary"
                             // onChange={() => handleRadioChange(null)}
                         />
                         Root
                     </label>
                 </li>
-                <li className="ml-5">
-                    <ul>
+                <li className="ml-1">
+                    <ul className="space-y-1">
                         {categories.map((category) => (
                             <React.Fragment key={category.id}>
                                 {renderCategory(category)}
@@ -91,6 +98,7 @@ export default function CategoryTreeMultipleSelection({action, initialSelectionI
                     </ul>
                 </li>
             </ul>
+            </div>
         </div>
     );
 }

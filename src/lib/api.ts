@@ -2,8 +2,8 @@
 import Cookies from 'js-cookie';
 import {setToken} from "@/lib/auth";
 
-//export const BASE_URL = 'https://btq-ms.onrender.com';
-export const BASE_URL = 'http://127.0.0.1:3001'; //'http://192.168.25.49:3001'
+// export const BASE_URL = 'https://btq-ms.onrender.com';
+export const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:3001';
 export const API_URL = BASE_URL + '/api/v1';
 
 // Function to retrieve the authentication token from cookies
@@ -20,14 +20,23 @@ const fetcher = async ({url, method, body}) => {
         },
     });
 
+    const result = await res.json().catch(() => ({}));
+
     if (!res.ok) {
-        throw new Error('API Error');
+        const message =
+            result?.error ||
+            result?.message ||
+            result?.errors?.join?.(', ') ||
+            'API Error';
+        throw new Error(message);
     }
 
-    const jsonData = await res.json().then(result => result.data); // Parse JSON data
+    const jsonData = result.data;
 
     const token = res.headers.get('Authorization'); // Get token from response headers
-    setToken(JSON.stringify(jsonData), token); // Assuming setToken function accepts parsed JSON data and token separately
+    if (token) {
+        setToken(JSON.stringify(jsonData), token);
+    }
     return jsonData; // Return parsed JSON data
 };
 export const signin = async (user: { user: { email: string; password: string}; }) => {
@@ -48,15 +57,20 @@ export const register = async (user: { user: { email: string; password: string; 
 };
 
 export async function authFetcher(url) {
-    return fetch(url, {
+    const response = await fetch(url, {
         headers: {
             Accept: 'application/json',
             Authorization: getTokenFromCookie(),
             'Content-Type': 'application/json',
         },
-    }).then(response => response.json()).then(result => {
-        return result;
     });
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+        throw new Error(result?.error || result?.message || 'Request failed');
+    }
+
+    return result;
 
 }
 

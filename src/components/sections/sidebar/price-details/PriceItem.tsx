@@ -4,18 +4,9 @@ import React from 'react';
 import {SupplierInformation} from '@/components/suppliers/SupplierInformation';
 import {getImageUrls} from '@/lib/helper';
 import Badge from '@/components/utils/Badge';
+import PriceItemData from "@/components/sections/sidebar/price-details/PriceItemData";
 
-const QuantityTypeClass={
-  unit: "bg-[#FF6F61] text-white",
-  dozen: "bg-[#7ED957] text-white",
-  box: "bg-[#4FC1E9] text-white"
-}
 
-const QuantityTypeVariant={
-  unit: "primary",
-  dozen: "success",
-  box: "danger"
-}
 export default function PriceItem({details, supplier}) {
   const {
     id,
@@ -45,22 +36,7 @@ export default function PriceItem({details, supplier}) {
           tel2={tel2}
           imageUrl={getImageUrls(image_urls)[0]}
         />
-        <ul className="flex gap-2 mt-4">
-          {
-            details.map((item, index) => <li key={'price-detail' + index}>
-              <Card className="flex flex-col border-1 border-gray-100">
-                <Badge variant={QuantityTypeVariant[item.quantity_type]} className={clsx("small px-1 rounded font-extrabold")}>
-                  {item.quantity_type}
-                </Badge>
-                <div>
-                  <span className="font-bold text-lg">{clsx(item.price, ' ')}</span>
-                  <span className="font-light text-md">{clsx(item.currency)}</span>
-                </div>
-              </Card>
-            </li>)
-          }
-        </ul>
-
+        <PriceItemData details={details} />
       </div>
     </Card>
   );

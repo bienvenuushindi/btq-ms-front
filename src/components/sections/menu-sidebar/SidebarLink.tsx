@@ -1,11 +1,12 @@
 'use client';
-import {useContext, useState} from 'react';
+import {useContext} from 'react';
 import Link from 'next/link';
 import {Settings, User, Grid, Book, BookOpen, Truck, Home} from 'react-feather';
 import {usePathname} from 'next/navigation';
 import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
 import {sidebarInitial} from '@/components/sections/sidebar/PageContainer';
 import {useRouter} from 'next/navigation';
+import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 
 const icons = {Settings, User, Grid, Book, BookOpen, Truck, Home};
 
@@ -19,10 +20,18 @@ function isFirstPartMatching(pathname, link) {
 }
 
 
-const SidebarLink = ({link}) => {
+const SidebarLink = ({
+  link,
+  isCollapsed = false,
+  onNavigate
+}: {
+  link: any,
+  isCollapsed?: boolean,
+  onNavigate?: () => void
+}) => {
   const pathname = usePathname();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const {startNavigation} = useRouteTransition();
   const {openBar, setOpenBar} = useContext(SidebarContext);
   let isActive = false;
 
@@ -34,6 +43,8 @@ const SidebarLink = ({link}) => {
   const onClick = async (event) => {
     event.preventDefault();
     if (openBar.state) setOpenBar({...sidebarInitial});
+    onNavigate?.();
+    startNavigation(`Opening ${link.label}...`);
     router.push(link.link);
   };
 
@@ -41,17 +52,24 @@ const SidebarLink = ({link}) => {
   return (
     <li>
       <Link href={link.link}
-            className={`flex items-center bg-primary text-primary-foreground  ${isActive ? 'rounded' : 'hover:bg-white-4'} px-2 py-3 my-3 text-left w-full`}
+            className={`group my-2 flex w-full items-center rounded-2xl px-3 py-3 text-left transition-all duration-200 ${
+              isActive
+                ? 'bg-primary text-white shadow-[0_14px_24px_rgba(255,122,53,0.28)]'
+                : 'text-slate-300 hover:bg-white/8 hover:text-white'
+            }`}
             onClick={onClick}>
         <div
-          className={`mr-2 font-bold`}>
+          className={`rounded-xl ${isActive ? 'bg-white/16' : 'bg-white/8'} p-2 font-bold ${isCollapsed ? 'mx-auto' : 'mr-3'}`}>
           <Icon
-            size={20}
-            color={`${isActive ? '#FFFFFF' : '#848a94'}`}
+            size={18}
+            color="#f8fafc"
           />
         </div>
-        <span
-          className={`flex-grow font-semibold text-gray-500 ${isActive ? 'text-white' : ''} ${isActive ? 'text-neutral-100' : ''}`}>{link.label}</span>
+        {!isCollapsed && (
+          <span className="flex-grow text-base font-semibold text-white">
+            {link.label}
+          </span>
+        )}
       </Link>
     </li>
 

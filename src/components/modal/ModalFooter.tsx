@@ -2,10 +2,10 @@ import {Button} from "@/components/ui/button";
 
 export default function ModalFooter({closeModal, children}:any) {
   return (
-    <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b -dark:border-gray-600">
+    <div className="flex items-center gap-2 border-t border-slate-200 bg-white p-6">
       {children}
       {closeModal && <Button size="sm" variant={'destructive'} data-modal-hide="defaultModal"  onClick={closeModal}
-              className="px-2 py-1 mr-2">Cancel
+              className="rounded-2xl border border-slate-200 bg-slate-100 px-4 py-2 text-slate-700 hover:bg-slate-200">Cancel
       </Button>}
     </div>
   )

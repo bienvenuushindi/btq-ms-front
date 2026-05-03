@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import {useEffect, useState} from 'react';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
+import DataLoading from "@/components/state/Loading";
 const ProtectedRoute = ({ children }) => {
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -24,6 +25,10 @@ const ProtectedRoute = ({ children }) => {
             checkAuth();
         }
     }, [data, isAuthenticated, isLoading, router]);
+
+    if (isLoading || isAuthenticated === null) {
+        return <DataLoading />;
+    }
 
     return isAuthenticated ? <>{children}</> : null;
 };

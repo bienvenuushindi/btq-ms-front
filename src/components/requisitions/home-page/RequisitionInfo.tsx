@@ -15,10 +15,10 @@ export function RequisitionInfo({requisition, className = '', withLink = true}) 
         {icon: <Calendar/>, label: 'Scheduled Date', value: date},
         {
             icon: <CreditCard/>,
-            label: 'Products Bought',
+            label: 'Items Added',
             value: `${count_products_bought} / ${count_products}`
         },
-        {icon: <Layers/>, label: 'Total Price', value: total_price},
+        {icon: <Layers/>, label: 'Requisition Total', value: total_price},
         {icon: <Globe/>, label: 'Currency', value: price_currency},
     ];
 

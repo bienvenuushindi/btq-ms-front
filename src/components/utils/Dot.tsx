@@ -17,10 +17,10 @@ export const dotClasses = cva(
         variants: {
             variant: {
                 primary: ['bg-primary'],
-                secondary: ['bg-gray-500'],
-                success: ['bg-green-800'],
-                danger: ['bg-red-800'],
-                warning: ['bg-yellow-800'],
+                secondary: ['bg-slate-500'],
+                success: ['bg-teal-600'],
+                danger: ['bg-rose-600'],
+                warning: ['bg-amber-500'],
             },
             size: {
                 small: 'p-1',   // Adjust size for small using padding

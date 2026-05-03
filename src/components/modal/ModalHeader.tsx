@@ -1,15 +1,14 @@
 import Button from '@/components/utils/Button';
-import {X} from 'react-feather'
 import React from 'react';
 import clsx from 'clsx';
 export default function ModalHeader({title, closeModal, titleClassName}:{title: any, closeModal: any, titleClassName?: any}) {
   return (
-    <div className="flex items-start justify-between p-4 border-b rounded-t -dark:border-gray-600">
-      <h3 className={clsx("text-xl font-semibold text-gray-900 ",titleClassName)}>
+    <div className="flex items-start justify-between border-b border-slate-200 px-6 py-5">
+      <h3 className={clsx("font-display text-3xl font-bold text-slate-900",titleClassName)}>
         {title}
       </h3>
       <Button size="small" intent="text" onClick={closeModal} type="button"
-              className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-500 hover:bg-orange-50 hover:text-primary"
               data-modal-hide="popup-modal">
         <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
              viewBox="0 0 14 14">

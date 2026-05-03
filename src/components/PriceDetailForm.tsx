@@ -92,13 +92,6 @@ export const PriceDetailForm = ({ productDetailID }) => {
       action: (e) => setFormState((prevState) => ({ ...prevState, currency: e.target.value })),
     },
     sizes.map((size, index) =>[
-      // {
-      //   label: size.name,
-      //   input_type: 'toggle',
-      //   name: 'found',
-      //   checked: activeSizes[index],
-      //   action: () => handleToggle(index),
-      // },
         {
         label: <Toggle enabled={activeSizes[index]} setEnabled={()=>handleToggle(index)} label={size.name}/>,
         placeholder: `${size.name} Price`,
@@ -120,16 +113,25 @@ export const PriceDetailForm = ({ productDetailID }) => {
     ),
     {
       input_type: 'button',
-      className: '',
+      className: 'w-full justify-center',
       type: 'submit',
-      placeholder: content.buttonText,
+      placeholder: 'Save pricing',
     },
   ];
 
   return (
     <ContainerOne>
       <div className="w-full">
-        <Form handleSubmit={handleSubmit} fields={forms} />
+        <div className="mb-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Pricing</p>
+          <h2 className="mt-2 font-display text-4xl font-bold text-slate-900">{content.header}</h2>
+          <p className="mt-3 max-w-2xl text-base text-slate-500">
+            Assign a supplier, set the currency, and activate the pack sizes that should have pricing.
+          </p>
+        </div>
+        <div className="oasis-panel p-6 lg:p-8">
+          <Form handleSubmit={handleSubmit} fields={forms} />
+        </div>
       </div>
     </ContainerOne>
   );

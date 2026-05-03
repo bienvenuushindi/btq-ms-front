@@ -14,39 +14,36 @@ export const buttonClasses = cva(
   {
     variants: {
       intent: {
-        text: ['bg-transparent', 'text-gray-800', 'hover:bg-gray-100'],
+        text: ['bg-transparent', 'text-primary', 'hover:bg-blue-50'],
         primary: [
           'bg-primary text-primary-foreground ',
-          'hover:bg-primary/90',
+          'shadow-[0_12px_22px_rgba(37,99,235,0.22)] hover:bg-primary/90',
         ],
         danger:[
           "bg-destructive text-destructive-foreground hover:bg-destructive/90"
         ],
         secondary: [
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+          "bg-secondary text-secondary-foreground border border-sky-200 hover:bg-secondary/80"
         ],
         tertiary: [
-          'text-white',
-          'bg-blue-700',
+          'text-primary',
+          'bg-blue-50',
           'rounded-lg',
-          'hover:bg-blue-800',
+          'hover:bg-blue-100',
           'focus:ring-4',
           'focus:outline-none',
-          'focus:ring-blue-300',
-          'dark:bg-blue-600',
-          'dark:hover:bg-blue-700',
-          'dark:focus:ring-blue-800'
+          'focus:ring-blue-200'
         ],
         default:[
-          "bg-primary text-primary-foreground hover:bg-primary/90",
+          "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_12px_22px_rgba(37,99,235,0.22)]",
         ],
         none: [
           'bg-transparent',
         ]
       },
       size: {
-        small: ['px-1', 'py-1', ' text-xs'],
-        medium: ['text-sm', 'px-2', 'py-2'],
+        small: ['px-2', 'py-1.5', ' text-xs'],
+        medium: ['text-sm', 'px-3', 'py-2'],
         large: ['text-xlg', 'px-4', 'py-4'],
       },
     },

@@ -6,10 +6,12 @@ import Form from '@/components/forms/Form';
 import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
 import CategoryTreeMultipleSelection from "@/components/categories/CategoryTreeMultipleSelection";
+import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 
 export const SupplierForm = ({supplier}: { supplier?: any }) => {
     const isAddMode = !supplier;
     const router = useRouter();
+    const {startNavigation} = useRouteTransition();
     let initial = {
         shop_name: '',
         address1: '',
@@ -85,10 +87,11 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
                 toastShow('success', 'Supplier updated successfully')
               
             }
-              router.push('/suppliers');
+            startNavigation('Returning to suppliers...');
+            router.push('/suppliers');
 
         } catch (e) {
-            setError(`Could not create supplier`);
+            setError(`Could not save supplier`);
         } finally {
             // setFormState({...initial});
         }
@@ -99,94 +102,100 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
     }
 
     const content = {
-        header: 'Create a supplier',
+        header: isAddMode ? 'Create a supplier' : 'Update supplier',
         subheader: '',
         buttonText: 'Create'
     };
     const supplierForm = [
-        {
-            label: 'Shop name',
-            required: true,
-            placeholder: 'shop Name',
-            value: formState.shop_name,
-            name: 'shop_name',
-            type: 'text',
-            input_type: 'text',
-            className: '',
-            action: (e) => {
-                setFormState((s) => ({...s, shop_name: e.target.value}));
+        [
+            {
+                label: 'Shop name',
+                required: true,
+                placeholder: 'Supplier name',
+                value: formState.shop_name,
+                name: 'shop_name',
+                type: 'text',
+                input_type: 'text',
+                className: '',
+                action: (e) => {
+                    setFormState((s) => ({...s, shop_name: e.target.value}));
+                },
             },
-        },
-        {
-            label: 'Made in',
-            required: true,
-            placeholder: 'Made in',
-            name: 'country_id',
-            value: formState.country_name,
-            input_type: 'select',
-            className: '',
-            options: {'CG': 'Congo', 'RW': 'RWANDA', 'UG': 'Uganda', 'KE': 'Kenya', 'QA': 'Qatar',},
-            action: (e) => {
-                const countryName = e.target.options[e.target.selectedIndex].text;
-                setFormState((s) => ({...s, country_id: e.target.value, country_name: countryName}));
+            {
+                label: 'Made in',
+                required: true,
+                placeholder: 'Select country',
+                name: 'country_id',
+                value: formState.country_name,
+                input_type: 'select',
+                className: '',
+                options: {'CG': 'Congo', 'RW': 'RWANDA', 'UG': 'Uganda', 'KE': 'Kenya', 'QA': 'Qatar',},
+                action: (e) => {
+                    const countryName = e.target.options[e.target.selectedIndex].text;
+                    setFormState((s) => ({...s, country_id: e.target.value, country_name: countryName}));
+                }
             }
-        },
-        {
-            label: 'City',
-            required: true,
-            placeholder: 'City',
-            value: formState.city,
-            name: 'city',
-            type: 'text',
-            input_type: 'text',
-            className: '',
-            action: (e) => {
-                setFormState((s) => ({...s, city: e.target.value}));
+        ],
+        [
+            {
+                label: 'City',
+                required: true,
+                placeholder: 'City',
+                value: formState.city,
+                name: 'city',
+                type: 'text',
+                input_type: 'text',
+                className: '',
+                action: (e) => {
+                    setFormState((s) => ({...s, city: e.target.value}));
+                },
             },
-        },
-        {
-            label: 'Phone 1',
-            required: true,
-            placeholder: 'Phone number 1',
-            value: formState.tel1,
-            name: 'Phone 1',
-            type: 'tel',
-            input_type: 'text',
-            className: '',
-            action: (e) => {
-                setFormState((s) => ({...s, tel1: e.target.value}));
+            {
+                label: 'Phone 1',
+                required: true,
+                placeholder: 'Primary phone number',
+                value: formState.tel1,
+                name: 'Phone 1',
+                type: 'tel',
+                input_type: 'text',
+                className: '',
+                action: (e) => {
+                    setFormState((s) => ({...s, tel1: e.target.value}));
+                },
+            }
+        ],
+        [
+            {
+                label: 'Phone 2',
+                required: false,
+                placeholder: 'Secondary phone number',
+                value: formState.tel2,
+                name: 'Phone 2',
+                type: 'tel',
+                input_type: 'text',
+                className: '',
+                action: (e) => {
+                    setFormState((s) => ({...s, tel2: e.target.value}));
+                },
             },
-        },
-        {
-            label: 'Phone 2',
-            required: true,
-            placeholder: 'Phone number 2',
-            value: formState.tel2,
-            name: 'Phone 2',
-            type: 'tel',
-            input_type: 'text',
-            className: '',
-            action: (e) => {
-                setFormState((s) => ({...s, tel2: e.target.value}));
-            },
-        },
-        {
-            label: 'Address 1',
-            required: true,
-            placeholder: 'Avenue, Building name, Floor Number',
-            value: formState.address1,
-            name: 'address1',
-            type: 'text',
-            input_type: 'text',
-            className: '',
-            action: (e) => {
-                setFormState((s) => ({...s, address1: e.target.value}));
-            },
-        },
+            {
+                label: 'Address 1',
+                required: true,
+                placeholder: 'Avenue, building, floor',
+                value: formState.address1,
+                name: 'address1',
+                type: 'text',
+                input_type: 'text',
+                className: '',
+                action: (e) => {
+                    setFormState((s) => ({...s, address1: e.target.value}));
+                },
+            }
+        ],
         {
             label: 'Address 2',
             required: false,
-            placeholder: 'Avenue, Building name, Floor Number',
+            placeholder: 'Additional address details',
             value: formState.address2,
             name: 'address2',
             type: 'text',
@@ -199,9 +208,9 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
             },
         },
         {
-            label: 'Enter Some Tags ...',
+            label: 'Tags',
             required: false,
-            placeholder: 'Add tag',
+            placeholder: 'Add tags',
             tags: formState.tags,
             suggestion_url: API_ENDPOINTS.SEARCH_TAGS,
             input_type: 'tag',
@@ -218,9 +227,9 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
         },
         {
             input_type: 'button',
-            className: '',
+            className: 'w-full justify-center',
             type: 'submit',
-            placeholder: isAddMode ? 'Create' : 'Update'
+            placeholder: isAddMode ? 'Create supplier' : 'Update supplier'
         }
     ];
 
@@ -240,9 +249,14 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
     return (
         <ContainerOne>
             <div className="w-full mx-auto">
-                <div className="text-center">
-                    <h2 className="text-3xl mb-2 text-black">{content.header}</h2>
-                    <p className="tex-lg text-black/25">{content.subheader}</p>
+                <div className="mx-auto max-w-7xl">
+                    <div className="mb-4">
+                        <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Suppliers</p>
+                        <h2 className="mt-2 font-display text-4xl font-bold text-slate-900">{content.header}</h2>
+                        <p className="mt-3 max-w-2xl text-base text-slate-500">
+                            Capture the supplier profile, contact details, category coverage, and supporting media in one place.
+                        </p>
+                    </div>
                     <Form handleSubmit={handleSubmit} fields={fields}/>
                 </div>
             </div>

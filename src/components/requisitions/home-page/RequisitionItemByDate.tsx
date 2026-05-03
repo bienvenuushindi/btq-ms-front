@@ -8,17 +8,18 @@ import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
 
 export function RequisitionItemByDate({date}) {
-    const formattedDate = format(date, 'dd-MM-yyyy');
-    const {data: requisition={}, error, isLoading} = useFetcher(API_ENDPOINTS.FIND_REQUISITION_BY_DATE(formattedDate));;
+    const formattedDate = date ? format(date, 'dd-MM-yyyy') : null;
+    const {data: requisition={}, error, isLoading} = useFetcher(
+        formattedDate ? API_ENDPOINTS.FIND_REQUISITION_BY_DATE(formattedDate) : null
+    );
 
     return (
         <DataWrapper isLoading={isLoading} error={error} loadingComponent={<DataLoading/>}>
-            <RequisitionItemCard title={clsx(formattedDate, "Requisition")} requisition={requisition} className="flex"/>
+            {formattedDate ? (
+                <RequisitionItemCard title={clsx(formattedDate, "Requisition")} requisition={requisition} className="flex"/>
+            ) : null}
         </DataWrapper>
     );
 }
-
-
-
 
 

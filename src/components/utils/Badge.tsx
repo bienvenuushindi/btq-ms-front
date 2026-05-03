@@ -19,10 +19,10 @@ export const badgeClasses = cva(
     variants: {
       variant: {
         primary: ["border border-input bg-secondary text-secondary-foreground hover:bg-secondary/80"],
-        secondary: ['bg-gray-100 text-gray-800'],
-        success: ['bg-green-100 text-green-800'],
-        danger: ['bg-red-100 text-red-800'],
-        warning: ['bg-warning text-warning-text'],
+        secondary: ['bg-slate-100 text-slate-700'],
+        success: ['bg-teal-50 text-teal-700 ring-1 ring-inset ring-teal-200'],
+        danger: ['bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-200'],
+        warning: ['bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200'],
       },
       size: {
         small: 'text-xs',   // Add small size class

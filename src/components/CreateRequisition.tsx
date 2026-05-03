@@ -12,6 +12,7 @@ import Form from '@/components/forms/Form';
 import Badge from '@/components/utils/Badge';
 import {format} from 'date-fns';
 import {useFetcher} from "@/app/hooks/useFetcher";
+import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 
 
 export default function CreateRequisition() {
@@ -20,6 +21,7 @@ export default function CreateRequisition() {
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   const router = useRouter();
+  const {startNavigation} = useRouteTransition();
   const getNextDayWithDayName = useCallback(
     (currentDate = new Date(), daysToAdd = 1) => {
       const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -56,6 +58,8 @@ export default function CreateRequisition() {
     });
     try {
       const result = await send('/requisitions', formData);
+      closeModal();
+      startNavigation('Opening new requisition...');
       router.push('/requisitions/' + result.id );
     } catch (e) {
       console.log(`Could not create requisition`);
@@ -95,7 +99,7 @@ export default function CreateRequisition() {
       <Button onClick={() => openModal()}
               size="small"
               intent={'primary'}
-              className="px-3 py-2 rounded-md flex items-center space-x-1"> New Requisition</Button>
+              className="oasis-button flex items-center space-x-1 rounded-2xl px-4 py-3"> New Requisition</Button>
       <ModalContainer
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -105,7 +109,7 @@ export default function CreateRequisition() {
           <ModalBody>
             <div className="w-full text-start">
                 <div>
-                  Unless update, this requisition is programmed on : <br/><Badge  variant={'success'} size={'large'}>{getNextDayWithDayName()}</Badge>
+                  Unless updated, this requisition is scheduled for: <br/><Badge  variant={'success'} size={'large'}>{getNextDayWithDayName()}</Badge>
                 </div>
               <Form
                 handleSubmit={createRequisition}
@@ -115,7 +119,7 @@ export default function CreateRequisition() {
           </ModalBody>
           <ModalFooter closeModal={closeModal}>
             <Button onClick={() => createRequisition()} size="small" intent={'primary'}
-                    className="px-2 py-1">Create</Button>
+                    className="oasis-button rounded-2xl px-4 py-2">Create Requisition</Button>
           </ModalFooter>
         </ModalContent>
 
@@ -124,4 +128,3 @@ export default function CreateRequisition() {
 
   );
 }
-

@@ -79,5 +79,12 @@ export function toggleWithParent(item: any, items: any[], parent_id: any) {
 
 
 export const tagColors = {
-    primary: '#0074bd'
+    primary: '#2563eb'
 }
+
+export const statusClasses = {
+    active: "bg-teal-500",
+    soon: "bg-amber-400",
+    expired: "bg-rose-500",
+    inactive: "bg-slate-400",
+};

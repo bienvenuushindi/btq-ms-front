@@ -4,7 +4,7 @@ const Card = ({ className, children }: any) => {
   return (
     <div
       className={clsx(
-        " p-2  border border-gray-100 rounded-lg shadow-sm ",
+        "surface-panel rounded-[24px] border border-white/60 p-4",
         className
       )}
     >

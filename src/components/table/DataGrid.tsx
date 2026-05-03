@@ -11,7 +11,7 @@ const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: {
   return (
     <div className="w-full  h-full ">
       <table className="w-full text-sm">
-        <thead className="text-xs bg-primary text-primary-foreground uppercase ">
+        <thead className="bg-[#1f4254] text-xs uppercase text-primary-foreground">
         <tr>
           <RenderTableHead tHeadProps={tHeadProps} columns={columns} onSorting={onSorting} />
         </tr>
@@ -37,9 +37,9 @@ const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: {
                 className=" border-b"
                 key={`row-${index}`}
               >
-                {columns.map((column) => (
+                {columns.map((column,colIndex) => (
                   <td
-                    key={`tbody-row-${column.key as React.Key}-${column.label}`}
+                    key={`tr-${index}-td-${colIndex}-${column.key ? column.key : ''}`}
                     className={clsx(
                       'px-1 py-3',
                       column.key ? 'table-cell' : 'flex justify-start '
@@ -106,8 +106,8 @@ export const renderCell = (column, value: any) => {
             src={transformedValue}
             alt="Image"
             className="rounded-md border border-gray-100"
-            width={48}
-            height={48}
+            width={60}
+            height={60}
             priority
           />
           {/*<span>{column.label}</span>*/}
@@ -139,12 +139,12 @@ export const RenderTableHead = ({ columns, onSorting, tHeadProps }) => {
       {columns.map((column) => (
         <th
           scope="col"
-          className="px-1 py-3 "
+          className="p-1"
           {...tHeadProps}
           key={`thead-${column.key as React.Key}-${column.label}`}
         >
-          <div className="flex items-center gap-2 justify-start">
-            <span className=" text-white py-1 text-left text-xs font-medium  uppercase tracking-wider ">{column.label}</span>
+          <div className="flex items-center justify-start">
+            <span className=" text-white py-1 text-left font-medium  uppercase tracking-wider ">{column.label}</span>
             {column.sortable && (
               <Button
                 variant="default"
@@ -153,12 +153,12 @@ export const RenderTableHead = ({ columns, onSorting, tHeadProps }) => {
               >
                 {params.sort === column.key ? (
                   params.direction === 'asc' ? (
-                    <ArrowUp size={16} color="#FFFFFF" />
+                    <ArrowUp size={12} color="#FFFFFF" />
                   ) : (
-                    <ArrowDown size={16} color="#FFFFFF" />
+                    <ArrowDown size={12} color="#FFFFFF" />
                   )
                 ) : (
-                  <ArrowDown size={16} color="#FFFFFF"/>
+                  <ArrowDown size={12} color="#FFFFFF"/>
                 )}
               </Button>
             )}

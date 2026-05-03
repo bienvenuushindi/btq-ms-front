@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {VariantProps} from 'class-variance-authority';
 import {buttonClasses} from '@/components/utils/Button';
-import Link from 'next/link';
+import TransitionLink from '@/components/navigation/TransitionLink';
 
 export interface ButtonLinkProps
   extends React.HTMLAttributes<HTMLLinkElement>,
@@ -17,10 +17,22 @@ const ButtonLink: FC<ButtonLinkProps> = ({
                                    size,
                                    ...props
                                  }: any) => {
+  const href = typeof props.href === 'string' ? props.href : '';
+  const loadingMessage =
+    href.includes('/create')
+      ? 'Opening create form...'
+      : href.includes('/update')
+        ? 'Opening update form...'
+        : 'Loading page...';
+
   return (
-    <Link className={buttonClasses({intent, size, className})} {...props}>
+    <TransitionLink
+      className={buttonClasses({intent, size, className})}
+      loadingMessage={loadingMessage}
+      {...props}
+    >
       {children}
-    </Link>
+    </TransitionLink>
   );
 };
 

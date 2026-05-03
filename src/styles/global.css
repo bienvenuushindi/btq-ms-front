@@ -8,20 +8,12 @@
         display: contents;
     }
 }
-*, html {
-    @apply text-black
-}
-
 * {
     box-sizing: border-box;
 }
 
-body {
-    @apply bg-white
-}
-
 form, input, textarea{
-    @apply text-gray-800
+    @apply text-slate-800
 }
 
 #carousel > div {

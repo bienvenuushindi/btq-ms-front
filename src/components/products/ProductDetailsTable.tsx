@@ -6,10 +6,12 @@ import {useParams, useRouter} from 'next/navigation';
 import EntityTable from '@/components/table/EntityTable';
 import Badge from '@/components/utils/Badge';
 import DateDisplay from "@/components/DateDisplay";
+import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 
 export const ProductDetailsTable = ({product, isLoading}) => {
   const {setOpenBar, setSidebarData} = useContext(SidebarContext);
   const router = useRouter();
+  const {startNavigation} = useRouteTransition();
   const params = useParams();
   const productID = params.id;
   const actions = [
@@ -20,6 +22,7 @@ export const ProductDetailsTable = ({product, isLoading}) => {
         <Edit size={20} color="#2962FF"/>
       ),
       onClick: (row) => {
+        startNavigation('Opening update form...');
         router.push(`/products/${productID}/details/update/${row.id}`);
       },
     },

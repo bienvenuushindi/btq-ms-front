@@ -8,26 +8,26 @@ export default function ProductStats() {
     const {inactive, active} = result;
 
     return (
-        <div className="flex gap-4">
+        <div className="grid w-full gap-4 md:grid-cols-2 xl:grid-cols-3">
             {inactive !== undefined && active !== undefined && (
                 <>
                     <StatsCard
                         label={<><Dot variant="secondary" size="medium"/> Total</>}
                         data={inactive + active}
-                        cardColor="bg-gray-50"
-                        textColor="text-gray-500"
+                        cardColor="bg-white"
+                        textColor="text-slate-900"
                     />
                     <StatsCard
                         label={<><Dot variant="success" size="medium"/> Active</>}
                         data={active}
-                        cardColor="bg-gray-50"
-                        textColor="text-green-800"
+                        cardColor="bg-emerald-50"
+                        textColor="text-emerald-700"
                     />
                     <StatsCard
                         label={<><Dot variant="danger" size="medium"/> Inactive</>}
                         data={inactive}
-                        cardColor="bg-gray-50"
-                        textColor="text-red-800"
+                        cardColor="bg-orange-50"
+                        textColor="text-primary"
                     />
                 </>
             )}

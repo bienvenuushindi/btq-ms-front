@@ -5,9 +5,11 @@ import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import Form from '@/components/forms/Form';
 import CategoryTree from '@/components/categories/CategoryTree';
 import toastShow from "@/components/toast/toast-selector";
+import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 
 export default function CategoryForm({category = null}: { category?: any }) {
   const router = useRouter();
+  const {startNavigation} = useRouteTransition();
   const isAddMode = !category
   let initial = {name: '', description: '', active: false, parent_category_id: null};
   let content = {
@@ -38,10 +40,13 @@ export default function CategoryForm({category = null}: { category?: any }) {
         //submit promise
         await send('/categories', formData);
         toastShow('success', 'Category created successfully')
+        startNavigation('Returning to categories...');
         router.push('/categories');
       } else {
         await send('/categories/' + category.id, formData, "PUT");
         toastShow('success', 'Category updated successfully')
+        startNavigation('Returning to categories...');
+        router.push('/categories');
       }
 
     } catch (e) {
@@ -56,10 +61,10 @@ export default function CategoryForm({category = null}: { category?: any }) {
 
 
   const productForm = [
-    {
+    [{
       label: 'Name',
       required: true,
-      placeholder: 'Category Name',
+      placeholder: 'Category name',
       value: formState.name,
       name: 'name',
       type: 'text',
@@ -68,11 +73,11 @@ export default function CategoryForm({category = null}: { category?: any }) {
       action: (e) => {
         setFormState((s) => ({...s, name: e.target.value}));
       },
-    },
+    }],
     {
       label: 'Description',
       required: true,
-      placeholder: 'Description',
+      placeholder: 'Category description',
       value: formState.description,
       name: 'description',
       input_type: 'text-area',
@@ -95,15 +100,22 @@ export default function CategoryForm({category = null}: { category?: any }) {
     },
     {
       input_type: 'button',
-      className: '',
+      className: 'w-full justify-center',
       type: 'submit',
-      placeholder: 'Submit'
+      placeholder: isAddMode ? 'Create category' : 'Update category'
     }
   ];
   return (
     <ContainerOne>
-      <div className="w-full lg:w-2/4 mx-auto">
-        <div className="text-center">
+      <div className="mx-auto w-full max-w-4xl">
+        <div className="mb-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Categories</p>
+          <h2 className="mt-2 font-display text-4xl font-bold text-slate-900">{content.header}</h2>
+          <p className="mt-3 max-w-2xl text-base text-slate-500">
+            Define the category label, add context, and place it correctly in the category tree.
+          </p>
+        </div>
+        <div className="oasis-panel p-6 lg:p-8">
           <div className="mx-auto">
             <Form handleSubmit={createCategory} fields={productForm}/>
           </div>

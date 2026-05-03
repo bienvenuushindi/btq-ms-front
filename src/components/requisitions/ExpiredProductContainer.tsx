@@ -9,9 +9,11 @@ import { useFetcher } from '@/app/hooks/useFetcher';
 import { useRouter } from 'next/navigation';
 import {API_URL} from "@/lib/api";
 import DataGridWithActions from "@/components/table/DataGridWIthActions";
+import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 
 export default function ExpiredProductContainer({ title, type, limit }: {title: any, type: any, limit?: any}) {
   const router = useRouter();
+  const {startNavigation} = useRouteTransition();
   const params = limit ? `?limit=${limit}` : '';
   const endpoint = `/product_details/${type}${params}`;
   const {
@@ -52,7 +54,7 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
           <Edit size={20} color="#2962FF"/>
       ),
       onClick: (row) => {
-        console.log(row)
+        startNavigation('Opening update form...');
         router.push(`/products/${row.product_id}/details/update/${row.id}`);
       },
     },
@@ -70,23 +72,25 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
   const shouldDisplayViewAllButton = meta && meta.total > 5 && limit;
 
   return (
-    <Card className="flex flex-col">
-      <div className="flex w-full justify-between items-center py-3">
-        <h3 className="font-semibold text-md">{title}</h3>
+    <Card className="flex flex-col border-slate-200/70 bg-white/95">
+      <div className="flex w-full items-center justify-between py-2">
+        <div>
+          <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Shelf life</p>
+          <h3 className="font-display text-2xl text-primary">{title}</h3>
+        </div>
         <div className="flex items-center gap-1">
           <span
             className={clsx(
-              'px-3 rounded font-bold',
-              type === 'expired' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'
+              'rounded-full px-3 py-1 text-sm font-bold',
+              type === 'expired' ? 'bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-200' : 'bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200'
             )}
           >
             {meta && meta.total}
           </span>
-          {/*<span className={clsx(type === 'expired' ? 'text-red-300' : 'text-yellow-800')}>Product(s)</span>*/}
         </div>
       </div>
 
-      <div className="flex-grow bg-gray-50">
+      <div className="flex-grow rounded-2xl bg-slate-50/80 p-1">
         <DataGridWithActions
             columns={columns}
             data={expired_products}
@@ -104,9 +108,9 @@ export default function ExpiredProductContainer({ title, type, limit }: {title: 
             await router.push(`/products/filters?status=${type}`);
           }}
           intent="none"
-          className="flex justify-end p-2 my-2 ml-auto items-center"
+          className="my-2 ml-auto flex items-center justify-end rounded-full border border-slate-200 bg-white/80 px-4 py-2 hover:border-primary/30 hover:bg-blue-50"
         >
-          <span className="text-md text-gray-700">View All</span> <ArrowRight size={20} />
+          <span className="text-md text-primary">View All</span> <ArrowRight size={20} />
         </Button>
       )}
     </Card>

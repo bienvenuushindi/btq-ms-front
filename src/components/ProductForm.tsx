@@ -7,11 +7,13 @@ import Form from '@/components/forms/Form';
 import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
 import CategoryTreeMultipleSelection from "@/components/categories/CategoryTreeMultipleSelection";
+import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 
 export const ProductForm = ({product}: { product?: any }) => {
     const isAddMode = !product;
     const params = useParams();
     const router = useRouter();
+    const {startNavigation} = useRouteTransition();
     let initial = {name: '', short_description: '', description: '', active: false, country_origin: '', tags: '', categories: []};
     if (!isAddMode) {
         initial = {
@@ -49,11 +51,13 @@ export const ProductForm = ({product}: { product?: any }) => {
             if (isAddMode) {
                 await send('/products', formData);
                 toastShow('success', 'Product created successfully')
+                startNavigation('Returning to products...');
                 router.push('/products');
             } else {
                 const productID = params.id;
                 await send(`/products/${productID}`, formData, 'PUT');
                 toastShow('success', 'Product updated successfully')
+                startNavigation('Opening product details...');
                 router.push(`/products/${productID}`);
             }
 
@@ -65,28 +69,43 @@ export const ProductForm = ({product}: { product?: any }) => {
     };
 
     const content = {
-        header: 'Create a product',
+        header: isAddMode ? 'Create a product' : 'Update product',
         subheader: '',
         buttonText: 'Create'
     };
     const productForm = [
-        {
-            label: 'Name',
-            required: true,
-            placeholder: 'Product Name',
-            value: formState.name,
-            name: 'name',
-            type: 'text',
-            input_type: 'text',
-            className: '',
-            action: (e) => {
-                setFormState((s) => ({...s, name: e.target.value}));
+        [
+            {
+                label: 'Name',
+                required: true,
+                placeholder: 'Product name',
+                value: formState.name,
+                name: 'name',
+                type: 'text',
+                input_type: 'text',
+                className: '',
+                action: (e) => {
+                    setFormState((s) => ({...s, name: e.target.value}));
+                },
             },
-        },
+            {
+                label: 'Made in',
+                required: true,
+                placeholder: 'Select country of origin',
+                name: 'country',
+                input_type: 'select',
+                value: formState.country_origin,
+                className: '',
+                options: Object.keys(countries).map(code => ({code, name: countries[code]})),
+                action: (e) => {
+                    setFormState((s) => ({...s, country_origin: e.target.value}));
+                }
+            }
+        ],
         {
             label: 'Short Description',
             required: true,
-            placeholder: 'Product Bio',
+            placeholder: 'Short product summary',
             value: formState.short_description,
             name: 'short_description',
             input_type: 'text-area',
@@ -108,23 +127,10 @@ export const ProductForm = ({product}: { product?: any }) => {
             },
         },
         {
-            label: 'Made in',
-            required: true,
-            placeholder: 'Made in',
-            name: 'country',
-            input_type: 'select',
-            value: formState.country_origin,
-            className: '',
-            options: Object.keys(countries).map(code => ({code, name: countries[code]})),
-            action: (e) => {
-                setFormState((s) => ({...s, country_origin: e.target.value}));
-            }
-        },
-        {
-            label: 'Enter Some Tags ...',
+            label: 'Tags',
             required: false,
             name: 'tag_list',
-            placeholder: 'Add tag',
+            placeholder: 'Add tags',
             tags: formState.tags,
             suggestion_url: API_ENDPOINTS.SEARCH_TAGS,
             input_type: 'tag',
@@ -146,15 +152,16 @@ export const ProductForm = ({product}: { product?: any }) => {
             labelClassName: 'sr-only',
             name: 'active',
             checked: formState.active,
+            label: 'Active product',
             action: () => {
                 setFormState((s) => ({...s, active: !formState.active}));
             }
         },
         {
             input_type: 'button',
-            className: '',
+            className: 'w-full justify-center',
             type: 'submit',
-            placeholder: 'Submit'
+            placeholder: isAddMode ? 'Create product' : 'Update product'
         }
     ]
 
@@ -172,10 +179,15 @@ export const ProductForm = ({product}: { product?: any }) => {
 
     return (
         <ContainerOne>
-            <div className="w-full  mx-auto">
-                <div className="text-center">
-                    <h2 className="text-3xl mb-2 text-black">{content.header}</h2>
-                    <p className="tex-lg text-black/25">{content.subheader}</p>
+            <div className="w-full mx-auto">
+                <div className="mx-auto max-w-7xl">
+                    <div className="mb-4">
+                        <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Products</p>
+                        <h2 className="mt-2 font-display text-4xl font-bold text-slate-900">{content.header}</h2>
+                        <p className="mt-3 max-w-2xl text-base text-slate-500">
+                            Build a complete product profile with clear copy, category mapping, reusable tags, and imagery.
+                        </p>
+                    </div>
                     <div className="mx-auto">
                         <Form handleSubmit={handleSubmit} fields={fields}/>
                     </div>

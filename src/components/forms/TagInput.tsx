@@ -76,9 +76,9 @@ export default function TagInput({ action, defaultTags, suggestionUrl }: any) {
 
     return (
         <div className="relative w-full" ref={tagInputRef}>
-            <div className={clsx('tags-input-container', 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 -dark:bg-gray-700 -dark:border-gray-600 -dark:placeholder-gray-400 -dark:text-white -dark:focus:ring-blue-500 -dark:focus:border-blue-500')}>
+            <div className={clsx('tags-input-container oasis-field flex min-h-[56px] flex-wrap items-center gap-2 text-sm')}>
                 {tags.map((tag, index) => (
-                    <Badge variant="success" className="flex items-center p-1" key={index}>
+                    <Badge variant="success" className="flex items-center gap-1 rounded-full px-3 py-1.5" key={index}>
                         <span className="text">{tag}</span>
                         <span className="close " onClick={() => removeTag(index)}><XCircle size={15} /></span>
                     </Badge>
@@ -86,8 +86,8 @@ export default function TagInput({ action, defaultTags, suggestionUrl }: any) {
                 <input
                     type="text"
                     value={input}
-                    className="tags-input w-full"
-                    placeholder="Type something"
+                    className="tags-input min-w-[180px] flex-1 bg-transparent text-slate-900 placeholder:text-slate-400 focus:outline-none"
+                    placeholder="Type and press enter"
                     onKeyUp={onKeyUp}
                     onKeyDown={onKeyDown}
                     onChange={onChange}
@@ -95,7 +95,7 @@ export default function TagInput({ action, defaultTags, suggestionUrl }: any) {
                 />
             </div>
             {input &&
-                <div tabIndex={1} onBlur={() => setShowAutoComplete(false)} className={`absolute bg-white text-start p-2 max-h-40 overflow-x-hidden border w-full z-30 ${showAutoComplete ? '' : 'hidden'}`}>
+                <div tabIndex={1} onBlur={() => setShowAutoComplete(false)} className={`absolute z-30 mt-2 max-h-40 w-full overflow-x-hidden rounded-2xl border border-slate-200 bg-white p-3 text-start shadow-[0_18px_34px_rgba(15,23,42,0.12)] ${showAutoComplete ? '' : 'hidden'}`}>
                     <TagResultBox searchUrl={suggestionUrl} action={addTag} query={input} />
                 </div>
             }

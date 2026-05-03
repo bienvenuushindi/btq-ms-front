@@ -5,9 +5,11 @@ import {API_ENDPOINTS, send} from '@/lib/api';
 import Form from '@/components/forms/Form';
 import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
+import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 
 export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
     const router = useRouter();
+    const {startNavigation} = useRouteTransition();
     const path = useParams();
     const isAddMode = !variant
     let initial = {
@@ -74,10 +76,13 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
                 //submit promise
                 await send('/products/' + path.id + '/product_details', formData);
                 toastShow('success', 'Product created successfully')
+                startNavigation('Opening product details...');
                 router.push('/products/' + path.id);
             } else {
                 await send('/products/' + path.id + '/product_details/' + path.variant, formData, "PUT");
                 toastShow('success', 'Product updated successfully')
+                startNavigation('Opening product details...');
+                router.push('/products/' + path.id);
             }
         } catch (e) {
             setError(`Could not create product`);
@@ -87,32 +92,34 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
     };
 
     const productDetailForm = [
-        {
-            label: 'Size',
-            required: true,
-            placeholder: 'Product Size',
-            value: formState.size,
-            name: 'size',
-            type: 'text',
-            input_type: 'text',
-            className: '',
-            action: (e) => {
-                setFormState((s) => ({...s, size: e.target.value}));
+        [
+            {
+                label: 'Size',
+                required: true,
+                placeholder: 'Variant size',
+                value: formState.size,
+                name: 'size',
+                type: 'text',
+                input_type: 'text',
+                className: '',
+                action: (e) => {
+                    setFormState((s) => ({...s, size: e.target.value}));
+                },
             },
-        },
-        {
-            label: 'Expiration date',
-            required: true,
-            placeholder: 'Expired On',
-            value: formState.expired_date,
-            name: 'expired_date',
-            input_type: 'date',
-            type: 'date',
-            className: '',
-            action: (e) => {
-                setFormState((s) => ({...s, expired_date: e.target.value}));
-            },
-        },
+            {
+                label: 'Expiration date',
+                required: true,
+                placeholder: 'Expired on',
+                value: formState.expired_date,
+                name: 'expired_date',
+                input_type: 'date',
+                type: 'date',
+                className: '',
+                action: (e) => {
+                    setFormState((s) => ({...s, expired_date: e.target.value}));
+                },
+            }
+        ],
         {
             label: 'Choose currency',
             placeholder: 'Select Currency',
@@ -194,9 +201,9 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
             },
         },
         {
-            label: 'Enter Some Tags ...',
+            label: 'Tags',
             required: false,
-            placeholder: 'Add tag',
+            placeholder: 'Add tags',
             tags: formState.tags,
             suggestion_url: API_ENDPOINTS.SEARCH_TAGS,
             input_type: 'tag',
@@ -213,31 +220,37 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
             image_props: {photos, setPhotos}
         },
         {
-            label: 'Status',
             input_type: 'checkbox',
             className: '',
             checked: formState.status,
+            labelClassName: 'sr-only',
             action: (e) => {
                 setFormState((s) => ({...s, status: !formState.status}));
-            }
+            },
+            label: 'Active variant'
         },
         {
             input_type: 'button',
-            className: '',
+            className: 'w-full justify-center',
             type: 'submit',
-            placeholder: 'Submit'
+            placeholder: isAddMode ? 'Create variant' : 'Update variant'
         }
     ];
 
 
     return (
         <ContainerOne>
-            <div className="w-full lg:w-2/4 mx-auto">
-                <div className="text-center">
-                    <h2 className="text-3xl mb-2 text-black">{content.header}</h2>
-                    <p className="tex-lg text-black/25">{content.subheader}</p>
+            <div className="mx-auto w-full max-w-5xl">
+                <div className="mb-4">
+                    <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Product Variants</p>
+                    <h2 className="mt-2 font-display text-4xl font-bold text-slate-900">{content.header}</h2>
+                    <p className="mt-3 max-w-2xl text-base text-slate-500">
+                        Set pricing packs, shelf-life details, and media for this specific variant.
+                    </p>
                 </div>
-                <Form fields={productDetailForm} handleSubmit={handleSubmit}/>
+                <div className="oasis-panel p-6 lg:p-8">
+                    <Form fields={productDetailForm} handleSubmit={handleSubmit}/>
+                </div>
             </div>
         </ContainerOne>
     );

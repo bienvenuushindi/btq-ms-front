@@ -41,28 +41,28 @@ const RequisitionModal = ({
     return (
         <ModalContainer isOpen={modalIsOpen} onRequestClose={reInitializeState}>
             <ModalContent>
-                <ModalHeader closeModal={reInitializeState} title={'Add Product'}/>
+                <ModalHeader closeModal={reInitializeState} title={'Add Items to Requisition'}/>
                 <ModalBody>
-                    <div className={' focus-within:shadow-lg'}>
+                    <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
                         <SearchBar onSearch={updateParams}/>
-                        <div>{url ?
+                        <div className="mt-4">{url ?
                             <RequisitionProductSearchResults oldItems={oldItems}
                                                              url={url} setItems={setItems}/> :
-                            <span>Enter your query</span>}</div>
+                            <span className="text-sm text-slate-500">Search for products to add to this requisition.</span>}</div>
                     </div>
                     {items.length > 0 && (
-                        <div className="space-y-4 p-4 bg-gray-100 rounded-lg shadow-md">
-                            <span className="block text-sm font-medium text-gray-700">
-                                  {items.length} item(s)
+                        <div className="space-y-4 rounded-[24px] border border-slate-200 bg-orange-50/50 p-4 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
+                            <span className="block text-sm font-medium text-slate-700">
+                                  {items.length} item(s) selected
                             </span>
-                            <ul className="space-y-2 list-decimal list-inside">{itemsList}</ul>
+                            <ul className="space-y-2">{itemsList}</ul>
                         </div>
                     )}
                 </ModalBody>
                 <ModalFooter closeModal={reInitializeState}>
                     <div className="flex items-center">
-                        <Button type="button" variant="default" size="sm" onClick={handleSubmit}>
-                            Add
+                        <Button type="button" variant="default" size="sm" onClick={handleSubmit} className="oasis-button rounded-2xl px-4 py-2">
+                            Add to Requisition
                         </Button>
                     </div>
                 </ModalFooter>

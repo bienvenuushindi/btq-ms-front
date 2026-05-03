@@ -22,7 +22,7 @@ const InputFileImage = () => {
     handlePhotosArray(uploadedPhotos);
   };
   return (
-    <div className="mb-4 flex gap-2">
+    <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-start">
       <input
         id="photosUpload"
         type="file"
@@ -33,12 +33,16 @@ const InputFileImage = () => {
       />
       <label htmlFor="photosUpload">
         <a type="button"
-           className={clsx(' text-sm font-medium mr-2 rounded  border  border-dashed flex items-center',
-             photos.length !== MAX_AMOUNT && 'bg-gray-100 hover:border-gray-600 border-gray-500 hover:bg-gray-500 p-4',
+           className={clsx('flex min-h-[126px] min-w-[126px] flex-col items-center justify-center rounded-[24px] border border-dashed text-sm font-medium transition',
+             photos.length !== MAX_AMOUNT && 'border-slate-300 bg-slate-50 px-4 py-5 text-slate-500 hover:border-primary hover:bg-orange-50 hover:text-primary',
              photos.length === MAX_AMOUNT && 'bip-animation bg-red-100 px-2.5 py-0.5'
            )}>
           {photos.length === MAX_AMOUNT ? <span className=" text-red-800">Limit Reached</span> :
-            <Camera size={50} color="#bbbec4"/>}
+            <>
+              <Camera size={42} color="#94a3b8"/>
+              <span className="mt-3 text-center text-sm font-semibold">Upload photos</span>
+              <span className="mt-1 text-center text-xs text-slate-400">PNG, JPG, WEBP up to 5 files</span>
+            </>}
         </a>
       </label>
       <PhotoPreviewList photos={photos}/>

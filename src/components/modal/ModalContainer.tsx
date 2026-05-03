@@ -5,7 +5,7 @@ export default function ModalContainer({isOpen, onRequestClose, children}:any) {
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      overlayClassName="fixed inset-0 z-50 bg-[rgba(0,0,0,.6)] "
+      overlayClassName="fixed inset-0 z-50 bg-slate-950/45 backdrop-blur-[2px]"
       className={`fixed inset-0 flex items-center justify-center z-50 ${isOpen ? 'visible' : 'hidden'}`}
       ariaHideApp={false}
 

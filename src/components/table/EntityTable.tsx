@@ -30,7 +30,7 @@ const EntityTable = ({
     return (
         <>
             {searchable && (
-                <Card className="w-full relative justify-start my-2 bg-gray-50">
+                <Card className="w-full relative justify-start my-2 border border-slate-200/70 bg-white/95">
 
                     <div className="flex gap-2 items-center">
                         <SearchBar onSearch={updateParams}/>
@@ -43,7 +43,7 @@ const EntityTable = ({
 
                 </Card>
             )}
-            <Card className="w-full relative justify-start bg-gray-50">
+            <Card className="w-full relative justify-start border border-slate-200/70 bg-white/95">
                 <div className="flex justify-end w-full my-2">
                     {links && meta && <TableMetaData meta={meta}/>}
                 </div>

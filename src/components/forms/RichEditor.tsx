@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import DOMPurify from 'dompurify'
@@ -16,7 +16,7 @@ export default function RichEditor({ content, action }) {
             theme="snow"
             value={value}
             onChange={handleChange}
-            className="border border-gray-200 rounded-lg p-1 min-h-[300px] flex flex-col"
+            className="overflow-hidden rounded-[20px] border border-slate-200 bg-white min-h-[320px] flex flex-col shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]"
         />
     );
 }
