@@ -1,25 +1,27 @@
-'use client'
-import React from 'react';
-import ContainerOne from '@/components/utils/wrappers/ContainerOne';
-import Container from '@/components/utils/wrappers/Container';
-import Card from '@/components/utils/wrappers/Card';
-import {useFetcher} from '@/app/hooks/useFetcher';
-import ProtectedRoute from "@/components/ProtectedRoute";
+'use client';
 
+import React from 'react';
+import Container from '@/components/utils/wrappers/Container';
+import {useFetcher} from '@/app/hooks/useFetcher';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import {API_ENDPOINTS} from '@/lib/api';
+import UserForm from '@/components/account/UserForm';
+import Card from '@/components/utils/wrappers/Card';
 
 export default function Account() {
-    const {data} = useFetcher('/current_user')
-    return (
-        <ProtectedRoute>
-            <Container>
-                <ContainerOne>
-                    <h4 className="text-2xl font-bold">Account</h4>
-                    <div className="flex gap-2 w-full">
-                        <Card className="w-1/4">avatar</Card>
-                        <Card className="w-3/4">info</Card>
-                    </div>
-                </ContainerOne>
-            </Container>
-        </ProtectedRoute>
-    )
-};
+  const {data: user, isLoading} = useFetcher(API_ENDPOINTS.CURRENT_USER);
+
+  return (
+    <ProtectedRoute>
+      <Container>
+        {isLoading || !user ? (
+          <Card className="w-full border-slate-200/70 bg-white/95 p-6 text-sm text-slate-500">
+            Loading profile...
+          </Card>
+        ) : (
+          <UserForm user={user}/>
+        )}
+      </Container>
+    </ProtectedRoute>
+  );
+}

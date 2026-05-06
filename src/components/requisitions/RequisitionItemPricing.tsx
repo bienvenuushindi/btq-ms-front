@@ -12,6 +12,7 @@ import {RequisitionContext} from '@/components/requisitions/RequisitionContext';
 import clsx from 'clsx';
 import SwitchCurrency from '@/components/requisitions/item-page/SwitchCurrency';
 import {useFetcher} from "@/app/hooks/useFetcher";
+import {useSWRConfig} from 'swr';
 
 const formatCurrencyValue = (value) => {
   const numericValue = Number(value);
@@ -25,6 +26,7 @@ const formatCurrencyValue = (value) => {
 
 export default function RequisitionItemPricing({productDetails}) {
   const {requisitionID, requisition} = useContext(RequisitionContext)
+  const {mutate} = useSWRConfig();
   const {data: quantityType = {}} = useFetcher(API_ENDPOINTS.QUANTITY_TYPES);
   const {data: currencies = {}} = useFetcher( API_ENDPOINTS.CURRENCIES);
   const {currency} = useContext(RequisitionContext);
@@ -66,9 +68,11 @@ export default function RequisitionItemPricing({productDetails}) {
       await send('/requisitions/' + requisitionID + '/update_products/' + productDetails.product_detail_id, formData, 'PUT');
       if (supplierId != productDetails.supplier_id) productDetails.supplier_id = supplierId;
       toastShow('success', 'Updated Successfully');
+      await mutate(API_ENDPOINTS.REQUISITION_BY_ID(requisitionID));
       setLoading(false);
-    } catch (e) {
-      setError(`Could not create product`);
+    } catch (e: any) {
+      setLoading(false);
+      setError(e?.message || 'Could not update product');
     }
   };
   const pricingForm = [
@@ -192,9 +196,14 @@ export default function RequisitionItemPricing({productDetails}) {
   ];
 
   const convertedPrice=async (price)=>{
-    formState.price = price
-    formState.currency=currency
-  }
+    setFormState((s) => ({
+      ...s,
+      price,
+      currency,
+    }));
+    productDetails.price = price;
+    productDetails.currency = currency;
+  };
   const updateForm = (supplier) => {
     setSupplierId(supplier.id);
     if (supplier.id == productDetails.supplier_id) {
@@ -239,7 +248,7 @@ export default function RequisitionItemPricing({productDetails}) {
           id: productDetails.supplier_id,
           shop_name: productDetails.supplier_name,
         } : null}
-      />
+    />
       <div className="flex grow flex-col rounded-[18px] border border-slate-200 bg-slate-50 p-3">
         <div className="mb-3 flex justify-end">
           {productDetails.status ? <Badge variant={'success'}>Found Status</Badge> :

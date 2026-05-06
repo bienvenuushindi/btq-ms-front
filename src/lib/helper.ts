@@ -88,3 +88,31 @@ export const statusClasses = {
     expired: "bg-rose-500",
     inactive: "bg-slate-400",
 };
+
+export const isFoundStatus = (status: unknown) => {
+    if (typeof status === 'string') {
+        return ['true', 'found', 'yes', '1'].includes(status.toLowerCase());
+    }
+
+    return Boolean(status);
+};
+
+export const getRequisitionFoundItemsCount = (requisition: any) => {
+    const items = requisition?.product_items;
+
+    if (Array.isArray(items)) {
+        return items.filter((item) => isFoundStatus(item?.status)).length;
+    }
+
+    return Number(requisition?.count_products_bought) || 0;
+};
+
+export const getRequisitionItemsCount = (requisition: any) => {
+    const items = requisition?.product_items;
+
+    if (Array.isArray(items)) {
+        return items.length;
+    }
+
+    return Number(requisition?.count_products) || 0;
+};

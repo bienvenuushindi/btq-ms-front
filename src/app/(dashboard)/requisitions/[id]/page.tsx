@@ -17,6 +17,7 @@ import RequisitionLoader from "@/components/banners/RequisitionLoader";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import {Calendar, Package, ShoppingCart} from 'react-feather';
 import StatusIndicator from '@/components/utils/StatusIndicator';
+import {getRequisitionFoundItemsCount, getRequisitionItemsCount} from '@/lib/helper';
 
 export default function Requisition() {
     const {openBar} = useContext(SidebarContext);
@@ -28,6 +29,8 @@ export default function Requisition() {
         error,
         isLoading
     } = useFetcher(API_ENDPOINTS.REQUISITION_BY_ID(requisitionId));
+    const itemsCount = getRequisitionItemsCount(requisition);
+    const foundItemsCount = getRequisitionFoundItemsCount(requisition);
     return (
         <ProtectedRoute>
             <RequisitionProvider>
@@ -74,7 +77,7 @@ export default function Requisition() {
                                                             </span>
                                                             <div>
                                                                 <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400">Items in requisition</p>
-                                                                <p className="text-base font-bold text-slate-900">{requisition.count_products || 0}</p>
+                                                                <p className="text-base font-bold text-slate-900">{itemsCount}</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -85,7 +88,7 @@ export default function Requisition() {
                                                             </span>
                                                             <div>
                                                                 <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400">Items marked found</p>
-                                                                <p className="text-base font-bold text-slate-900">{requisition.count_products_bought || 0}</p>
+                                                                <p className="text-base font-bold text-slate-900">{foundItemsCount}</p>
                                                             </div>
                                                         </div>
                                                     </div>

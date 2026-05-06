@@ -81,7 +81,18 @@ export function send(path, body, method = 'POST') {
         headers: {
             Authorization:getTokenFromCookie(),
         },
-    }).then(response => response.json()).then(result => {
+    }).then(async (response) => {
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+            const message =
+                result?.error ||
+                result?.message ||
+                result?.errors?.join?.(', ') ||
+                'Request failed';
+            throw new Error(message);
+        }
+
         return result.data;
     });
 }

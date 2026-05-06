@@ -27,8 +27,8 @@ const RequisitionModal = ({
 
     useEffect(() => {
         if (requisition) {
-            const {product_items} = requisition;
-            setOldItems(product_items.map((item => item.id)))
+            const productItems = Array.isArray(requisition.product_items) ? requisition.product_items : [];
+            setOldItems(productItems.map((item => item.id)))
         }
     }, [requisition]);
 

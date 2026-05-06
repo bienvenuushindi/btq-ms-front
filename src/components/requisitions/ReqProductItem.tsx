@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import Badge from '@/components/utils/Badge';
 import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
 import {RequisitionContext} from '@/components/requisitions/RequisitionContext';
+import {isFoundStatus} from '@/lib/helper';
 
 const formatCurrencyValue = (value) => {
   const numericValue = Number(value);
@@ -22,6 +23,7 @@ export default function ReqProductItem({row, removeItem}) {
   const {setOpenBar, setSidebarData} = useContext(SidebarContext);
   const {requisition} = useContext(RequisitionContext);
   const isArchived = Boolean(requisition?.archived);
+  const found = isFoundStatus(row.status);
 
   const openDrawer = () => {
     setSidebarData(row);
@@ -40,10 +42,10 @@ export default function ReqProductItem({row, removeItem}) {
         onClick={openDrawer}
         className={clsx(
           'flex-1 rounded-[18px] border-l-4 bg-white px-4 py-3 text-left transition hover:bg-slate-50',
-          row.status ? 'border-emerald-600' : 'border-rose-600'
+          found ? 'border-emerald-600' : 'border-rose-600'
         )}
       >
-        <Title row={row} isArchived={isArchived}/>
+        <Title row={row} isArchived={isArchived} found={found}/>
       </button>
       {!isArchived ? (
         <Button size="small" intent="none" className="mx-1 mt-1 rounded-full border border-amber-200 bg-amber-50 text-sm hover:bg-amber-100" onClick={async () => {
@@ -56,7 +58,7 @@ export default function ReqProductItem({row, removeItem}) {
   );
 }
 
-const Title = ({row, isArchived}) => {
+const Title = ({row, isArchived, found}) => {
   return (
     <div className="flex min-w-0 items-start gap-3">
       <Image
@@ -74,8 +76,8 @@ const Title = ({row, isArchived}) => {
             <Text size="small" intent="secondary" className="block">{row.size}</Text>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant={row.status ? 'success' : 'danger'} size="small">
-              {row.status ? 'Found' : 'Pending'}
+            <Badge variant={found ? 'success' : 'danger'} size="small">
+              {found ? 'Found' : 'Pending'}
             </Badge>
             {row.quantity ? (
               <Badge variant="secondary" size="small">
@@ -90,7 +92,7 @@ const Title = ({row, isArchived}) => {
         </div>
         <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
           <span className="inline-flex items-center gap-1">
-            {row.status ? <CheckCircle size={14} className="text-emerald-600"/> : <Circle size={14} className="text-rose-600"/>}
+            {found ? <CheckCircle size={14} className="text-emerald-600"/> : <Circle size={14} className="text-rose-600"/>}
             {row.supplier_name ? `Supplier: ${row.supplier_name}` : row.supplier_id ? 'Supplier selected' : 'Supplier not selected'}
           </span>
           <span>Total: {row.price && row.quantity ? `${formatCurrencyValue(row.price * row.quantity)} ${row.currency || ''}` : 'Not set'}</span>
