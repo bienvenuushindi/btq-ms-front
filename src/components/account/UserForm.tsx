@@ -46,7 +46,10 @@ export default function UserForm({user}: {user: any}) {
   }, [user]);
 
   const isPlaceholderImage = (photo: any) => (
-    typeof photo === 'string' && photo.includes('no-img.png')
+    typeof photo === 'string' && (
+      photo.includes('no-img.png') ||
+      photo.includes('user-placeholder.svg')
+    )
   );
 
   const handleSubmit = async (e) => {
