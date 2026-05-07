@@ -8,6 +8,8 @@ import {truncateDescription} from "@/lib/helper";
 import {Button} from "@/components/ui/button";
 
 const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: { data:any, columns:any, tHeadProps:any, isLoading:any, loader?:any, onSorting?:any }) => {
+  const rows = Array.isArray(data) ? data : [];
+
   return (
     <div className="h-full w-full overflow-x-auto">
       <table className="min-w-[720px] w-full border-separate border-spacing-0 text-sm">
@@ -25,14 +27,14 @@ const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: {
           </tr>
         )}
         {isLoading ||
-          (data.length === 0 ? (
+          (rows.length === 0 ? (
             <tr className="bg-white">
               <td colSpan={columns.length} className="h-40 px-4 text-center text-sm text-slate-500">
                 No Data Found
               </td>
             </tr>
           ) : (
-            data.map((row, index) => (
+            rows.map((row, index) => (
               <tr
                 className="bg-white transition hover:bg-slate-50/80"
                 key={`row-${index}`}

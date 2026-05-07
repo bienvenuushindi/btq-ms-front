@@ -11,6 +11,8 @@ const resolveActionValue = (value, row) => (
 );
 
 const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, actions, onSorting}) => {
+    const rows = Array.isArray(data) ? data : [];
+
     return (
         <div className="relative w-full overflow-x-auto">
             <table className="min-w-[780px] w-full border-separate border-spacing-0 text-left text-sm">
@@ -29,13 +31,13 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
                         <TableLoader columnLength={columns.length}/>}
                     </td>
                 </tr>)}
-                {isLoading || (data.length === 0 ?
+                {isLoading || (rows.length === 0 ?
                     <tr
                         className="bg-white">
                         <td colSpan={columns.length + 1} className="h-40 px-4 text-center text-sm text-slate-500">No Data Found</td>
                     </tr>
                     :
-                    data.map((row, index) => (
+                    rows.map((row, index) => (
 
                         <tr
                             className="bg-white transition hover:bg-slate-50/80"

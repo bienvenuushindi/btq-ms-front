@@ -12,12 +12,15 @@ import { useFetcher } from '@/app/hooks/useFetcher';
 import { API_ENDPOINTS } from '@/lib/api';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
+import FilterCheckbox from '@/components/table/filter/FilterCheckbox';
+import {updateUrl} from '@/lib/helper';
 
 export default function RequisitionsPage() {
-  const [url, setUrl] = useState(API_ENDPOINTS.REQUISITIONS);
+  const [url, setUrl] = useState(() => updateUrl(API_ENDPOINTS.REQUISITIONS, {status: null}));
   const { data, meta, links, error, isLoading } = useFetcher(url);
   const router = useRouter();
   const {startNavigation} = useRouteTransition();
+  const [selectedFilter, setSelectedFilter] = useState('all');
   const columns = [
     {
       key: 'date',
@@ -58,6 +61,37 @@ export default function RequisitionsPage() {
     }
   ];
 
+  const Filters = () => {
+    const archiveFilter = {
+      all: null,
+      archived: 'archived',
+      not_archived: 'not_archived',
+    };
+
+    const handleFilterChange = (selectedFilters) => {
+      setUrl((prevUrl) => updateUrl(prevUrl, {status: selectedFilters}));
+    };
+
+    const field = {
+      name: 'status',
+      input_type: 'radio',
+      className: '',
+      value: selectedFilter,
+      options: ['all', 'archived', 'not_archived'],
+      action: (e) => {
+        setSelectedFilter(e.target.value);
+        handleFilterChange(archiveFilter[e.target.value]);
+      }
+    };
+
+    return (
+      <div className="flex space-x-2">
+        <h2 className="font-bold text-gray-500">Archive</h2>
+        <FilterCheckbox field={field}/>
+      </div>
+    );
+  };
+
   return (
     <ProtectedRoute>
       <Container>
@@ -73,6 +107,7 @@ export default function RequisitionsPage() {
               updateList={setUrl}
               columns={columns}
               entities="requisitions"
+              filters={<Filters/>}
             />
           </ErrorBoundary>
         </ContainerOne>

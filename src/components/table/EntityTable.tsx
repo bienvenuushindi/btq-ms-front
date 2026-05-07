@@ -29,10 +29,10 @@ const EntityTable = ({
 
     return (
         <>
-            {searchable && (
+            {(searchable || filters) && (
                 <Card className="relative my-2 w-full justify-start rounded-[24px] border border-slate-200/70 bg-white/95 p-3 sm:p-4">
                     <div className="flex flex-col gap-2.5 sm:gap-3 lg:flex-row lg:items-center">
-                        <SearchBar onSearch={updateParams} containerClassName="w-full lg:flex-1"/>
+                        {searchable ? <SearchBar onSearch={updateParams} containerClassName="w-full lg:flex-1"/> : <div className="hidden lg:block lg:flex-1" />}
                         <ShowRow updateCount={updateParams}/>
                         <div className="w-full lg:w-auto">
                             {filters}
