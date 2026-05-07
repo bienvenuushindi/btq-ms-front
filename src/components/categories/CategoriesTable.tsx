@@ -26,12 +26,6 @@ export default function CategoriesTable(){
             type: 'text',
             label: 'Description',
         }, {
-            key: 'active',
-            type: 'text',
-            label: ' Status',
-            sortable: true,
-            dataTransformation: (value: any) => <StatusIndicator active={value}/>,
-        }, {
             key: 'created_at',
             type: 'text',
             label: 'Created',
@@ -42,6 +36,12 @@ export default function CategoriesTable(){
             type: 'text',
             label: 'Numb of Products',
             sortable: true,
+        }, {
+            key: 'active',
+            type: 'text',
+            label: ' Status',
+            sortable: true,
+            dataTransformation: (value: any) => <StatusIndicator active={value}/>,
         },
     ];
     const actions = [

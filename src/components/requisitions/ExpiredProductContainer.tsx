@@ -172,7 +172,7 @@ export default function ExpiredProductContainer({title, type, limit}: {title: an
   }
 
   return (
-    <Card className="flex min-h-[420px] flex-col rounded-[30px] border-slate-200/80 bg-white p-4 shadow-sm">
+    <Card className="flex min-h-[420px] flex-col rounded-[30px] border-slate-200/80 bg-white p-3 sm:p-4 shadow-sm">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Shelf Life</p>
@@ -190,8 +190,8 @@ export default function ExpiredProductContainer({title, type, limit}: {title: an
         </span>
       </div>
 
-      <div className="mt-3 rounded-[28px] border border-slate-200 bg-slate-50/85 p-3">
-        <div className="mb-3 flex items-center justify-between gap-3 px-1">
+      <div className="mt-3 rounded-[28px] border border-slate-200 bg-slate-50/85 p-2.5 sm:p-3">
+        <div className="mb-3 flex flex-col gap-1 px-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
           <p className="text-sm font-semibold text-slate-700">{title}</p>
           <span className="text-xs text-slate-400">
             {limit ? `Showing up to ${limit}` : `${expiredProducts.length} item${expiredProducts.length === 1 ? '' : 's'}`}
@@ -213,7 +213,7 @@ export default function ExpiredProductContainer({title, type, limit}: {title: an
               return (
                 <div
                   key={item.id}
-                  className="flex items-center gap-3 rounded-[24px] border border-slate-200 bg-white px-3 py-3 shadow-[0_8px_20px_rgba(15,23,42,0.05)]"
+                  className="flex items-start gap-3 rounded-[24px] border border-slate-200 bg-white px-3 py-3 shadow-[0_8px_20px_rgba(15,23,42,0.05)]"
                 >
                   <ProductImage src={imageSrc} alt={productLabel}/>
 
@@ -230,31 +230,33 @@ export default function ExpiredProductContainer({title, type, limit}: {title: an
                     </div>
                   </div>
 
-                  <CustomPopover
-                    title={
-                      <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                        <MoreVertical size={18}/>
-                      </span>
-                    }
-                  >
-                    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_18px_34px_rgba(15,23,42,0.12)]">
-                      <div className="grid gap-1 p-2">
-                        <span className="px-2 pt-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">Actions</span>
-                        {actions.map((action) => (
-                          <Button
-                            key={`${item.id}-${action.label}`}
-                            size="small"
-                            intent="text"
-                            className="flex w-full items-center rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                            onClick={() => action.onClick(item)}
-                          >
-                            <span className="mr-2">{action.icon}</span>
-                            <span className={clsx('font-medium', action.className)}>{action.label}</span>
-                          </Button>
-                        ))}
+                  <div className="shrink-0 self-center sm:self-start">
+                    <CustomPopover
+                      title={
+                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
+                          <MoreVertical size={18}/>
+                        </span>
+                      }
+                    >
+                      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_18px_34px_rgba(15,23,42,0.12)]">
+                        <div className="grid gap-1 p-2">
+                          <span className="px-2 pt-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">Actions</span>
+                          {actions.map((action) => (
+                            <Button
+                              key={`${item.id}-${action.label}`}
+                              size="small"
+                              intent="text"
+                              className="flex w-full items-center rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                              onClick={() => action.onClick(item)}
+                            >
+                              <span className="mr-2">{action.icon}</span>
+                              <span className={clsx('font-medium', action.className)}>{action.label}</span>
+                            </Button>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  </CustomPopover>
+                    </CustomPopover>
+                  </div>
                 </div>
               );
             })

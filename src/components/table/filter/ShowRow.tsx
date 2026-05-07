@@ -20,16 +20,16 @@ export const ShowRow = ({updateCount}) => {
     }
   };
   return(
-    <div className="flex w-full items-center gap-2 sm:w-52">
+    <div className="flex w-full items-center gap-2 sm:w-56">
       {field.name && <label htmlFor={field.label}
-                            className={clsx('text-start text-sm font-semibold text-gray-500 -dark:text-white' )}>
+                            className={clsx('text-start text-sm font-semibold text-slate-500' )}>
           Show
       </label>}
       <SelectInput
         name={'show-count'}
         value={field.value}
         className={
-          clsx('block w-full rounded-xl bg-gray-50 py-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 -dark:border-gray-600 -dark:bg-gray-700 -dark:text-white -dark:placeholder-gray-400 -dark:focus:border-blue-500 -dark:focus:ring-blue-500', field.className)
+          clsx('block w-full rounded-2xl border-slate-200 bg-slate-50 py-2.5 text-sm text-slate-700 focus:border-slate-300 focus:ring-slate-100', field.className)
         }
         onChange={field.action} >
         <option value="">{field.placeholder}</option>

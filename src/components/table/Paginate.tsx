@@ -32,7 +32,6 @@ const Paginate = ({ meta, links, setUrl }) => {
         Page {currentPage} of {totalPages}
       </div>
       {Object.keys(links).map((key) => {
-        // Determine if the button should be displayed
         const shouldDisplayButton =
           key === 'self' ||
           (meta['pages'] === 2 && (key === 'last' || key === 'first'));

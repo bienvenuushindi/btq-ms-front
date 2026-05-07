@@ -2,12 +2,13 @@
 import {API_ENDPOINTS} from '@/lib/api';
 import {useRouter, useSearchParams} from 'next/navigation';
 import React, {useState} from 'react';
+import Image from 'next/image';
 import ProductsTableLoader from '@/components/banners/ProductsTableLoader';
 import EntityTable from '@/components/table/EntityTable';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import {Archive, Edit, RotateCcw} from 'react-feather';
 import FilterCheckbox from '@/components/table/filter/FilterCheckbox';
-import {updateUrl} from '@/lib/helper';
+import {getImageUrls, updateUrl} from '@/lib/helper';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 import {send} from '@/lib/api';
@@ -66,23 +67,26 @@ export default function ProductsTable() {
 
     const columns = [
         {
-            key: 'active',
-            sortable: true,
-            label: 'Status',
-            dataTransformation: (value: any) => (
-                <StatusIndicator active={value}/>
-            )
-        },
-        {
-            key: 'image_urls',
-            type: 'picture',
-            label: 'Image',
-            dataTransformation: (value: any) => value?.[0]
-        },
-        {
             key: 'name',
-            label: 'Product',
+            label: 'Product Name',
             sortable: true,
+            dataTransformation: (value: any, row: any) => {
+                const imageSrc = getImageUrls(row.image_urls || [])[0];
+
+                return (
+                    <div className="flex min-w-0 items-center gap-3">
+                        <Image
+                            src={imageSrc}
+                            alt={value}
+                            width={36}
+                            height={36}
+                            className="h-9 w-9 rounded-full border border-slate-200 bg-white object-cover"
+                            priority
+                        />
+                        <span className="truncate font-semibold text-slate-900">{value}</span>
+                    </div>
+                );
+            }
         },
         {
             key: 'product_details',
@@ -123,6 +127,14 @@ export default function ProductsTable() {
                 startNavigation('Opening product details...');
                 await router.push('/products/' + data.id);
             }
+        },
+        {
+            key: 'active',
+            sortable: true,
+            label: 'Status',
+            dataTransformation: (value: any) => (
+                <StatusIndicator active={value}/>
+            )
         },
     ];
 

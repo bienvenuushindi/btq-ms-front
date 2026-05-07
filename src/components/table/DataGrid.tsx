@@ -10,38 +10,39 @@ import {Button} from "@/components/ui/button";
 const DataGrid = ({ data, columns, tHeadProps, isLoading, loader, onSorting }: { data:any, columns:any, tHeadProps:any, isLoading:any, loader?:any, onSorting?:any }) => {
   return (
     <div className="h-full w-full overflow-x-auto">
-      <table className="min-w-[720px] w-full text-sm">
-        <thead className="bg-[#1f4254] text-xs uppercase text-primary-foreground">
+      <table className="min-w-[720px] w-full border-separate border-spacing-0 text-sm">
+        <thead className="sticky top-0 z-[1] bg-white text-xs">
         <tr>
           <RenderTableHead tHeadProps={tHeadProps} columns={columns} onSorting={onSorting} />
         </tr>
         </thead>
         <tbody>
         {isLoading && (
-          <tr>
-            <td colSpan={columns.length} className="text-center">
+          <tr className="bg-white">
+            <td colSpan={columns.length} className="px-4 py-10 text-center">
               {loader || <TableLoader columnLength={columns.length} />}
             </td>
           </tr>
         )}
         {isLoading ||
           (data.length === 0 ? (
-            <tr>
-              <td colSpan={columns.length} className="text-center h-40">
+            <tr className="bg-white">
+              <td colSpan={columns.length} className="h-40 px-4 text-center text-sm text-slate-500">
                 No Data Found
               </td>
             </tr>
           ) : (
             data.map((row, index) => (
               <tr
-                className=" border-b"
+                className="bg-white transition hover:bg-slate-50/80"
                 key={`row-${index}`}
               >
                 {columns.map((column,colIndex) => (
                   <td
                     key={`tr-${index}-td-${colIndex}-${column.key ? column.key : ''}`}
                     className={clsx(
-                      'px-2 py-3 align-top text-xs sm:text-sm',
+                      'border-b border-slate-300 px-4 py-3.5 align-middle text-xs text-slate-600 sm:text-sm',
+                      index === 0 && 'first:rounded-tl-[18px] last:rounded-tr-[18px]',
                       column.key ? 'table-cell' : 'flex justify-start '
                     )}
                   >
@@ -62,7 +63,7 @@ export const renderCell = (column, value: any) => {
   }
   let transformedValue;
   if (value) {
-    transformedValue = column.dataTransformation?.(value[column.key]) || value[column.key];
+    transformedValue = column.dataTransformation?.(value[column.key], value) || value[column.key];
   } else {
     transformedValue = value[column.key];
   }
@@ -101,26 +102,25 @@ export const renderCell = (column, value: any) => {
       }}>{column.label}</Button>;
     case 'picture':
       return (
-        <div className="flex gap-1 items-center">
+        <div className="flex items-center">
           <Image
             src={transformedValue}
             alt="Image"
-            className="rounded-md border border-gray-100"
-            width={60}
-            height={60}
+            className="h-9 w-9 rounded-full border border-slate-200 bg-white object-cover"
+            width={36}
+            height={36}
             priority
           />
-          {/*<span>{column.label}</span>*/}
         </div>
       );
     case 'description':
       return (
-          <span className="text-gray-500">
+          <span className="text-slate-500">
              {truncateDescription(transformedValue,100)}
           </span>
       )
     default:
-      return <span className={clsx(['size', 'date' ,'total_price', 'shop_name', 'name', 'unit_price', 'box_price', 'dozen_price'].includes(column.key)? 'font-bold' : 'text-gray-500')}>{transformedValue}</span>;
+      return <span className={clsx(['size', 'date' ,'total_price', 'shop_name', 'name', 'unit_price', 'box_price', 'dozen_price'].includes(column.key)? 'font-semibold text-slate-900' : 'text-slate-500')}>{transformedValue}</span>;
   }
 };
 export const RenderTableHead = ({ columns, onSorting, tHeadProps }) => {
@@ -139,27 +139,27 @@ export const RenderTableHead = ({ columns, onSorting, tHeadProps }) => {
       {columns.map((column) => (
         <th
           scope="col"
-          className="p-1.5 sm:p-2"
+          className="border-b border-slate-200 bg-slate-50/80 px-4 py-3 text-left first:rounded-tl-[18px] last:rounded-tr-[18px]"
           {...tHeadProps}
           key={`thead-${column.key as React.Key}-${column.label}`}
         >
-          <div className="flex items-center justify-start gap-1">
-            <span className="py-1 text-left text-[11px] font-medium uppercase tracking-[0.18em] text-white sm:text-xs sm:tracking-wider">{column.label}</span>
+          <div className="flex items-center justify-start gap-1.5">
+            <span className="py-1 text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500 sm:text-xs">{column.label}</span>
             {column.sortable && (
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-6 w-6 rounded-none bg-transparent p-0 text-white shadow-none hover:bg-transparent focus-visible:bg-transparent"
+                className="h-6 w-6 rounded-full bg-transparent p-0 text-slate-400 shadow-none hover:bg-slate-100 hover:text-slate-600 focus-visible:bg-slate-100"
                 onClick={() => handleSort(column.key)}
               >
                 {params.sort === column.key ? (
                   params.direction === 'asc' ? (
-                    <ArrowUp size={12} color="#FFFFFF" />
+                    <ArrowUp size={12} color="#64748b" />
                   ) : (
-                    <ArrowDown size={12} color="#FFFFFF" />
+                    <ArrowDown size={12} color="#64748b" />
                   )
                 ) : (
-                  <ArrowDown size={12} color="#FFFFFF"/>
+                  <ArrowDown size={12} color="#cbd5e1"/>
                 )}
               </Button>
             )}

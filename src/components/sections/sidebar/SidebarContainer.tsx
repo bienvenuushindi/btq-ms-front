@@ -23,13 +23,13 @@ export const SidebarContainer = ({title, children}:any) => {
           setOpenBar((prev) => ({...prev, state: false}));
         }}
         tabIndex={-1}
-        className={clsx('bg-[rgba(0,0,0,.4)] flex justify-center items-center fixed top-0 left-0  h-screen w-full', !openBar.state && 'hidden')}
+        className={clsx('fixed top-0 left-0 z-[55] flex h-screen w-full items-center justify-center bg-[rgba(0,0,0,.4)]', !openBar.state && 'hidden')}
         style={{height: `${maxHeight}px`}} // Set the height dynamically
       ></div>
 
       <div
         className={clsx(
-          'fixed top-0 right-0 bottom-0 z-50 border-gray-700 bg-white shadow ease-in-out delay-150 duration-300',
+          'fixed top-0 right-0 bottom-0 z-[60] border-gray-700 bg-white shadow ease-in-out delay-150 duration-300',
           openBar.panelClassName || 'w-full sm:w-[400px]',
           openBar.state ? 'translate-x-0' : 'translate-x-full'
         )}

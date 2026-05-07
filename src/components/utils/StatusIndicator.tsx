@@ -1,4 +1,4 @@
-import Dot from '@/components/utils/Dot';
+import Badge from '@/components/utils/Badge';
 
 type StatusIndicatorProps = {
   active: boolean;
@@ -16,16 +16,14 @@ export default function StatusIndicator({
   const label = active ? activeLabel : inactiveLabel;
 
   return (
-    <span
+    <Badge
       title={label}
       aria-label={label}
-      className={`inline-flex items-center justify-center ${className}`}
+      variant={active ? 'success' : 'danger'}
+      size="small"
+      className={`px-3 py-1 font-semibold ${className}`}
     >
-      <Dot
-        variant={active ? 'success' : 'danger'}
-        size="small"
-        className="mr-0"
-      />
-    </span>
+      {label}
+    </Badge>
   );
 }

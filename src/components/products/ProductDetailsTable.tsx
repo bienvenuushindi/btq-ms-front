@@ -3,10 +3,12 @@ import {useContext} from 'react';
 import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
 import {Edit, Trash2} from 'react-feather';
 import {useParams, useRouter} from 'next/navigation';
+import Image from 'next/image';
 import EntityTable from '@/components/table/EntityTable';
 import DateDisplay from "@/components/DateDisplay";
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 import StatusIndicator from '@/components/utils/StatusIndicator';
+import {getImageUrls} from '@/lib/helper';
 
 export const ProductDetailsTable = ({product, isLoading}) => {
   const {setOpenBar, setSidebarData} = useContext(SidebarContext);
@@ -39,21 +41,28 @@ export const ProductDetailsTable = ({product, isLoading}) => {
   ];
   const columns = [
     {
-      key: 'image_urls',
-      type: 'picture',
-      label: '',
-      className:'w-full bg-gray-600',
-      dataTransformation: (value: any) => value[0],
-      // action: (data) => {
-      //   // setOpenBar({state: true, target: 'supplier_details'});
-      //   // setSidebarData(data.attributes);
-      // }
-    },
-    {
       key: 'size',
       type: 'text',
       label: 'Variants',
-      dataTransformation: (value: any) => <span>{product.name}<br/>{value.toUpperCase()}</span>,
+      dataTransformation: (value: any, row: any) => {
+        const imageSrc = getImageUrls(row.image_urls || [])[0] || '/images/product-placeholder.png';
+
+        return (
+          <div className="flex min-w-0 items-center gap-3">
+            <Image
+              src={imageSrc}
+              alt={`${product.name} ${value}`}
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded-full border border-slate-200 bg-white object-cover"
+              priority
+            />
+            <span className="min-w-0 font-semibold text-slate-900">
+              {product.name}<br/>{value.toUpperCase()}
+            </span>
+          </div>
+        );
+      },
     },
     {
       key: 'unit_price',

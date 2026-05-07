@@ -27,21 +27,21 @@ function DashboardMetricCard({ icon, label, value, detail, tone = 'slate', href,
 
   return (
     <Card className={`rounded-[18px] border border-slate-200/90 shadow-[0_8px_18px_rgba(15,23,42,0.04)] ${toneClasses[tone]}`}>
-      <CardContent className="flex h-full flex-col gap-2 p-3">
+      <CardContent className="flex h-full flex-col gap-2 p-3 sm:p-4">
         <div className="flex items-center justify-between gap-3">
           <span className="text-xs font-semibold leading-snug text-slate-600">{label}</span>
           <span className="shrink-0 rounded-full bg-white/80 p-1.5 text-slate-600 ring-1 ring-inset ring-slate-200/80">
             {icon}
           </span>
         </div>
-        <div className="font-display text-[1.45rem] font-bold md:text-[1.6rem]">{value}</div>
-        <div className="min-h-[2rem] text-xs leading-5 text-slate-500">{detail}</div>
+        <div className="font-display text-[1.25rem] font-bold sm:text-[1.35rem] md:text-[1.6rem]">{value}</div>
+        <div className="min-h-[2.5rem] text-xs leading-5 text-slate-500">{detail}</div>
         {hasAction ? (
           <div className="pt-0.5">
             <TransitionLink
               href={href!}
               loadingMessage={loadingMessage || 'Opening page...'}
-              className="inline-flex w-fit max-w-full rounded-lg border border-slate-200 bg-white/80 px-2.5 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-100"
+              className="inline-flex w-full justify-center rounded-lg border border-slate-200 bg-white/80 px-2.5 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 sm:w-fit"
             >
               {actionLabel}
             </TransitionLink>
