@@ -1,7 +1,8 @@
 'use client'
 import SidebarLink from "@/components/sections/menu-sidebar/SidebarLink";
 import clsx from "clsx";
-import {Package} from "react-feather";
+import Image from 'next/image';
+import {BRAND_ADMIN_LABEL, BRAND_LOGO, BRAND_NAME} from '@/lib/brand';
 
 const sections = [
   {
@@ -44,12 +45,12 @@ const Sidebar = ({
             <div className={clsx("transition-all duration-300", isCollapsed ? 'w-auto p-2' : 'w-full')}>
               <div className={clsx("flex items-center", isCollapsed ? 'justify-center' : 'gap-3')}>
                 <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-white shadow-[0_12px_24px_rgba(255,122,53,0.3)]">
-                  <Package className="h-5 w-5" />
+                  <Image src={BRAND_LOGO} alt={BRAND_NAME} width={40} height={40} className="h-10 w-10 rounded-2xl object-cover" />
                 </div>
                 {!isCollapsed && (
                   <div>
-                    <p className="font-display text-[2rem] font-bold leading-none text-white">OasisMarket</p>
-                    <p className="mt-1 text-sm text-slate-300">Admin Dashboard</p>
+                    <p className="font-display text-[2rem] font-bold leading-none text-white">{BRAND_NAME}</p>
+                    <p className="mt-1 text-sm text-slate-300">{BRAND_ADMIN_LABEL}</p>
                   </div>
                 )}
               </div>
@@ -91,7 +92,7 @@ const Sidebar = ({
                 </div>
                 {!isCollapsed && (
                   <div>
-                    <p className="text-base font-semibold text-white">OasisMarket Admin</p>
+                    <p className="text-base font-semibold text-white">{BRAND_NAME} Admin</p>
                     <p className="text-sm text-slate-300">Super Admin</p>
                   </div>
                 )}

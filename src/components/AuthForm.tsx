@@ -3,7 +3,8 @@
 import { register, signin } from '@/lib/api';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { BarChart2, CheckCircle, Package, Shield, Truck } from 'react-feather';
+import Image from 'next/image';
+import { BarChart2, CheckCircle, Shield, Truck } from 'react-feather';
 import { useCallback, useState, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,13 +16,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import {BRAND_ADMIN_LABEL, BRAND_LOGO, BRAND_NAME} from '@/lib/brand';
 
 const registerContent = {
   linkUrl: '/signin',
   linkText: 'Already have an account?',
   linkCta: 'Sign in',
   eyebrow: 'New workspace',
-  header: 'Create your OasisMarket account',
+  header: `Create your ${BRAND_NAME} account`,
   subheader: 'Start managing products, suppliers, and requisitions from one admin workspace.',
   buttonText: 'Create Account',
   sideTitle: 'Build a calmer operations flow.',
@@ -148,11 +150,11 @@ export default function AuthForm({ mode }: { mode: 'register' | 'signin' }) {
         <div className="relative z-10">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-[22px] bg-primary text-white shadow-[0_18px_34px_rgba(255,122,53,0.28)]">
-              <Package className="h-5 w-5" />
+              <Image src={BRAND_LOGO} alt={BRAND_NAME} width={40} height={40} className="h-10 w-10 rounded-[18px] object-cover" />
             </div>
             <div>
-              <p className="font-display text-[2rem] font-bold leading-none text-white">OasisMarket</p>
-              <p className="mt-1 text-sm text-slate-300">Admin Dashboard</p>
+              <p className="font-display text-[2rem] font-bold leading-none text-white">{BRAND_NAME}</p>
+              <p className="mt-1 text-sm text-slate-300">{BRAND_ADMIN_LABEL}</p>
             </div>
           </div>
           <div className="mt-16 max-w-xl">
@@ -201,11 +203,11 @@ export default function AuthForm({ mode }: { mode: 'register' | 'signin' }) {
           <CardHeader className="border-b border-slate-200/80 px-6 pb-6 pt-7 sm:px-8">
             <div className="flex items-center gap-3 lg:hidden">
               <div className="flex h-11 w-11 items-center justify-center rounded-[20px] bg-primary text-white shadow-[0_12px_24px_rgba(255,122,53,0.28)]">
-                <Package className="h-5 w-5" />
+                <Image src={BRAND_LOGO} alt={BRAND_NAME} width={36} height={36} className="h-9 w-9 rounded-[16px] object-cover" />
               </div>
               <div>
-                <p className="font-display text-2xl font-bold text-slate-900">OasisMarket</p>
-                <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Admin Dashboard</p>
+                <p className="font-display text-2xl font-bold text-slate-900">{BRAND_NAME}</p>
+                <p className="text-xs uppercase tracking-[0.24em] text-slate-400">{BRAND_ADMIN_LABEL}</p>
               </div>
             </div>
             <div className="mt-5 lg:mt-0">

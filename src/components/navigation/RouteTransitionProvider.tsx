@@ -2,7 +2,8 @@
 
 import React, {createContext, useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {usePathname, useSearchParams} from 'next/navigation';
-import {Package} from 'react-feather';
+import Image from 'next/image';
+import {BRAND_LOGO, BRAND_NAME} from '@/lib/brand';
 
 type RouteTransitionContextValue = {
   isNavigating: boolean;
@@ -17,9 +18,9 @@ function RouteTransitionOverlay({message}: {message: string}) {
     <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/30 backdrop-blur-sm">
       <div className="w-[min(92vw,30rem)] rounded-[32px] border border-white/60 bg-white px-8 py-10 text-center shadow-[0_28px_60px_rgba(15,23,42,0.18)]">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-[22px] bg-primary text-white shadow-[0_18px_34px_rgba(255,122,53,0.28)]">
-          <Package className="h-7 w-7" />
+          <Image src={BRAND_LOGO} alt={BRAND_NAME} width={64} height={64} className="h-16 w-16 rounded-[22px] object-cover" />
         </div>
-        <h2 className="mt-6 font-display text-4xl font-bold text-slate-900">OasisMarket</h2>
+        <h2 className="mt-6 font-display text-4xl font-bold text-slate-900">{BRAND_NAME}</h2>
         <p className="mt-3 text-lg font-medium text-slate-700">{message}</p>
         <div className="mx-auto mt-6 h-2.5 w-40 overflow-hidden rounded-full bg-slate-200">
           <div className="h-full w-1/2 animate-[pulse_1.1s_ease-in-out_infinite] rounded-full bg-primary" />

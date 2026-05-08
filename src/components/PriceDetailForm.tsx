@@ -41,12 +41,17 @@ export const PriceDetailForm = ({
 
   const [formState, setFormState] = useState({ ...initialFormState });
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeSizes, setActiveSizes] = useState(
     sizes.map((size) => Boolean(initialPrices[size.code]))
   );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
+    setError('');
+    setIsSubmitting(true);
     const formData = new FormData();
 
     // Append non-price fields
@@ -84,6 +89,9 @@ export const PriceDetailForm = ({
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Could not save supplier pricing');
+      toastShow('error', error instanceof Error ? error.message : 'Could not save supplier pricing');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -167,7 +175,8 @@ export const PriceDetailForm = ({
       input_type: 'button',
       className: 'w-full justify-center',
       type: 'submit',
-      placeholder: 'Save pricing',
+      disabled: isSubmitting,
+      placeholder: isSubmitting ? 'Saving pricing...' : 'Save pricing',
     },
   ];
 

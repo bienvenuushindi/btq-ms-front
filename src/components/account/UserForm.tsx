@@ -37,6 +37,7 @@ export default function UserForm({user}: {user: any}) {
   const initialState = useMemo(() => buildInitialState(user), [user]);
   const [formState, setFormState] = useState(initialState);
   const [photos, setPhotos] = useState<string[] | File[]>(user?.image_urls || []);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setFormState(initialState);
@@ -55,7 +56,9 @@ export default function UserForm({user}: {user: any}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user?.id) return;
+    if (!user?.id || isSubmitting) return;
+
+    setIsSubmitting(true);
 
     const formData = new FormData();
     Object.entries(formState).forEach(([key, value]) => {
@@ -77,6 +80,8 @@ export default function UserForm({user}: {user: any}) {
       window.location.reload();
     } catch (error) {
       toastShow('error', 'Could not update profile');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -181,7 +186,8 @@ export default function UserForm({user}: {user: any}) {
         input_type: 'button',
         className: 'w-full justify-center',
         type: 'submit',
-        placeholder: 'Save Changes',
+        disabled: isSubmitting,
+        placeholder: isSubmitting ? 'Saving changes...' : 'Save Changes',
       },
     ],
     right: [

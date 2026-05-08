@@ -64,6 +64,7 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
     const [formState, setFormState] = useState({...initial});
     const [error, setError] = useState('');
     const [photos, setPhotos] = useState(getImageUrls());
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         if (!isAddMode) return;
@@ -78,6 +79,10 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (isSubmitting) return;
+
+        setError('');
+        setIsSubmitting(true);
         const formData = new FormData();
         Object.keys(formState).forEach((key) => {
             formData.append(`product_detail[${key}]`, formState[key]);
@@ -113,9 +118,11 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
                 router.push('/products/' + path.id);
             }
         } catch (e) {
-            setError(`Could not create product`);
+            const message = e instanceof Error ? e.message : `Could not ${isAddMode ? 'create' : 'update'} product variant`;
+            setError(message);
+            toastShow('error', message);
         } finally {
-            // setFormState({...initial});
+            setIsSubmitting(false);
         }
     };
 
@@ -261,7 +268,10 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
             input_type: 'button',
             className: 'w-full justify-center',
             type: 'submit',
-            placeholder: isAddMode ? 'Create variant' : 'Update variant'
+            disabled: isSubmitting,
+            placeholder: isSubmitting
+                ? (isAddMode ? 'Creating variant...' : 'Updating variant...')
+                : (isAddMode ? 'Create variant' : 'Update variant')
         }
     ];
 
@@ -276,6 +286,11 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
                         Set pricing packs, shelf-life details, and media for this specific variant.
                     </p>
                 </div>
+                {error && (
+                    <div className="mb-4 rounded-[22px] border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium leading-6 text-rose-700">
+                        {error}
+                    </div>
+                )}
                 <div className="oasis-panel p-6 lg:p-8">
                     <Form fields={productDetailForm} handleSubmit={handleSubmit}/>
                 </div>

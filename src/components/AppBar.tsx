@@ -5,6 +5,7 @@ import { AccountPopover } from '@/components/AccountPopover';
 import {usePopover} from '@/app/hooks/usePopover';
 import clsx from 'clsx';
 import {usePathname} from 'next/navigation';
+import {BRAND_NAME} from '@/lib/brand';
 
 const pageTitles: Record<string, string> = {
   home: 'Dashboard Overview',
@@ -21,7 +22,7 @@ const AppBar = (props) => {
   const accountPopover = usePopover();
   const pathname = usePathname();
   const pathKey = pathname.split('/')[1] || 'home';
-  const title = pageTitles[pathKey] || 'OasisMarket';
+  const title = pageTitles[pathKey] || BRAND_NAME;
 
   return (
     <>

@@ -13,6 +13,7 @@ import DashboardStats from '@/components/pages/dashboard/DashboardStats';
 import CreateRequisition from '@/components/CreateRequisition';
 import CreateCategory from '@/components/categories/CreateCategory';
 import {Plus} from 'react-feather';
+import {BRAND_NAME} from '@/lib/brand';
 
 export default function HomePage() {
   const [date, setDate] = useState<Date | undefined>(undefined);
@@ -64,7 +65,7 @@ export default function HomePage() {
           <Card className="w-full rounded-[22px] border-slate-200/90 bg-white">
             <CardHeader className="px-4 pb-2 pt-5 sm:px-6">
               <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Overview</p>
-              <CardTitle className="font-display text-[1.35rem] font-bold text-slate-900 sm:text-[1.5rem] md:text-[1.75rem]">OasisMarket Snapshot</CardTitle>
+              <CardTitle className="font-display text-[1.35rem] font-bold text-slate-900 sm:text-[1.5rem] md:text-[1.75rem]">{BRAND_NAME} Snapshot</CardTitle>
               <CardDescription>
                 A clean view of stock health, recent requisition activity, and the items that need attention first.
               </CardDescription>

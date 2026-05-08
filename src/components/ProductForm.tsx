@@ -141,9 +141,9 @@ export const ProductForm = ({product}: { product?: any }) => {
             },
         },
         {
-            label: 'Description',
-            required: true,
-            placeholder: 'Description',
+            label: 'Description (Optional)',
+            required: false,
+            placeholder: 'Description (optional)',
             value: formState.description,
             name: 'description',
             input_type: 'rich-text-area',

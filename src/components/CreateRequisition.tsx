@@ -28,6 +28,7 @@ export default function CreateRequisition({
 }: CreateRequisitionProps) {
   const {data: currencies={}} = useFetcher( API_ENDPOINTS.CURRENCIES);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   const router = useRouter();
@@ -61,7 +62,11 @@ export default function CreateRequisition({
   const [formState, setFormState] = useState({...initial});
 
   const [date, setDate] = useState(getNextDay());
-  const createRequisition = async () => {
+  const createRequisition = async (e?) => {
+    e?.preventDefault?.();
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     const formData = new FormData();
     Object.keys(formState).forEach((key) => {
       formData.append(`requisition[${key}]`, formState[key]);
@@ -77,6 +82,7 @@ export default function CreateRequisition({
     } catch (e) {
       console.log(`Could not create requisition`);
     } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -132,7 +138,8 @@ export default function CreateRequisition({
           </ModalBody>
           <ModalFooter closeModal={closeModal}>
             <Button onClick={() => createRequisition()} size="small" intent={'primary'}
-                    className="oasis-button rounded-2xl px-4 py-2">Create Requisition</Button>
+                    disabled={isSubmitting}
+                    className="oasis-button rounded-2xl px-4 py-2">{isSubmitting ? 'Creating requisition...' : 'Create Requisition'}</Button>
           </ModalFooter>
         </ModalContent>
 

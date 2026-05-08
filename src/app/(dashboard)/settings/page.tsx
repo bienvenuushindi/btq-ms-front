@@ -4,9 +4,10 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import Container from '@/components/utils/wrappers/Container';
 import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
+import {BRAND_NAME} from '@/lib/brand';
 
 const settingsFields = [
-  ['Platform Name', 'OasisMarket'],
+  ['Platform Name', BRAND_NAME],
   ['Default Currency', 'USD'],
   ['Free Delivery Threshold', '50,000'],
   ['Default Delivery Fee', '2,000'],
@@ -22,7 +23,7 @@ export default function SettingsPage() {
           <Card className="w-full max-w-4xl rounded-[30px] border-slate-200/90 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
             <CardHeader className="border-b border-slate-200/90 pb-6">
               <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Platform settings</p>
-              <CardTitle className="font-display text-4xl font-bold text-slate-900">OasisMarket Controls</CardTitle>
+              <CardTitle className="font-display text-4xl font-bold text-slate-900">{BRAND_NAME} Controls</CardTitle>
               <CardDescription>
                 Core operating defaults for the marketplace workspace.
               </CardDescription>

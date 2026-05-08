@@ -30,7 +30,13 @@ export default function CategoryForm({category = null}: { category?: any }) {
   }
   const [formState, setFormState] = useState({...initial});
   const [error, setError] = useState('');
-  const createCategory = async () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const createCategory = async (e?) => {
+    e?.preventDefault?.();
+    if (isSubmitting) return;
+
+    setError('');
+    setIsSubmitting(true);
     const formData = new FormData();
 
     Object.keys(formState).forEach((key) => {
@@ -60,8 +66,11 @@ export default function CategoryForm({category = null}: { category?: any }) {
       }
 
     } catch (e) {
-      console.log(`Could not create category`);
+      const message = e instanceof Error ? e.message : `Could not ${isAddMode ? 'create' : 'update'} category`;
+      setError(message);
+      toastShow('error', message);
     } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -112,7 +121,10 @@ export default function CategoryForm({category = null}: { category?: any }) {
       input_type: 'button',
       className: 'w-full justify-center',
       type: 'submit',
-      placeholder: isAddMode ? 'Create category' : 'Update category'
+      disabled: isSubmitting,
+      placeholder: isSubmitting
+        ? (isAddMode ? 'Creating category...' : 'Updating category...')
+        : (isAddMode ? 'Create category' : 'Update category')
     }
   ];
   return (
@@ -126,6 +138,11 @@ export default function CategoryForm({category = null}: { category?: any }) {
           </p>
         </div>
         <div className="oasis-panel p-6 lg:p-8">
+          {error && (
+            <div className="mb-4 rounded-[22px] border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium leading-6 text-rose-700">
+              {error}
+            </div>
+          )}
           <div className="mx-auto">
             <Form handleSubmit={createCategory} fields={productForm}/>
           </div>
