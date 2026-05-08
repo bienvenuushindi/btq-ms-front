@@ -9,7 +9,7 @@ import Text from "@/components/Text";
 import {RequisitionContext} from "@/components/requisitions/RequisitionContext";
 
 
-export default function ReqItemProductList({details}) {
+export default function ReqItemProductList({details, revalidate}) {
     const {requisitionID, requisition} = useContext(RequisitionContext)
     const isArchived = Boolean(requisition?.archived);
     const [data, setData] = useState(details);
@@ -25,6 +25,7 @@ export default function ReqItemProductList({details}) {
         const newList = data.filter((item: { product_detail_id: any; }) => item.product_detail_id != itemToDelete)
         await deleteItem('/requisitions/' + requisitionID + '/product_details/' + itemToDelete + '/remove_item');
         setData(newList);
+        await revalidate?.();
         setShowDeleteAlert(false);
     };
     const removeItem = async (id) => {

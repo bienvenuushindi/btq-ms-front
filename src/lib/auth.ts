@@ -13,3 +13,13 @@ export const setToken = (user: string, accessToken: string) => {
     Cookies.set('accessToken', accessToken, { expires: expiresDate });
     Cookies.set('expiresAt', expiresDate.toISOString(), { expires: expiresDate });
 };
+
+export const clearToken = () => {
+    if (typeof window === 'undefined') {
+        return;
+    }
+
+    Cookies.remove('user');
+    Cookies.remove('accessToken');
+    Cookies.remove('expiresAt');
+};

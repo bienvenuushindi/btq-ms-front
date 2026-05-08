@@ -29,13 +29,13 @@ export const SidebarContainer = ({title, children}:any) => {
 
       <div
         className={clsx(
-          'fixed top-0 right-0 bottom-0 z-[60] border-gray-700 bg-white shadow ease-in-out delay-150 duration-300',
+          'fixed top-0 right-0 bottom-0 z-[60] border-l border-slate-200 bg-slate-100 shadow ease-in-out delay-150 duration-300',
           openBar.panelClassName || 'w-full sm:w-[400px]',
           openBar.state ? 'translate-x-0' : 'translate-x-full'
         )}
         style={{height: '100%'}}
       >
-        <div className="shadow-sm p-1 gap-1  flex items-center">
+        <div className="border-b border-slate-200 bg-white/80 p-1 shadow-sm backdrop-blur-sm gap-1 flex items-center">
           <Button size="small"
                   intent="secondary"
                   onClick={() => {
@@ -53,7 +53,7 @@ export const SidebarContainer = ({title, children}:any) => {
           </h5>
         </div>
         <div className="pointer-events-auto">
-          <div className="body relative h-[calc(100vh-10px)] overflow-y-auto">
+          <div className="body relative h-[calc(100vh-10px)] overflow-y-auto bg-slate-100">
             {openBar.state && children}
           </div>
         </div>

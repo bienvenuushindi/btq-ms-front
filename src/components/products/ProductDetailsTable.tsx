@@ -108,7 +108,7 @@ export const ProductDetailsTable = ({product, isLoading}) => {
     {
       key: 'button',
       type: 'details',
-      label: "Suppliers",
+      label: (row) => `Suppliers (${row.suppliers?.length || 0})`,
       action: (data) => {
         setOpenBar({state: true, target: 'price_details',title:  product.name + ' (' + data.size+ ')'});
         setSidebarData(data);

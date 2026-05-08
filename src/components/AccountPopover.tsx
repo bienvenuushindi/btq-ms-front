@@ -1,17 +1,21 @@
 'use client';
 import {useCallback} from 'react';
 import {Menu, Transition} from '@headlessui/react';
+import {useRouter} from 'next/navigation';
+import {clearToken} from '@/lib/auth';
 
 
 export const AccountPopover = (props) => {
   const {anchorEl, onClose, open} = props;
+  const router = useRouter();
   const handleSignOut = useCallback(
     () => {
-      //   onClose?.();
-      //   auth.signOut();
-      //   router.push('/auth/login');
+      clearToken();
+      onClose?.();
+      router.replace('/signin');
+      router.refresh();
     },
-    [onClose]
+    [onClose, router]
   );
 
   return (

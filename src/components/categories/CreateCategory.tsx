@@ -8,7 +8,12 @@ import ModalContainer from '@/components/modal/ModalContainer';
 import CategoryForm from '@/components/categories/CategoryForm';
 
 
-export default function CreateCategory({revalidate}) {
+export default function CreateCategory({
+  revalidate,
+  buttonLabel = 'New Category',
+  buttonClassName = '',
+  buttonIntent = 'primary',
+}) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
@@ -16,8 +21,8 @@ export default function CreateCategory({revalidate}) {
     <>
       <Button onClick={() => openModal()}
               size="small"
-              intent={'primary'}
-              className="px-3 py-2 rounded-md flex items-center space-x-1"> New Category</Button>
+              intent={buttonIntent as any}
+              className={`flex items-center justify-center space-x-1 rounded-2xl px-4 py-2 text-center  ${buttonClassName}`}> {buttonLabel}</Button>
       <ModalContainer
         isOpen={modalIsOpen}
         onRequestClose={closeModal}

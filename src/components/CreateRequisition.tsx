@@ -15,7 +15,11 @@ import {useFetcher} from "@/app/hooks/useFetcher";
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 
 
-export default function CreateRequisition() {
+export default function CreateRequisition({
+  buttonLabel = 'New Requisition',
+  buttonClassName = '',
+  buttonIntent = 'primary',
+}) {
   const {data: currencies={}} = useFetcher( API_ENDPOINTS.CURRENCIES);
   const [modalIsOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
@@ -98,8 +102,8 @@ export default function CreateRequisition() {
     <>
       <Button onClick={() => openModal()}
               size="small"
-              intent={'primary'}
-              className="oasis-button flex items-center space-x-1 rounded-2xl px-4 py-3"> New Requisition</Button>
+              intent={buttonIntent as any}
+              className={`oasis-button flex items-center justify-center space-x-1 rounded-2xl px-4 py-2 text-center ${buttonClassName}`}> {buttonLabel}</Button>
       <ModalContainer
         isOpen={modalIsOpen}
         onRequestClose={closeModal}

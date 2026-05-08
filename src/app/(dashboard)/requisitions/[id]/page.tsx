@@ -107,7 +107,7 @@ export default function Requisition() {
                                             </div>
                                         </Card>
                                     </div>
-                                    <ReqItemProductList details={requisition.product_items}/>
+                                    <ReqItemProductList details={requisition.product_items} revalidate={mutate}/>
                                     <SidebarContentSelector target={openBar.target}/>
                                 </>
                             )}

@@ -97,11 +97,23 @@ export const renderCell = (column, value: any) => {
         }
         onChange={column.action}/>;
     case 'button':
-      return <Button size="sm" variant="secondary" onClick={() => column.action(value)}>{column.label}</Button>;
+      return (
+        <Button size="sm" variant="secondary" onClick={() => column.action(value)}>
+          {typeof column.label === 'function' ? column.label(value) : column.label}
+        </Button>
+      );
     case 'details':
-      return <Button size="sm" variant="secondary" onClick={() => {
-        column.action(value);
-      }}>{column.label}</Button>;
+      return (
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={() => {
+            column.action(value);
+          }}
+        >
+          {typeof column.label === 'function' ? column.label(value) : column.label}
+        </Button>
+      );
     case 'picture':
       return (
         <div className="flex items-center">

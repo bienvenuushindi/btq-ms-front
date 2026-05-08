@@ -1,9 +1,8 @@
 'use client';
 import {useEffect, useState} from 'react';
 import SupplierList from '@/components/requisitions/SupplierList';
-import ErrorBoundary from '@/components/ErrorBoundary';
 import {useFetcher} from "@/app/hooks/useFetcher";
-import {API_ENDPOINTS} from "@/lib/api";
+import DataLoading from '@/components/state/Loading';
 
 export default function SearchSupplierResults({url, action, supplierId}) {
   const {data: suppliers=[], meta,  error, isLoading} = useFetcher(url);
@@ -20,7 +19,21 @@ export default function SearchSupplierResults({url, action, supplierId}) {
 
   return (
     <>
-      <ErrorBoundary error={error}>
+      {!url ? (
+        <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-500">
+          Start typing to search for a supplier.
+        </div>
+      ) : isLoading ? (
+        <DataLoading/>
+      ) : error ? (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          We couldn&apos;t load suppliers right now. Try a different search or try again in a moment.
+        </div>
+      ) : suppliers.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-500">
+          No matching suppliers found. Try a different search term.
+        </div>
+      ) : (
         <SupplierList
           title={`Search Results (${meta && meta.total || 0})`}
           suppliers={suppliers}
@@ -28,7 +41,7 @@ export default function SearchSupplierResults({url, action, supplierId}) {
           selected={selected}
           onUpdateSelected={updateSelected}
         />
-      </ErrorBoundary>
+      )}
     </>
   );
 }

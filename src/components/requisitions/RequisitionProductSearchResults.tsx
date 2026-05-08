@@ -1,11 +1,9 @@
-import clsx from 'clsx';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import DataLoading from "@/components/state/Loading";
 import React from "react";
-import DataWrapper from "@/components/utils/wrappers/DataWrapper";
 
 export default function RequisitionProductSearchResults({url, setItems, oldItems}) {
-  const {data: products = [], meta, links, error, isLoading} = useFetcher(url)
+  const {data: products = [], error, isLoading} = useFetcher(url)
   function handleChange(e) {
     const targetItem = JSON.parse(e.target.value)
     if (e.target.checked) {
@@ -21,8 +19,18 @@ export default function RequisitionProductSearchResults({url, setItems, oldItems
 
   return (
     <>
-      <DataWrapper isLoading={isLoading} error={error} loadingComponent={<DataLoading/>}>
-        { products.map((product, index) => <div key={"product-" + product.id} className="p-2">
+      {isLoading ? (
+        <DataLoading/>
+      ) : error ? (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          We couldn&apos;t load products right now. Try adjusting the search or refreshing the list.
+        </div>
+      ) : products.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-500">
+          No matching products found. Try a different search term.
+        </div>
+      ) : (
+        products.map((product, index) => <div key={"product-" + product.id} className="p-2">
           <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
             <span className="text-gray-500">{index})</span>
             {product.name}
@@ -63,8 +71,7 @@ export default function RequisitionProductSearchResults({url, setItems, oldItems
             ))}
           </ul>
         </div>)
-        }
-      </DataWrapper>
+      )}
     </>
   );
 }

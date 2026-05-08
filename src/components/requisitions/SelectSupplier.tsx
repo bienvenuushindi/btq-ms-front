@@ -5,11 +5,15 @@ import SearchSupplierResults from '@/components/requisitions/SearchSupplierResul
 import {updateUrl} from '@/lib/helper';
 
 export default function SelectSupplier({action, productId, supplierId}) {
-  const [url, setUrl] = useState(API_ENDPOINTS.SEARCH_SUPPLIERS(productId));
+  const [url, setUrl] = useState<string | null>(null);
   const updateParams = (newFilters) => {
-    setUrl((prevUrl) => {
-      return  updateUrl(prevUrl, newFilters);
-    });
+    const query = newFilters?.q?.trim?.() || '';
+    if (!query) {
+      setUrl(null);
+      return;
+    }
+
+    setUrl(updateUrl(API_ENDPOINTS.SEARCH_SUPPLIERS(productId), {q: query}));
   }
   return (
     <div className="w-full">

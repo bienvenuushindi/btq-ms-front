@@ -77,8 +77,19 @@ export default function AuthForm({ mode }: { mode: 'register' | 'signin' }) {
       setSuccessMessage('');
       setIsSubmitting(true);
 
+      const formData = new FormData(e.currentTarget);
       const data = {
-        user: formState,
+        user: {
+          email: String(formData.get('email') || ''),
+          password: String(formData.get('password') || ''),
+          ...(mode === 'register'
+            ? {
+                name: String(formData.get('name') || ''),
+                phone_number: String(formData.get('phone_number') || ''),
+                role_id: formState.role_id,
+              }
+            : {}),
+        },
       };
 
       try {
@@ -101,7 +112,7 @@ export default function AuthForm({ mode }: { mode: 'register' | 'signin' }) {
         setIsSubmitting(false);
       }
     },
-    [formState, mode, router, startTransition]
+    [formState.role_id, mode, router, startTransition]
   );
 
   const content = mode === 'register' ? registerContent : signinContent;
@@ -230,6 +241,8 @@ export default function AuthForm({ mode }: { mode: 'register' | 'signin' }) {
                     <Input
                       required
                       id="full-name"
+                      name="name"
+                      autoComplete="name"
                       placeholder="John Doe"
                       value={formState.name}
                       className="h-12 rounded-2xl border-slate-200 bg-slate-50 px-4 text-slate-900 placeholder:text-slate-400 focus-visible:border-primary focus-visible:ring-primary/20"
@@ -245,6 +258,8 @@ export default function AuthForm({ mode }: { mode: 'register' | 'signin' }) {
                       required
                       type="tel"
                       id="tel"
+                      name="phone_number"
+                      autoComplete="tel"
                       placeholder="+243 000 000 000"
                       value={formState.phone_number}
                       className="h-12 rounded-2xl border-slate-200 bg-slate-50 px-4 text-slate-900 placeholder:text-slate-400 focus-visible:border-primary focus-visible:ring-primary/20"
@@ -262,6 +277,8 @@ export default function AuthForm({ mode }: { mode: 'register' | 'signin' }) {
                   required
                   type="email"
                   id="email"
+                  name="email"
+                  autoComplete="email"
                   placeholder="name@company.com"
                   value={formState.email}
                   className="h-12 rounded-2xl border-slate-200 bg-slate-50 px-4 text-slate-900 placeholder:text-slate-400 focus-visible:border-primary focus-visible:ring-primary/20"
@@ -277,6 +294,8 @@ export default function AuthForm({ mode }: { mode: 'register' | 'signin' }) {
                   required
                   type="password"
                   id="password"
+                  name="password"
+                  autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
                   placeholder="Enter your password"
                   value={formState.password}
                   className="h-12 rounded-2xl border-slate-200 bg-slate-50 px-4 text-slate-900 placeholder:text-slate-400 focus-visible:border-primary focus-visible:ring-primary/20"

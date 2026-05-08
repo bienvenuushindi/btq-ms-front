@@ -7,7 +7,7 @@ import ModalBody from '@/components/modal/ModalBody';
 import {PriceDetailForm} from '@/components/PriceDetailForm';
 import {PlusCircle} from 'react-feather';
 
-export default function AddSupplier({productDetailID = null, closeExternalModal = null}) {
+export default function AddSupplier({productDetailID = null, closeExternalModal = null, onSuccess = null}) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const openModal = () => {
     setIsOpen(true);
@@ -32,7 +32,15 @@ export default function AddSupplier({productDetailID = null, closeExternalModal 
         <ModalContent>
           <ModalHeader closeModal={closeModal} title={'Add Supplier'}/>
           <ModalBody>
-             <PriceDetailForm productDetailID={productDetailID}/>
+             <PriceDetailForm
+               productDetailID={productDetailID}
+               onSuccess={async () => {
+                 if (onSuccess) {
+                   await Promise.resolve(onSuccess());
+                 }
+                 closeModal();
+               }}
+             />
           </ModalBody>
         </ModalContent>
 

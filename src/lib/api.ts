@@ -104,6 +104,19 @@ export function deleteItem(path) {
         headers: {
             Authorization: getTokenFromCookie(),
         },
+    }).then(async (response) => {
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+            const message =
+                result?.error ||
+                result?.message ||
+                result?.errors?.join?.(', ') ||
+                'Request failed';
+            throw new Error(message);
+        }
+
+        return result.data;
     });
 }
 
@@ -133,6 +146,8 @@ export const API_ENDPOINTS = {
     // Price Details (nested under Product Details)
     PRICE_DETAILS: (productDetailId: any) =>
         `${API_URL}/product_details/${productDetailId}/price_details`,
+    REMOVE_PRICE_DETAIL_SUPPLIER: (productDetailId: any, supplierId: any) =>
+        `${API_URL}/product_details/${productDetailId}/price_details/supplier/${supplierId}`,
     // Requisitions
     REQUISITIONS: `${API_URL}/requisitions`,
     REQUISITION_BY_ID: (requisitionId: any) => `${API_URL}/requisitions/${requisitionId}`,

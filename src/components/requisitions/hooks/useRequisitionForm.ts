@@ -4,11 +4,17 @@ import { updateUrl } from '@/lib/helper';
 
 export function useRequisitionForm({ requisitionID, revalidate, closeModal }) {
     const [items, setItems] = useState([]);
-    const [url, setUrl] = useState(API_ENDPOINTS.SEARCH_PRODUCTS);
+    const [url, setUrl] = useState<string | null>(null);
     const [error, setError] = useState('');
 
     const updateParams = (newFilters) => {
-        setUrl((prevUrl) => updateUrl(prevUrl, newFilters));
+        const query = newFilters?.q?.trim?.() || '';
+        if (!query) {
+            setUrl(null);
+            return;
+        }
+
+        setUrl(updateUrl(API_ENDPOINTS.SEARCH_PRODUCTS, {q: query}));
     };
 
     const handleSubmit = async () => {
