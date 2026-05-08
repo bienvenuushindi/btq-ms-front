@@ -2,9 +2,10 @@ import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import Form, {InputImageContext} from '@/components/forms/Form';
 import React, {useEffect, useMemo, useState} from 'react';
 import InputFileImage from '@/components/forms/InputFileImage';
-import {send} from '@/lib/api';
+import {API_ENDPOINTS, send} from '@/lib/api';
 import toastShow from '@/components/toast/toast-selector';
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
+import {revalidateCache} from '@/lib/cache';
 
 const COUNTRY_OPTIONS = {
   CG: 'Congo',
@@ -68,6 +69,9 @@ export default function UserForm({user}: {user: any}) {
 
     try {
       await send(`/users/${user.id}`, formData, 'PUT');
+      await revalidateCache({
+        keys: [API_ENDPOINTS.CURRENT_USER, `${API_ENDPOINTS.USERS}/${user.id}`],
+      });
       toastShow('success', 'Profile updated successfully');
       startNavigation('Refreshing profile...');
       window.location.reload();

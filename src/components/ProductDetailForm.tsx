@@ -1,16 +1,19 @@
 'use client';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams, useRouter} from 'next/navigation';
 import {API_ENDPOINTS, send} from '@/lib/api';
 import Form from '@/components/forms/Form';
 import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
+import {useFetcher} from '@/app/hooks/useFetcher';
+import {revalidateCache} from '@/lib/cache';
 
 export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
     const router = useRouter();
     const {startNavigation} = useRouteTransition();
     const path = useParams();
+    const {data: currentUser} = useFetcher(API_ENDPOINTS.CURRENT_USER);
     const isAddMode = !variant
     let initial = {
         size: '',
@@ -22,7 +25,7 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
         box_units: 1,
         tags: '',
         supplier_id: null,
-        currency: '',
+        currency: currentUser?.default_currency || 'usd',
         status: false,
     };
     let content = {
@@ -61,6 +64,18 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
     const [formState, setFormState] = useState({...initial});
     const [error, setError] = useState('');
     const [photos, setPhotos] = useState(getImageUrls());
+
+    useEffect(() => {
+        if (!isAddMode) return;
+        if (!currentUser?.default_currency) return;
+
+        setFormState((prevState) => (
+            prevState.currency
+                ? prevState
+                : {...prevState, currency: currentUser.default_currency}
+        ));
+    }, [currentUser?.default_currency, isAddMode]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
@@ -75,11 +90,24 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
             if (isAddMode) {
                 //submit promise
                 await send('/products/' + path.id + '/product_details', formData);
+                await revalidateCache({
+                    keys: [
+                        API_ENDPOINTS.PRODUCT_BY_ID(path.id),
+                        API_ENDPOINTS.PRODUCT_DETAILS(path.id),
+                    ],
+                });
                 toastShow('success', 'Product created successfully')
                 startNavigation('Opening product details...');
                 router.push('/products/' + path.id);
             } else {
                 await send('/products/' + path.id + '/product_details/' + path.variant, formData, "PUT");
+                await revalidateCache({
+                    keys: [
+                        API_ENDPOINTS.PRODUCT_BY_ID(path.id),
+                        API_ENDPOINTS.PRODUCT_DETAILS(path.id),
+                        API_ENDPOINTS.PRODUCT_DETAIL_BY_ID(path.id, path.variant),
+                    ],
+                });
                 toastShow('success', 'Product updated successfully')
                 startNavigation('Opening product details...');
                 router.push('/products/' + path.id);
@@ -127,7 +155,7 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
             input_type: 'radio',
             className: '',
             value: formState.currency,
-            options: ['fc', 'ugx', 'usd'],
+            options: ['fc', 'rw', 'ugx', 'usd'],
             action: (e) => {
                 setFormState((s) => ({...s, currency: e.target.value}));
             }

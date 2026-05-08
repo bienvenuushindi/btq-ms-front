@@ -88,6 +88,8 @@ export function send(path, body, method = 'POST') {
             const message =
                 result?.error ||
                 result?.message ||
+                result?.meta?.message ||
+                result?.status?.message ||
                 result?.errors?.join?.(', ') ||
                 'Request failed';
             throw new Error(message);

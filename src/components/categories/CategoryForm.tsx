@@ -6,6 +6,8 @@ import Form from '@/components/forms/Form';
 import CategoryTree from '@/components/categories/CategoryTree';
 import toastShow from "@/components/toast/toast-selector";
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
+import {API_ENDPOINTS} from '@/lib/api';
+import {revalidateCache} from '@/lib/cache';
 
 export default function CategoryForm({category = null}: { category?: any }) {
   const router = useRouter();
@@ -39,11 +41,19 @@ export default function CategoryForm({category = null}: { category?: any }) {
       if (isAddMode) {
         //submit promise
         await send('/categories', formData);
+        await revalidateCache({
+          prefixes: [API_ENDPOINTS.CATEGORIES],
+          keys: [API_ENDPOINTS.CATEGORY_TREE_STRUCTURE],
+        });
         toastShow('success', 'Category created successfully')
         startNavigation('Returning to categories...');
         router.push('/categories');
       } else {
         await send('/categories/' + category.id, formData, "PUT");
+        await revalidateCache({
+          prefixes: [API_ENDPOINTS.CATEGORIES],
+          keys: [API_ENDPOINTS.CATEGORY_TREE_STRUCTURE],
+        });
         toastShow('success', 'Category updated successfully')
         startNavigation('Returning to categories...');
         router.push('/categories');

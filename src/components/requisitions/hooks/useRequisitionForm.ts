@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {API_ENDPOINTS, send} from '@/lib/api';
 import { updateUrl } from '@/lib/helper';
+import {revalidateCache} from '@/lib/cache';
 
 export function useRequisitionForm({ requisitionID, revalidate, closeModal }) {
     const [items, setItems] = useState([]);
@@ -24,6 +25,10 @@ export function useRequisitionForm({ requisitionID, revalidate, closeModal }) {
         }
         try {
             await send(`/requisitions/${requisitionID}/add_products`, formData);
+            await revalidateCache({
+                keys: [API_ENDPOINTS.REQUISITION_BY_ID(requisitionID)],
+                prefixes: [API_ENDPOINTS.REQUISITIONS, API_ENDPOINTS.RECENT_REQUISITIONS],
+            });
             closeModal();
             setItems([]);
             revalidate();

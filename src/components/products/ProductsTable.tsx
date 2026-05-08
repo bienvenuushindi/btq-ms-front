@@ -15,6 +15,7 @@ import {send} from '@/lib/api';
 import toastShow from '@/components/toast/toast-selector';
 import StatusIndicator from '@/components/utils/StatusIndicator';
 import Badge from '@/components/utils/Badge';
+import {revalidateCache} from '@/lib/cache';
 
 export default function ProductsTable() {
     const searchParams = useSearchParams();
@@ -58,6 +59,10 @@ export default function ProductsTable() {
 
         try {
             await send(`/products/${row.id}`, formData, 'PUT');
+            await revalidateCache({
+                keys: [API_ENDPOINTS.PRODUCT_BY_ID(row.id)],
+                prefixes: [API_ENDPOINTS.PRODUCTS, API_ENDPOINTS.PRODUCT_STATS],
+            });
             await mutate();
             toastShow('success', row.active ? 'Product archived successfully' : 'Product restored successfully');
         } catch (error) {

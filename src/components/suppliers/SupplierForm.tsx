@@ -7,6 +7,7 @@ import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
 import CategoryTreeMultipleSelection from "@/components/categories/CategoryTreeMultipleSelection";
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
+import {revalidateCache} from '@/lib/cache';
 
 export const SupplierForm = ({supplier}: { supplier?: any }) => {
     const isAddMode = !supplier;
@@ -64,6 +65,7 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
     const [formState, setFormState] = useState({...initial});
     const [error, setError] = useState('');
     const [photos, setPhotos] = useState([...getImageUrls()]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const isPlaceholderImage = (photo: any) => (
         typeof photo === 'string' && (
@@ -75,6 +77,10 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (isSubmitting) return;
+
+        setError('');
+        setIsSubmitting(true);
         const formData = new FormData();
         Object.keys(formState).forEach((key) => {
             formData.append(`supplier[${key}]`, formState[key]);
@@ -88,10 +94,17 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
         try {
             if (isAddMode) {
                 await send('/suppliers', formData);
+                await revalidateCache({
+                    prefixes: [API_ENDPOINTS.SUPPLIERS],
+                });
                 toastShow('success', 'Supplier created successfully')
   
             } else {
                 await send(`/suppliers/${supplier.id}`, formData, 'PUT');
+                await revalidateCache({
+                    keys: [API_ENDPOINTS.SUPPLIER_BY_ID(supplier.id)],
+                    prefixes: [API_ENDPOINTS.SUPPLIERS],
+                });
                 toastShow('success', 'Supplier updated successfully')
               
             }
@@ -99,9 +112,11 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
             router.push('/suppliers');
 
         } catch (e) {
-            setError(`Could not save supplier`);
+            const message = e instanceof Error ? e.message : `Could not ${isAddMode ? 'create' : 'update'} supplier`;
+            setError(message);
+            toastShow('error', message);
         } finally {
-            // setFormState({...initial});
+            setIsSubmitting(false);
         }
     };
 
@@ -237,7 +252,10 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
             input_type: 'button',
             className: 'w-full justify-center',
             type: 'submit',
-            placeholder: isAddMode ? 'Create supplier' : 'Update supplier'
+            disabled: isSubmitting,
+            placeholder: isSubmitting
+                ? (isAddMode ? 'Creating supplier...' : 'Updating supplier...')
+                : (isAddMode ? 'Create supplier' : 'Update supplier')
         }
     ];
 
@@ -265,6 +283,11 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
                             Capture the supplier profile, contact details, category coverage, and supporting media in one place.
                         </p>
                     </div>
+                    {error && (
+                        <div className="mb-4 rounded-[22px] border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium leading-6 text-rose-700">
+                            {error}
+                        </div>
+                    )}
                     <Form handleSubmit={handleSubmit} fields={fields}/>
                 </div>
             </div>

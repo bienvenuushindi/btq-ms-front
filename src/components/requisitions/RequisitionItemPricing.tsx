@@ -12,7 +12,7 @@ import {RequisitionContext} from '@/components/requisitions/RequisitionContext';
 import clsx from 'clsx';
 import SwitchCurrency from '@/components/requisitions/item-page/SwitchCurrency';
 import {useFetcher} from "@/app/hooks/useFetcher";
-import {useSWRConfig} from 'swr';
+import {revalidateCache} from '@/lib/cache';
 
 const formatCurrencyValue = (value) => {
   const numericValue = Number(value);
@@ -26,7 +26,6 @@ const formatCurrencyValue = (value) => {
 
 export default function RequisitionItemPricing({productDetails}) {
   const {requisitionID, requisition} = useContext(RequisitionContext)
-  const {mutate} = useSWRConfig();
   const {data: quantityType = {}} = useFetcher(API_ENDPOINTS.QUANTITY_TYPES);
   const {data: currencies = {}} = useFetcher( API_ENDPOINTS.CURRENCIES);
   const {currency} = useContext(RequisitionContext);
@@ -68,7 +67,10 @@ export default function RequisitionItemPricing({productDetails}) {
       await send('/requisitions/' + requisitionID + '/update_products/' + productDetails.product_detail_id, formData, 'PUT');
       if (supplierId != productDetails.supplier_id) productDetails.supplier_id = supplierId;
       toastShow('success', 'Updated Successfully');
-      await mutate(API_ENDPOINTS.REQUISITION_BY_ID(requisitionID));
+      await revalidateCache({
+        keys: [API_ENDPOINTS.REQUISITION_BY_ID(requisitionID)],
+        prefixes: [API_ENDPOINTS.REQUISITIONS, API_ENDPOINTS.RECENT_REQUISITIONS],
+      });
       setLoading(false);
     } catch (e: any) {
       setLoading(false);

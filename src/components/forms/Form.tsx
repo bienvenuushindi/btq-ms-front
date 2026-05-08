@@ -161,6 +161,7 @@ const renderField = (field) => {
             return (
                 <Button
                     onClick={field.action}
+                    type={field.type || 'button'}
                     size="small"
                     intent={field.intent || 'primary'}
                     disabled={field.disabled || false}

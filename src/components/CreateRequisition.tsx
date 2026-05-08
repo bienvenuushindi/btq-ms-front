@@ -1,6 +1,6 @@
 'use client';
 import {API_ENDPOINTS, send} from '@/lib/api';
-import React, {useCallback, useState} from 'react';
+import React, {type ReactNode, useCallback, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import Button from '@/components/utils/Button';
 import ModalHeader from '@/components/modal/ModalHeader';
@@ -13,13 +13,19 @@ import Badge from '@/components/utils/Badge';
 import {format} from 'date-fns';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
+import {revalidateCache} from '@/lib/cache';
 
+type CreateRequisitionProps = {
+  buttonLabel?: ReactNode;
+  buttonClassName?: string;
+  buttonIntent?: string;
+};
 
 export default function CreateRequisition({
   buttonLabel = 'New Requisition',
   buttonClassName = '',
   buttonIntent = 'primary',
-}) {
+}: CreateRequisitionProps) {
   const {data: currencies={}} = useFetcher( API_ENDPOINTS.CURRENCIES);
   const [modalIsOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
@@ -62,6 +68,9 @@ export default function CreateRequisition({
     });
     try {
       const result = await send('/requisitions', formData);
+      await revalidateCache({
+        prefixes: [API_ENDPOINTS.REQUISITIONS, API_ENDPOINTS.RECENT_REQUISITIONS],
+      });
       closeModal();
       startNavigation('Opening new requisition...');
       router.push('/requisitions/' + result.id );

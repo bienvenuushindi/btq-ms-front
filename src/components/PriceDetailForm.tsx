@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { send } from '@/lib/api';
+import { API_ENDPOINTS, send } from '@/lib/api';
 import {useRouter} from 'next/navigation';
 import Form from '@/components/forms/Form';
 import ContainerOne from '@/components/utils/wrappers/ContainerOne';
@@ -9,6 +9,7 @@ import Toggle from '@/components/forms/Toggle';
 import toastShow from '@/components/toast/toast-selector';
 import {SupplierInformation} from '@/components/suppliers/SupplierInformation';
 import {getImageUrls} from '@/lib/helper';
+import {revalidateCache} from '@/lib/cache';
 
 const buildInitialPrices = (initialDetails = []) =>
   initialDetails.reduce((acc, detail) => {
@@ -63,6 +64,13 @@ export const PriceDetailForm = ({
 
     try {
       await send(`/product_details/${productDetailID}/price_details`, formData);
+      await revalidateCache({
+        keys: [
+          API_ENDPOINTS.PRICE_DETAILS(productDetailID),
+          API_ENDPOINTS.PRODUCT_DETAIL_SUPPLIERS(productDetailID),
+        ],
+        prefixes: [API_ENDPOINTS.PRODUCTS],
+      });
       setError('');
       toastShow('success', initialSupplier ? 'Supplier pricing updated successfully' : 'Supplier pricing saved successfully');
       if (!initialSupplier) {

@@ -1,5 +1,5 @@
 'use client';
-import {useState} from 'react';
+import {type ReactNode, useState} from 'react';
 import Button from '@/components/utils/Button';
 import ModalHeader from '@/components/modal/ModalHeader';
 import ModalBody from '@/components/modal/ModalBody';
@@ -7,13 +7,19 @@ import ModalContent from '@/components/modal/ModalContent';
 import ModalContainer from '@/components/modal/ModalContainer';
 import CategoryForm from '@/components/categories/CategoryForm';
 
+type CreateCategoryProps = {
+  revalidate?: () => void;
+  buttonLabel?: ReactNode;
+  buttonClassName?: string;
+  buttonIntent?: string;
+};
 
 export default function CreateCategory({
   revalidate,
   buttonLabel = 'New Category',
   buttonClassName = '',
   buttonIntent = 'primary',
-}) {
+}: CreateCategoryProps) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);

@@ -8,6 +8,7 @@ import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import toastShow from '@/components/toast/toast-selector';
 import CategoryTreeMultipleSelection from "@/components/categories/CategoryTreeMultipleSelection";
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
+import {revalidateCache} from '@/lib/cache';
 
 export const ProductForm = ({product}: { product?: any }) => {
     const isAddMode = !product;
@@ -33,6 +34,7 @@ export const ProductForm = ({product}: { product?: any }) => {
     const [formState, setFormState] = useState({...initial});
     const [error, setError] = useState('');
     const [photos, setPhotos] = useState(getImageUrls());
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const isPlaceholderImage = (photo: any) => (
         typeof photo === 'string' && (
@@ -48,6 +50,10 @@ export const ProductForm = ({product}: { product?: any }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (isSubmitting) return;
+
+        setError('');
+        setIsSubmitting(true);
         const formData = new FormData();
         Object.keys(formState).forEach((key) => {
             formData.append(`product[${key}]`, formState[key]);
@@ -61,21 +67,30 @@ export const ProductForm = ({product}: { product?: any }) => {
         try {
             if (isAddMode) {
                 await send('/products', formData);
+                await revalidateCache({
+                    prefixes: [API_ENDPOINTS.PRODUCTS, API_ENDPOINTS.PRODUCT_STATS],
+                });
                 toastShow('success', 'Product created successfully')
                 startNavigation('Returning to products...');
                 router.push('/products');
             } else {
                 const productID = params.id;
                 await send(`/products/${productID}`, formData, 'PUT');
+                await revalidateCache({
+                    keys: [API_ENDPOINTS.PRODUCT_BY_ID(productID)],
+                    prefixes: [API_ENDPOINTS.PRODUCTS, API_ENDPOINTS.PRODUCT_STATS],
+                });
                 toastShow('success', 'Product updated successfully')
                 startNavigation('Opening product details...');
                 router.push(`/products/${productID}`);
             }
 
         } catch (e) {
-            setError(`Could not create product`);
+            const message = e instanceof Error ? e.message : `Could not ${isAddMode ? 'create' : 'update'} product`;
+            setError(message);
+            toastShow('error', message);
         } finally {
-            // setFormState({...initial});
+            setIsSubmitting(false);
         }
     };
 
@@ -172,7 +187,10 @@ export const ProductForm = ({product}: { product?: any }) => {
             input_type: 'button',
             className: 'w-full justify-center',
             type: 'submit',
-            placeholder: isAddMode ? 'Create product' : 'Update product'
+            disabled: isSubmitting,
+            placeholder: isSubmitting
+              ? (isAddMode ? 'Creating product...' : 'Updating product...')
+              : (isAddMode ? 'Create product' : 'Update product')
         }
     ]
 
@@ -199,6 +217,11 @@ export const ProductForm = ({product}: { product?: any }) => {
                             Build a complete product profile with clear copy, category mapping, reusable tags, and imagery.
                         </p>
                     </div>
+                    {error && (
+                        <div className="mb-4 rounded-[22px] border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium leading-6 text-rose-700">
+                            {error}
+                        </div>
+                    )}
                     <div className="mx-auto">
                         <Form handleSubmit={handleSubmit} fields={fields}/>
                     </div>
