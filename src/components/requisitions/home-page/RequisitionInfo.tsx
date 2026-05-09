@@ -4,7 +4,7 @@ import React from "react";
 import {ViewMore} from "@/components/requisitions/home-page/ViewMore";
 import NotFound from "@/components/state/NotFound";
 import clsx from "clsx";
-import {getRequisitionFoundItemsCount, getRequisitionItemsCount} from "@/lib/helper";
+import {getRequisitionItemsCount, getRequisitionPurchasedItemsCount} from "@/lib/helper";
 
 export function RequisitionInfo({requisition, className = '', withLink = true}) {
     if (!requisition || Object.keys(requisition).length === 0) {
@@ -12,14 +12,14 @@ export function RequisitionInfo({requisition, className = '', withLink = true}) 
     }
 
     const {date, total_price, price_currency} = requisition;
-    const foundItemsCount = getRequisitionFoundItemsCount(requisition);
+    const purchasedItemsCount = getRequisitionPurchasedItemsCount(requisition);
     const itemsCount = getRequisitionItemsCount(requisition);
     const details = [
         {icon: <Calendar/>, label: 'Scheduled Date', value: date},
         {
             icon: <CreditCard/>,
-            label: 'Items Added',
-            value: `${foundItemsCount} / ${itemsCount}`
+            label: 'Items Purchased',
+            value: `${purchasedItemsCount} / ${itemsCount}`
         },
         {icon: <Layers/>, label: 'Requisition Total', value: total_price},
         {icon: <Globe/>, label: 'Currency', value: price_currency},

@@ -13,6 +13,7 @@ import clsx from 'clsx';
 import SwitchCurrency from '@/components/requisitions/item-page/SwitchCurrency';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {revalidateCache} from '@/lib/cache';
+import {isPurchasedStatus} from '@/lib/helper';
 
 const formatCurrencyValue = (value) => {
   const numericValue = Number(value);
@@ -34,7 +35,7 @@ export default function RequisitionItemPricing({productDetails}) {
   const initial = {
     price: productDetails.price || 0,
     currency: productDetails.currency,
-    status: productDetails.status || false,
+    status: isPurchasedStatus(productDetails.status),
     quantity: productDetails.quantity || 0,
     quantity_type: productDetails.quantity_type,
     note: productDetails.note || '',
@@ -79,15 +80,16 @@ export default function RequisitionItemPricing({productDetails}) {
   };
   const pricingForm = [
     {
-      label: 'Status',
+      label: 'Mark as purchased',
       input_type: 'toggle',
       className: '',
       labelClassName: '',
       name: 'status',
       checked: formState.status,
       action: () => {
-        setFormState((s) => ({...s, status: !formState.status}));
-        productDetails.status = !productDetails.status;
+        const nextStatus = !formState.status;
+        setFormState((s) => ({...s, status: nextStatus}));
+        productDetails.status = nextStatus;
       }
     },
     [{
@@ -229,7 +231,7 @@ export default function RequisitionItemPricing({productDetails}) {
         </div>
         <div className="grid gap-3 md:grid-cols-2">
           <ReadOnlyField label="Supplier" value={productDetails.supplier_name || (productDetails.supplier_id ? 'Supplier selected' : 'Not selected')} />
-          <ReadOnlyField label="Status" value={productDetails.status ? 'Found' : 'Not found'} />
+          <ReadOnlyField label="Purchase status" value={isPurchasedStatus(productDetails.status) ? 'Purchased' : 'Not yet purchased'} />
           <ReadOnlyField label="Price" value={formState.price ? `${formatCurrencyValue(formState.price)} ${formState.currency || ''}` : 'Not set'} />
           <ReadOnlyField label="Total price" value={formState.price && formState.quantity ? `${formatCurrencyValue(formState.price * formState.quantity)} ${formState.currency || ''}` : 'Not set'} />
           <ReadOnlyField label="Quantity" value={formState.quantity ? `${formState.quantity} ${formState.quantity_type || 'units'}` : 'Not set'} />
@@ -253,8 +255,8 @@ export default function RequisitionItemPricing({productDetails}) {
     />
       <div className="flex grow flex-col rounded-[18px] border border-slate-200 bg-slate-50 p-3">
         <div className="mb-3 flex justify-end">
-          {productDetails.status ? <Badge variant={'success'}>Found Status</Badge> :
-            <Badge variant={'danger'}> Not Found</Badge>}
+          {isPurchasedStatus(productDetails.status) ? <Badge variant={'success'}>Purchased</Badge> :
+            <Badge variant={'danger'}>Pending purchase</Badge>}
         </div>
         {error ? (
           <div className="mb-3 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">

@@ -89,23 +89,27 @@ export const statusClasses = {
     inactive: "bg-slate-400",
 };
 
-export const isFoundStatus = (status: unknown) => {
+export const isPurchasedStatus = (status: unknown) => {
     if (typeof status === 'string') {
-        return ['true', 'found', 'yes', '1'].includes(status.toLowerCase());
+        return ['true', 'found', 'purchased', 'yes', '1'].includes(status.toLowerCase());
     }
 
     return Boolean(status);
 };
 
-export const getRequisitionFoundItemsCount = (requisition: any) => {
+export const isFoundStatus = isPurchasedStatus;
+
+export const getRequisitionPurchasedItemsCount = (requisition: any) => {
     const items = requisition?.product_items;
 
     if (Array.isArray(items)) {
-        return items.filter((item) => isFoundStatus(item?.status)).length;
+        return items.filter((item) => isPurchasedStatus(item?.status)).length;
     }
 
     return Number(requisition?.count_products_bought) || 0;
 };
+
+export const getRequisitionFoundItemsCount = getRequisitionPurchasedItemsCount;
 
 export const getRequisitionItemsCount = (requisition: any) => {
     const items = requisition?.product_items;

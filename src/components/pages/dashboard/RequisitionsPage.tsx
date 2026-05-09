@@ -40,7 +40,7 @@ export default function RequisitionsPage() {
     },
     {
       key: 'count_products_bought',
-      label: 'Items Bought',
+      label: 'Items Purchased',
       type: 'text'
     },
     {

@@ -1,6 +1,7 @@
 import {useContext} from 'react';
 import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
 import ShowImages from '@/components/ShowImages';
+import {isPurchasedStatus} from '@/lib/helper';
 
 export default function RequisitionDetails(){
   const { sidebarData} = useContext(SidebarContext);
@@ -35,7 +36,7 @@ export default function RequisitionDetails(){
             </ul>
           </li>
           <li>Currency: {sidebarData.currency || '-'}</li>
-          <li>Found Status: {sidebarData['status'] || 'No'}</li>
+          <li>Purchase Status: {isPurchasedStatus(sidebarData['status']) ? 'Purchased' : 'Not yet purchased'}</li>
           <li>Qty: {sidebarData.quantity}</li>
           <li>Qty Type: {sidebarData.quantity_type || '-'}</li>
           <li>Price: {sidebarData.price}</li>

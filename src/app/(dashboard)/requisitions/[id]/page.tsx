@@ -17,7 +17,7 @@ import RequisitionLoader from "@/components/banners/RequisitionLoader";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import {Calendar, Package, ShoppingCart} from 'react-feather';
 import StatusIndicator from '@/components/utils/StatusIndicator';
-import {getRequisitionFoundItemsCount, getRequisitionItemsCount} from '@/lib/helper';
+import {getRequisitionItemsCount, getRequisitionPurchasedItemsCount} from '@/lib/helper';
 
 export default function Requisition() {
     const {openBar} = useContext(SidebarContext);
@@ -30,7 +30,7 @@ export default function Requisition() {
         isLoading
     } = useFetcher(API_ENDPOINTS.REQUISITION_BY_ID(requisitionId));
     const itemsCount = getRequisitionItemsCount(requisition);
-    const foundItemsCount = getRequisitionFoundItemsCount(requisition);
+    const purchasedItemsCount = getRequisitionPurchasedItemsCount(requisition);
     return (
         <ProtectedRoute>
             <RequisitionProvider>
@@ -87,8 +87,8 @@ export default function Requisition() {
                                                                 <ShoppingCart size={18}/>
                                                             </span>
                                                             <div>
-                                                                <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400">Items marked found</p>
-                                                                <p className="text-base font-bold text-slate-900">{foundItemsCount}</p>
+                                                                <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400">Items purchased</p>
+                                                                <p className="text-base font-bold text-slate-900">{purchasedItemsCount}</p>
                                                             </div>
                                                         </div>
                                                     </div>
