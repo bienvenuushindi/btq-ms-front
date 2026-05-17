@@ -21,7 +21,7 @@ export function RequisitionInfo({requisition, className = '', withLink = true}) 
             label: 'Items Purchased',
             value: `${purchasedItemsCount} / ${itemsCount}`
         },
-        {icon: <Layers/>, label: 'Requisition Total', value: total_price},
+        {icon: <Layers/>, label: 'Total Purchased So Far', value: total_price},
         {icon: <Globe/>, label: 'Currency', value: price_currency},
     ];
 

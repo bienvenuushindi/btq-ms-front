@@ -13,33 +13,33 @@ export default function RequisitionDetails(){
         <h4>{sidebarData.name} - {sidebarData.size}</h4>
         <ul>
           <li>Expiration Date: {sidebarData.expired_date || 'not applied'}</li>
-          <li>Prices</li>
+          <li>Your Selling Prices</li>
           <li>
             <h4>Box</h4>
             <ul>
-              <li>Box Price:{sidebarData.box_price} </li>
+              <li>Selling Box Price:{sidebarData.box_price} </li>
               <li>Quantity In Box: {sidebarData.box_units}</li>
             </ul>
           </li>
           <li>
             <h4>Group</h4>
             <ul>
-              <li>Group Price:{sidebarData.dozen_price} </li>
+              <li>Selling Group Price:{sidebarData.dozen_price} </li>
               <li>Quantity In Group: {sidebarData.dozen_units}</li>
             </ul>
           </li>
           <li>
             <h4>Unit</h4>
             <ul>
-              <li>Unit Price: {sidebarData.unit_price}</li>
+              <li>Selling Unit Price: {sidebarData.unit_price}</li>
               <li>Unit Qty: 1</li>
             </ul>
           </li>
           <li>Currency: {sidebarData.currency || '-'}</li>
           <li>Purchase Status: {isPurchasedStatus(sidebarData['status']) ? 'Purchased' : 'Not yet purchased'}</li>
-          <li>Qty: {sidebarData.quantity}</li>
-          <li>Qty Type: {sidebarData.quantity_type || '-'}</li>
-          <li>Price: {sidebarData.price}</li>
+          <li>Quantity to Buy: {sidebarData.quantity}</li>
+          <li>Buying Unit: {sidebarData.quantity_type || '-'}</li>
+          <li>Today&apos;s Purchase Price: {sidebarData.price}</li>
           <li>Note: {sidebarData.note}</li>
           <li>Supplier : {sidebarData.supplier_id || 'Select Supplier'}</li>
         </ul>

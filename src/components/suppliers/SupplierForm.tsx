@@ -8,6 +8,7 @@ import toastShow from '@/components/toast/toast-selector';
 import CategoryTreeMultipleSelection from "@/components/categories/CategoryTreeMultipleSelection";
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 import {revalidateCache} from '@/lib/cache';
+import {getEditableImageUrls, isPlaceholderImage} from '@/lib/helper';
 
 export const SupplierForm = ({supplier}: { supplier?: any }) => {
     const isAddMode = !supplier;
@@ -58,22 +59,12 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
 
     const getImageUrls = () => {
         if (isAddMode) return [];
-        return (supplier.image_urls).map((image_path) => (
-            image_path
-        ));
+        return getEditableImageUrls(supplier.image_urls || []);
     };
     const [formState, setFormState] = useState({...initial});
     const [error, setError] = useState('');
     const [photos, setPhotos] = useState([...getImageUrls()]);
     const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const isPlaceholderImage = (photo: any) => (
-        typeof photo === 'string' && (
-            photo.includes('supplier-placeholder.png') ||
-            photo.includes('product-placeholder.png') ||
-            photo.includes('no-img.png')
-        )
-    );
 
     const handleSubmit = async (e) => {
         e.preventDefault();

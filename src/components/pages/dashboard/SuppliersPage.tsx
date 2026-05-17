@@ -10,7 +10,6 @@ import Container from '@/components/utils/wrappers/Container';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import EntityTable from '@/components/table/EntityTable';
 import { Edit, Trash2 } from 'react-feather';
-import { useRouter } from 'next/navigation';
 import { useFetcher } from '@/app/hooks/useFetcher';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
@@ -19,7 +18,6 @@ export default function SuppliersPage() {
   const [url, setUrl] = useState(API_ENDPOINTS.SUPPLIERS);
   const { openBar, setOpenBar, setSidebarData } = useContext(SidebarContext);
   const { data: suppliers = [], meta, links, error, isLoading } = useFetcher(url);
-  const router = useRouter();
   const {startNavigation} = useRouteTransition();
   const columns = [
     {
@@ -48,16 +46,16 @@ export default function SuppliersPage() {
     {
       label: 'Edit',
       className: 'text-lightBlue-100',
-      icon: <Edit size={20} color="#2962FF" />,
+      icon: <Edit size={15} color="#2962FF" />,
+      href: (row: any) => `/suppliers/update/${row.id}`,
       onClick: (row: any) => {
         startNavigation('Opening supplier editor...');
-        router.push(`/suppliers/update/${row.id}`);
       }
     },
     {
       label: 'Delete',
       className: 'text-red-600',
-      icon: <Trash2 size={20} color="#EF4444FF" />,
+      icon: <Trash2 size={15} color="#EF4444FF" />,
       onClick: (row: any) => {
         console.log(`Delete clicked for row ${row.id}`);
       }

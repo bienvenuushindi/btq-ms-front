@@ -6,6 +6,7 @@ import {API_ENDPOINTS, send} from '@/lib/api';
 import toastShow from '@/components/toast/toast-selector';
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 import {revalidateCache} from '@/lib/cache';
+import {getEditableImageUrls, isPlaceholderImage} from '@/lib/helper';
 
 const COUNTRY_OPTIONS = {
   CG: 'Congo',
@@ -36,7 +37,7 @@ export default function UserForm({user}: {user: any}) {
   const {startNavigation} = useRouteTransition();
   const initialState = useMemo(() => buildInitialState(user), [user]);
   const [formState, setFormState] = useState(initialState);
-  const [photos, setPhotos] = useState<string[] | File[]>(user?.image_urls || []);
+  const [photos, setPhotos] = useState<string[] | File[]>(getEditableImageUrls(user?.image_urls || []));
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -44,15 +45,8 @@ export default function UserForm({user}: {user: any}) {
   }, [initialState]);
 
   useEffect(() => {
-    setPhotos(user?.image_urls || []);
+    setPhotos(getEditableImageUrls(user?.image_urls || []));
   }, [user]);
-
-  const isPlaceholderImage = (photo: any) => (
-    typeof photo === 'string' && (
-      photo.includes('no-img.png') ||
-      photo.includes('user-placeholder.svg')
-    )
-  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();

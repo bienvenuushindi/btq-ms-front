@@ -1,6 +1,6 @@
 'use client'
 
-import {useState} from "react";
+import React, {useState} from "react";
 import {API_ENDPOINTS} from "@/lib/api";
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {Edit, Trash2} from "react-feather";
@@ -11,6 +11,7 @@ import ContainerOne from "@/components/utils/wrappers/ContainerOne";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import EntityTable from "@/components/table/EntityTable";
 import StatusIndicator from '@/components/utils/StatusIndicator';
+import CreateCategory from '@/components/categories/CreateCategory';
 
 export default function CategoriesTable(){
     const [url, setUrl] = useState(API_ENDPOINTS.CATEGORIES);
@@ -49,17 +50,17 @@ export default function CategoriesTable(){
             label: 'Edit',
             className: 'text-lightBlue-100',
             icon: (
-                <Edit size={20} color="#2962FF"/>
+                <Edit size={15} color="#2962FF"/>
             ),
-            onClick: (row: any) => {
-                console.log(`Edit clicked for row ${row.id}`);
-            },
+            render: (row: any, content: React.ReactNode) => (
+                <CreateCategory category={row} revalidate={mutate} trigger={content}/>
+            ),
         },
         {
             label: 'Delete',
             className: 'text-red-600',
             icon: (
-                <Trash2 size={20} color="#EF4444FF"/>
+                <Trash2 size={15} color="#EF4444FF"/>
             ),
             onClick: (row: any) => {
                 console.log(`Delete clicked for row ${row.id}`);

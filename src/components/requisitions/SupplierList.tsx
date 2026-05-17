@@ -3,7 +3,7 @@ import {RadioGroup} from '@headlessui/react';
 import {CheckCircle} from 'react-feather';
 import SelectSupplierLoader from '@/components/banners/SelectSupplierLoader';
 
-function SupplierList({isLoading, suppliers, selected, onUpdateSelected, title}) {
+function SupplierList({isLoading, suppliers, selected, onUpdateSelected, title, emptyMessage = 'No suppliers available yet.'}) {
     return (
         <div className="w-full">
             {isLoading ? (
@@ -13,7 +13,7 @@ function SupplierList({isLoading, suppliers, selected, onUpdateSelected, title})
                     <h5 className="my-2 text-sm font-semibold text-slate-700">{title}</h5>
                     {suppliers.length === 0 ? (
                         <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-3 py-4 text-sm text-slate-500">
-                            No suppliers available for this search yet.
+                            {emptyMessage}
                         </div>
                     ) : (
                     <RadioGroup value={selected} onChange={onUpdateSelected}>
@@ -21,11 +21,15 @@ function SupplierList({isLoading, suppliers, selected, onUpdateSelected, title})
                         <div className="w-full flex justify-start flex-col items-start">
                             <div className="w-full">
                                 <div className="space-y-2">
-                                    {suppliers.map((supplier: { id: any; shop_name: any; address: any; }) => {
+                                    {suppliers.map((supplier: any) => {
                                             const {
                                                 id,
                                                 shop_name,
                                                 address: supplierAddress,
+                                                price,
+                                                currency,
+                                                quantity_type,
+                                                last_update_at,
                                             } = supplier;
 
                                             const {
@@ -35,7 +39,7 @@ function SupplierList({isLoading, suppliers, selected, onUpdateSelected, title})
                                                 address2,
                                                 tel1,
                                                 tel2
-                                            } = supplierAddress
+                                            } = supplierAddress || {};
                                             return (
                                                 <RadioGroup.Option
                                                     key={id}
@@ -65,6 +69,18 @@ function SupplierList({isLoading, suppliers, selected, onUpdateSelected, title})
                                                                                 checked ? 'text-sky-100' : 'text-gray-500'
                                                                             }`}
                                                                         >
+                                                                            {price ? (
+                                                                                <div className="mb-2 flex flex-wrap gap-2">
+                                                                                    <span className={`rounded-full px-2 py-1 text-xs font-semibold ${checked ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700'}`}>
+                                                                                        Last purchase price: {price} {currency || ''}
+                                                                                    </span>
+                                                                                    {quantity_type ? (
+                                                                                        <span className={`rounded-full px-2 py-1 text-xs font-semibold ${checked ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700'}`}>
+                                                                                            Buying unit: {quantity_type}
+                                                                                        </span>
+                                                                                    ) : null}
+                                                                                </div>
+                                                                            ) : null}
                                                                             <div className="flex flex-col">
                                                                                 <h6 className={`${
                                                                                     checked ? 'text-sky-100' : 'text-gray-700'
@@ -90,6 +106,9 @@ function SupplierList({isLoading, suppliers, selected, onUpdateSelected, title})
                                                                                         )}
                                                                                 </ul>
                                                                             </div>
+                                                                            {last_update_at ? (
+                                                                                <div className={`${checked ? 'text-sky-100' : 'text-slate-400'}`}>Last used: {last_update_at}</div>
+                                                                            ) : null}
 
                                                                             <div className="flex ">
                                                                                 <h6 className={`${

@@ -9,6 +9,7 @@ import toastShow from '@/components/toast/toast-selector';
 import CategoryTreeMultipleSelection from "@/components/categories/CategoryTreeMultipleSelection";
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 import {revalidateCache} from '@/lib/cache';
+import {getEditableImageUrls, isPlaceholderImage} from '@/lib/helper';
 
 export const ProductForm = ({product}: { product?: any }) => {
     const isAddMode = !product;
@@ -27,22 +28,12 @@ export const ProductForm = ({product}: { product?: any }) => {
     }
     const getImageUrls = () => {
         if (isAddMode) return [];
-        return (product.image_urls).map((image_path) => (
-            image_path
-        ));
+        return getEditableImageUrls(product.image_urls || []);
     };
     const [formState, setFormState] = useState({...initial});
     const [error, setError] = useState('');
     const [photos, setPhotos] = useState(getImageUrls());
     const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const isPlaceholderImage = (photo: any) => (
-        typeof photo === 'string' && (
-            photo.includes('product-placeholder.png') ||
-            photo.includes('supplier-placeholder.png') ||
-            photo.includes('no-img.png')
-        )
-    );
 
     function updateCategory(ids: any[]) {
         setFormState((s) => ({...s, categories: [...ids]}));

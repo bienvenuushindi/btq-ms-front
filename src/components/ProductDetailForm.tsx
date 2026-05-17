@@ -8,6 +8,46 @@ import toastShow from '@/components/toast/toast-selector';
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 import {useFetcher} from '@/app/hooks/useFetcher';
 import {revalidateCache} from '@/lib/cache';
+import {getEditableImageUrls, isPlaceholderImage} from '@/lib/helper';
+
+const numericValue = (value) => Number(value || 0);
+const numericFields = new Set(['unit_price', 'dozen_price', 'box_price', 'dozen_units', 'box_units']);
+
+const SectionHeader = ({title, description}: { title: string; description: string }) => (
+    <div className="pt-2">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-blue-600">{title}</p>
+        <p className="mt-1 max-w-2xl text-sm text-slate-500">{description}</p>
+    </div>
+);
+
+const priceHierarchyMessage = (state) => {
+    const unitPrice = numericValue(state.unit_price);
+    const groupPrice = numericValue(state.dozen_price);
+    const groupUnits = numericValue(state.dozen_units);
+    const boxPrice = numericValue(state.box_price);
+    const boxUnits = numericValue(state.box_units);
+
+    if (groupPrice > 0 && groupUnits <= 0) {
+        return 'Group quantity must be greater than 0 when group price is set.';
+    }
+
+    if (boxPrice > 0 && boxUnits <= 0) {
+        return 'Box quantity must be greater than 0 when box price is set.';
+    }
+
+    const groupUnitPrice = groupUnits > 0 ? groupPrice / groupUnits : 0;
+    const boxUnitPrice = boxUnits > 0 ? boxPrice / boxUnits : 0;
+
+    if (groupPrice > 0 && unitPrice < groupUnitPrice) {
+        return `Unit price must be at least the group unit price (${groupUnitPrice.toFixed(2)} ${state.currency}).`;
+    }
+
+    if (boxPrice > 0 && groupPrice > 0 && groupUnitPrice < boxUnitPrice) {
+        return `Group unit price must be at least the box unit price (${boxUnitPrice.toFixed(2)} ${state.currency}).`;
+    }
+
+    return '';
+};
 
 export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
     const router = useRouter();
@@ -22,7 +62,7 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
         dozen_price: 0.0,
         box_price: 0.0,
         dozen_units: 12,
-        box_units: 1,
+        box_units: '',
         tags: '',
         supplier_id: null,
         currency: currentUser?.default_currency || 'usd',
@@ -57,9 +97,7 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
 
     const getImageUrls = () => {
         if (isAddMode) return [];
-        return (variant.image_urls).map((image_path) => (
-            image_path
-        ));
+        return getEditableImageUrls(variant.image_urls || []);
     };
     const [formState, setFormState] = useState({...initial});
     const [error, setError] = useState('');
@@ -71,23 +109,43 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
         if (!currentUser?.default_currency) return;
 
         setFormState((prevState) => (
-            prevState.currency
+            prevState.currency && prevState.currency !== 'usd'
                 ? prevState
                 : {...prevState, currency: currentUser.default_currency}
         ));
     }, [currentUser?.default_currency, isAddMode]);
 
+    const updateFormField = (key, value, shouldValidatePrice = false) => {
+        const nextState = {...formState, [key]: value};
+
+        if (shouldValidatePrice) {
+            setError(priceHierarchyMessage(nextState));
+        }
+
+        setFormState((s) => ({...s, [key]: value}));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (isSubmitting) return;
 
-        setError('');
+        const priceError = priceHierarchyMessage(formState);
+        setError(priceError);
+        if (priceError) {
+            toastShow('error', priceError);
+            return;
+        }
+
         setIsSubmitting(true);
         const formData = new FormData();
         Object.keys(formState).forEach((key) => {
-            formData.append(`product_detail[${key}]`, formState[key]);
+            const value = numericFields.has(key) && formState[key] === '' ? 0 : formState[key];
+            formData.append(`product_detail[${key}]`, value);
         });
         for (let i = 0; i < photos.length; i++) {
+            if (isPlaceholderImage(photos[i])) {
+                continue;
+            }
             formData.append('product_detail[images][]', photos[i]);
         }
         try {
@@ -127,7 +185,16 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
     };
 
     const productDetailForm = [
-        [
+        {
+            input_type: 'custom',
+            component: (
+                <SectionHeader
+                    title="Basic"
+                    description="Identify this variant and decide whether it can be used in sales and requisitions."
+                />
+            ),
+        },
+        [  
             {
                 label: 'Size',
                 required: true,
@@ -138,7 +205,7 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
                 input_type: 'text',
                 className: '',
                 action: (e) => {
-                    setFormState((s) => ({...s, size: e.target.value}));
+                    updateFormField('size', e.target.value);
                 },
             },
             {
@@ -151,10 +218,29 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
                 type: 'date',
                 className: '',
                 action: (e) => {
-                    setFormState((s) => ({...s, expired_date: e.target.value}));
+                    updateFormField('expired_date', e.target.value);
                 },
             }
         ],
+        [{
+            input_type: 'checkbox',
+            className: '',
+            checked: Boolean(formState.status),
+            labelClassName: 'sr-only',
+            action: () => {
+                updateFormField('status', !formState.status);
+            },
+            label: 'Available for sales'
+        }],
+        {
+            input_type: 'custom',
+            component: (
+                <SectionHeader
+                    title="Selling Prices"
+                    description="Set the prices your customers pay for single units, groups, and boxes."
+                />
+            ),
+        },
         {
             label: 'Choose currency',
             placeholder: 'Select Currency',
@@ -164,48 +250,34 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
             value: formState.currency,
             options: ['fc', 'rw', 'ugx', 'usd'],
             action: (e) => {
-                setFormState((s) => ({...s, currency: e.target.value}));
+                updateFormField('currency', e.target.value, true);
             }
         },
-        [
-            {
-                label: 'Box Price',
-                required: false,
-                placeholder: 'Box Price',
-                value: formState.box_price,
-                name: 'box-price',
-                input_type: 'number',
-                type: 'number',
-                className: '',
-                action: (e) => {
-                    setFormState((s) => ({...s, box_price: e.target.value}));
-                },
-            }, {
-            label: 'Unit Qty in Box',
-            required: false,
-            placeholder: 'Box Units',
-            value: formState.box_units,
-            name: 'box-units',
+        [{
+            label: 'Selling Unit Price',
+            required: true,
+            placeholder: 'Selling unit price',
+            value: formState.unit_price,
+            name: 'unit-price',
             input_type: 'number',
             type: 'number',
             className: '',
             action: (e) => {
-                setFormState((s) => ({...s, box_units: e.target.value}));
+                updateFormField('unit_price', e.target.value, true);
             },
-        },
-        ],
+        }],
         [
             {
-                label: 'Group Price',
+                label: 'Selling Group Price',
                 required: false,
-                placeholder: 'Group Price',
+                placeholder: 'Selling group price',
                 value: formState.dozen_price,
                 name: 'dozen-price',
                 input_type: 'number',
                 type: 'number',
                 className: '',
                 action: (e) => {
-                    setFormState((s) => ({...s, dozen_price: e.target.value}));
+                    updateFormField('dozen_price', e.target.value, true);
                 },
             },
             {
@@ -218,22 +290,45 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
                 type: 'number',
                 className: '',
                 action: (e) => {
-                    setFormState((s) => ({...s, dozen_units: e.target.value}));
+                    updateFormField('dozen_units', e.target.value, true);
                 },
             },
         ],
-        {
-            label: 'Unit Price',
+        [
+            {
+                label: 'Selling Box Price',
+                required: false,
+                placeholder: 'Selling box price',
+                value: formState.box_price,
+                name: 'box-price',
+                input_type: 'number',
+                type: 'number',
+                className: '',
+                action: (e) => {
+                    updateFormField('box_price', e.target.value, true);
+                },
+            }, {
+            label: 'Unit Qty in Box',
             required: false,
-            placeholder: 'Unit Price',
-            value: formState.unit_price,
-            name: 'unit-price',
+            placeholder: 'Box units',
+            value: formState.box_units,
+            name: 'box-units',
             input_type: 'number',
             type: 'number',
             className: '',
             action: (e) => {
-                setFormState((s) => ({...s, unit_price: e.target.value}));
+                updateFormField('box_units', e.target.value, true);
             },
+        },
+        ],
+        {
+            input_type: 'custom',
+            component: (
+                <SectionHeader
+                    title="Optional"
+                    description="Add tags and photos only when they help you identify the variant faster."
+                />
+            ),
         },
         {
             label: 'Tags',
@@ -245,7 +340,7 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
             name: 'tags',
             className: '',
             action: (tags) => {
-                setFormState((s) => ({...s, tags: tags.join(',')}));
+                updateFormField('tags', tags.join(','));
             },
         },
         {
@@ -253,16 +348,6 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
             input_type: 'image-file',
             name: 'photos',
             image_props: {photos, setPhotos}
-        },
-        {
-            input_type: 'checkbox',
-            className: '',
-            checked: formState.status,
-            labelClassName: 'sr-only',
-            action: (e) => {
-                setFormState((s) => ({...s, status: !formState.status}));
-            },
-            label: 'Active variant'
         },
         {
             input_type: 'button',

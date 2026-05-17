@@ -29,7 +29,7 @@ export default function RequisitionsPage() {
     },
     {
       key: 'total_price',
-      label: 'Total Amount',
+      label: 'Total Purchased So Far',
       type: 'text',
       appendTransformation: (val1: any, val2: any) => (isNaN(val1) ? val1 : `${val1} ${val2.price_currency}`)
     },

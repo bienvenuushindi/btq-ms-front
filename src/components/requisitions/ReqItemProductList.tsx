@@ -7,17 +7,36 @@ import ReqProductItem from '@/components/requisitions/ReqProductItem';
 import Card from '@/components/utils/wrappers/Card';
 import Text from "@/components/Text";
 import {RequisitionContext} from "@/components/requisitions/RequisitionContext";
+import {isPurchasedStatus} from '@/lib/helper';
 
+const statusFilters = [
+    {key: 'all', label: 'All'},
+    {key: 'pending', label: 'Pending'},
+    {key: 'purchased', label: 'Purchased'},
+];
 
 export default function ReqItemProductList({details, revalidate}) {
     const {requisitionID, requisition} = useContext(RequisitionContext)
     const isArchived = Boolean(requisition?.archived);
     const [data, setData] = useState(details);
+    const [statusFilter, setStatusFilter] = useState('all');
     const [showDeleteAlert, setShowDeleteAlert] = useState(false);
     const [itemToDelete, setItemToDelete] = useState(null);
     useEffect(() => {
         setData(details);
     }, [details]);
+    const filteredData = data.filter((item) => {
+        const purchased = isPurchasedStatus(item?.status);
+        if (statusFilter === 'purchased') return purchased;
+        if (statusFilter === 'pending') return !purchased;
+        return true;
+    });
+    const filterCounts = data.reduce((counts, item) => {
+        if (isPurchasedStatus(item?.status)) counts.purchased += 1;
+        else counts.pending += 1;
+        counts.all += 1;
+        return counts;
+    }, {all: 0, pending: 0, purchased: 0});
     const handleCancelDelete = () => {
         setShowDeleteAlert(false);
     };
@@ -45,9 +64,25 @@ export default function ReqItemProductList({details, revalidate}) {
                                 : 'Open any row to update supplier, pricing, quantity, expiration date, and notes.'}
                         </p>
                     </div>
-                    <span className="inline-flex w-fit rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                        {data.length} item{data.length === 1 ? '' : 's'}
-                    </span>
+                    <div className="flex flex-wrap items-center gap-2">
+                        {statusFilters.map((filter) => {
+                            const active = statusFilter === filter.key;
+                            return (
+                                <button
+                                    key={filter.key}
+                                    type="button"
+                                    onClick={() => setStatusFilter(filter.key)}
+                                    className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
+                                        active
+                                            ? 'border-blue-600 bg-blue-600 text-white'
+                                            : 'border-slate-200 bg-slate-100 text-slate-700 hover:border-slate-300 hover:bg-white'
+                                    }`}
+                                >
+                                    {filter.label} {filterCounts[filter.key]}
+                                </button>
+                            );
+                        })}
+                    </div>
                 </div>
                 {data.length === 0 ? (
                     <div className="flex min-h-[180px] items-center justify-center rounded-[20px] border border-dashed border-slate-200 bg-slate-50/70 px-6 py-8 text-center">
@@ -56,9 +91,16 @@ export default function ReqItemProductList({details, revalidate}) {
                             <p className="mt-2 text-xs text-slate-500 md:text-sm">Use the add action above to start building this requisition.</p>
                         </div>
                     </div>
+                ) : filteredData.length === 0 ? (
+                    <div className="flex min-h-[160px] items-center justify-center rounded-[20px] border border-dashed border-slate-200 bg-slate-50/70 px-6 py-8 text-center">
+                        <div>
+                            <p className="text-base font-semibold text-slate-900">No {statusFilter} items</p>
+                            <p className="mt-2 text-xs text-slate-500 md:text-sm">Use another status filter to view the rest of this requisition.</p>
+                        </div>
+                    </div>
                 ) : (
                 <ul className="space-y-3 py-4">
-                    {data.map((row: { isOpen: boolean; id: React.Key; }) => {
+                    {filteredData.map((row: { isOpen: boolean; id: React.Key; }) => {
                         row.isOpen = false;
                         return <li key={row.id}
                                    className="rounded-[22px] border border-slate-200 bg-slate-50/70 p-2 shadow-[0_8px_18px_rgba(15,23,42,0.03)]">

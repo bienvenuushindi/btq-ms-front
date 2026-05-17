@@ -17,7 +17,7 @@ export default function SelectSupplier({action, productId, supplierId}) {
   }
   return (
     <div className="w-full">
-      <h2 className="text-xl font-bold my-2">Select Supplier </h2>
+      <h2 className="text-xl font-bold my-2">Choose Supplier</h2>
       <div className={'w-full flex justify-start flex-col items-start'}>
         <SearchBar onSearch={updateParams} />
         <div className="w-full">

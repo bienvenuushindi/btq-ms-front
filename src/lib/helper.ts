@@ -16,6 +16,20 @@ export const getImageUrls = (urls) => {
     return (urls || []).map((image_path) => image_path);
 };
 
+export const isPlaceholderImage = (photo: any) => (
+    typeof photo === 'string' && (
+        photo.includes('product-placeholder.png') ||
+        photo.includes('supplier-placeholder.png') ||
+        photo.includes('user-placeholder.svg') ||
+        photo.includes('category-placeholder.svg') ||
+        photo.includes('no-img.png')
+    )
+);
+
+export const getEditableImageUrls = (urls) => {
+    return getImageUrls(urls).filter((image_path) => !isPlaceholderImage(image_path));
+};
+
 // urlUtils.js
 export const updateUrl = <T extends Record<string, string | undefined | null>>(
     prevUrl: string,

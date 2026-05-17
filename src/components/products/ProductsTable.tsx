@@ -148,18 +148,18 @@ export default function ProductsTable() {
             label: 'Edit',
             className: 'text-sky-700',
             icon: (
-                <Edit size={20} color="#0369a1"/>
+                <Edit size={15} color="#0369a1"/>
             ),
+            href: (row) => `/products/update/${row.id}`,
             onClick: (row) => {
                 startNavigation('Opening product editor...');
-                router.push(`/products/update/${row.id}`);
             },
         },
         {
             label: (row) => row.active ? 'Archive' : 'Restore',
             className: (row) => row.active ? 'text-amber-700' : 'text-emerald-700',
             icon: (row) => (
-                row.active ? <Archive size={20} color="#b45309"/> : <RotateCcw size={20} color="#15803d"/>
+                row.active ? <Archive size={15} color="#b45309"/> : <RotateCcw size={15} color="#15803d"/>
             ),
             onClick: toggleArchiveStatus,
         },

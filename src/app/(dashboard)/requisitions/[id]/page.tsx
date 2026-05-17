@@ -15,9 +15,13 @@ import DataWrapper from "@/components/utils/wrappers/DataWrapper";
 import {RequisitionInfoWithContext} from "@/components/requisitions/item-page/RequisitionInfoWithContext";
 import RequisitionLoader from "@/components/banners/RequisitionLoader";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import {Calendar, Package, ShoppingCart} from 'react-feather';
+import {Archive, Calendar, Package, RotateCcw, ShoppingCart} from 'react-feather';
 import StatusIndicator from '@/components/utils/StatusIndicator';
 import {getRequisitionItemsCount, getRequisitionPurchasedItemsCount} from '@/lib/helper';
+import Button from '@/components/utils/Button';
+import {send} from '@/lib/api';
+import {revalidateCache} from '@/lib/cache';
+import toastShow from '@/components/toast/toast-selector';
 
 export default function Requisition() {
     const {openBar} = useContext(SidebarContext);
@@ -31,6 +35,26 @@ export default function Requisition() {
     } = useFetcher(API_ENDPOINTS.REQUISITION_BY_ID(requisitionId));
     const itemsCount = getRequisitionItemsCount(requisition);
     const purchasedItemsCount = getRequisitionPurchasedItemsCount(requisition);
+    const updateRequisitionStatus = async () => {
+        if (!requisition?.id) return;
+
+        const nextArchived = !requisition.archived;
+        const formData = new FormData();
+        formData.append('requisition[archived]', String(nextArchived));
+
+        try {
+            await send(`/requisitions/${requisition.id}`, formData, 'PUT');
+            await revalidateCache({
+                keys: [API_ENDPOINTS.REQUISITION_BY_ID(requisition.id)],
+                prefixes: [API_ENDPOINTS.REQUISITIONS, API_ENDPOINTS.RECENT_REQUISITIONS],
+            });
+            await mutate();
+            toastShow('success', nextArchived ? 'Requisition archived successfully' : 'Requisition restored successfully');
+        } catch (error) {
+            toastShow('error', error instanceof Error ? error.message : 'Could not update requisition status');
+        }
+    };
+
     return (
         <ProtectedRoute>
             <RequisitionProvider>
@@ -53,12 +77,24 @@ export default function Requisition() {
                                                             Review schedule, item progress, and pricing status before updating the products below.
                                                         </p>
                                                     </div>
-                                                    <StatusIndicator
-                                                        active={!requisition.archived}
-                                                        activeLabel="Active requisition"
-                                                        inactiveLabel="Archived requisition"
-                                                        className="rounded-full border border-slate-200 bg-white p-1.5"
-                                                    />
+                                                    <div className="flex items-center gap-2">
+                                                        <StatusIndicator
+                                                            active={!requisition.archived}
+                                                            activeLabel="Active"
+                                                            inactiveLabel="Archived"
+                                                            className="rounded-full border border-slate-200 bg-white !px-2 !py-0.5 text-[11px]"
+                                                        />
+                                                        <Button
+                                                            type="button"
+                                                            intent={requisition.archived ? 'primary' : 'danger'}
+                                                            size="small"
+                                                            onClick={updateRequisitionStatus}
+                                                            className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold"
+                                                        >
+                                                            {requisition.archived ? <RotateCcw size={13}/> : <Archive size={13}/>}
+                                                            {requisition.archived ? 'Restore' : 'Archive'}
+                                                        </Button>
+                                                    </div>
                                                 </div>
                                                 <RequisitionInfoWithContext requisition={requisition}/>
                                             </div>

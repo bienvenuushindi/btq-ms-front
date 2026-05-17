@@ -2,7 +2,7 @@
 import {useContext} from 'react';
 import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
 import {Edit, Trash2} from 'react-feather';
-import {useParams, useRouter} from 'next/navigation';
+import {useParams} from 'next/navigation';
 import Image from 'next/image';
 import EntityTable from '@/components/table/EntityTable';
 import DateDisplay from "@/components/DateDisplay";
@@ -12,7 +12,6 @@ import {getImageUrls} from '@/lib/helper';
 
 export const ProductDetailsTable = ({product, isLoading}) => {
   const {setOpenBar, setSidebarData} = useContext(SidebarContext);
-  const router = useRouter();
   const {startNavigation} = useRouteTransition();
   const params = useParams();
   const productID = params.id;
@@ -21,18 +20,18 @@ export const ProductDetailsTable = ({product, isLoading}) => {
       label: 'Edit',
       className: 'text-lightBlue-100',
       icon: (
-        <Edit size={20} color="#2962FF"/>
+        <Edit size={15} color="#2962FF"/>
       ),
+      href: (row) => `/products/${productID}/details/update/${row.id}`,
       onClick: (row) => {
         startNavigation('Opening update form...');
-        router.push(`/products/${productID}/details/update/${row.id}`);
       },
     },
     {
       label: 'Delete',
       className: 'text-red-600',
       icon: (
-        <Trash2 size={20} color="#EF4444FF"/>
+        <Trash2 size={15} color="#EF4444FF"/>
       ),
       onClick: (row) => {
         console.log(`Delete clicked for row ${row.id}`);
@@ -67,19 +66,19 @@ export const ProductDetailsTable = ({product, isLoading}) => {
     {
       key: 'unit_price',
       type: 'text',
-      label: 'Unit Prices',
+      label: 'Selling Unit Prices',
       appendTransformation: (val1: any, val2: any) => isNaN(val1)? val1 : val1 +" "+ val2['currency']
     },
     {
       key: 'box_price',
       type: 'text',
-      label: 'Box Prices',
+      label: 'Selling Box Prices',
       appendTransformation: (val1: any, val2: any) => isNaN(val1)? val1 : val1 +" "+  val2['currency']
     },
     {
       key: 'dozen_price',
       type: 'text',
-      label: 'Group Prices',
+      label: 'Selling Group Prices',
       appendTransformation: (val1: any, val2: any) => isNaN(val1)? val1 : val1 +" "+  val2['currency']
     },
     {

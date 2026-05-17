@@ -12,6 +12,8 @@ type CreateCategoryProps = {
   buttonLabel?: ReactNode;
   buttonClassName?: string;
   buttonIntent?: string;
+  category?: any;
+  trigger?: ReactNode;
 };
 
 export default function CreateCategory({
@@ -19,24 +21,38 @@ export default function CreateCategory({
   buttonLabel = 'New Category',
   buttonClassName = '',
   buttonIntent = 'primary',
+  category = null,
+  trigger,
 }: CreateCategoryProps) {
   const [modalIsOpen, setIsOpen] = useState(false);
+  const isEditMode = Boolean(category);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
+  const handleSaved = async () => {
+    await revalidate?.();
+    closeModal();
+  };
+
   return (
     <>
-      <Button onClick={() => openModal()}
-              size="small"
-              intent={buttonIntent as any}
-              className={`flex items-center justify-center space-x-1 rounded-2xl px-4 py-2 text-center  ${buttonClassName}`}> {buttonLabel}</Button>
+      {trigger ? (
+        <button type="button" className="flex w-full items-center text-left" onClick={openModal}>
+          {trigger}
+        </button>
+      ) : (
+        <Button onClick={() => openModal()}
+                size="small"
+                intent={buttonIntent as any}
+                className={`flex items-center justify-center space-x-1 rounded-2xl px-4 py-2 text-center  ${buttonClassName}`}> {buttonLabel}</Button>
+      )}
       <ModalContainer
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
       >
         <ModalContent>
-          <ModalHeader closeModal={closeModal} title={'Create Category'}/>
+          <ModalHeader closeModal={closeModal} title={isEditMode ? 'Edit Category' : 'Create Category'}/>
           <ModalBody>
-            <CategoryForm />
+            <CategoryForm category={category} onSaved={handleSaved}/>
           </ModalBody>
         </ModalContent>
 

@@ -9,7 +9,7 @@ import {useRouteTransition} from '@/components/navigation/RouteTransitionProvide
 import {API_ENDPOINTS} from '@/lib/api';
 import {revalidateCache} from '@/lib/cache';
 
-export default function CategoryForm({category = null}: { category?: any }) {
+export default function CategoryForm({category = null, onSaved}: { category?: any; onSaved?: () => void | Promise<void> }) {
   const router = useRouter();
   const {startNavigation} = useRouteTransition();
   const isAddMode = !category
@@ -52,8 +52,12 @@ export default function CategoryForm({category = null}: { category?: any }) {
           keys: [API_ENDPOINTS.CATEGORY_TREE_STRUCTURE],
         });
         toastShow('success', 'Category created successfully')
-        startNavigation('Returning to categories...');
-        router.push('/categories');
+        if (onSaved) {
+          await onSaved();
+        } else {
+          startNavigation('Returning to categories...');
+          router.push('/categories');
+        }
       } else {
         await send('/categories/' + category.id, formData, "PUT");
         await revalidateCache({
@@ -61,8 +65,12 @@ export default function CategoryForm({category = null}: { category?: any }) {
           keys: [API_ENDPOINTS.CATEGORY_TREE_STRUCTURE],
         });
         toastShow('success', 'Category updated successfully')
-        startNavigation('Returning to categories...');
-        router.push('/categories');
+        if (onSaved) {
+          await onSaved();
+        } else {
+          startNavigation('Returning to categories...');
+          router.push('/categories');
+        }
       }
 
     } catch (e) {
