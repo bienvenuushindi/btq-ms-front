@@ -4,7 +4,7 @@ import { register, signin } from '@/lib/api';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { BarChart2, CheckCircle, Shield, Truck } from 'react-feather';
+import { BarChart2, CheckCircle, Package, Shield, Truck } from 'react-feather';
 import { useCallback, useState, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

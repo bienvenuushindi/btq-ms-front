@@ -20,8 +20,10 @@ export default function PreviousSuppliers({action, supplierId, productId, curren
   const [selected, setSelected] = useState(supplierId)
   const appliedSupplierRef = useRef(null);
   const updateSelected = (id) => {
+    const previousSelected = selected;
     setSelected(id)
-    action(mergedList.find((supplier) => supplierKey(supplier) === id?.toString()))
+    const accepted = action(mergedList.find((supplier) => supplierKey(supplier) === id?.toString()))
+    if (accepted === false) setSelected(previousSelected);
   }
 
   useEffect(()=>{
@@ -34,7 +36,7 @@ export default function PreviousSuppliers({action, supplierId, productId, curren
     if (!selectedSupplier || appliedSupplierRef.current === selectedSupplierKey) return;
 
     appliedSupplierRef.current = selectedSupplierKey;
-    action(selectedSupplier);
+    action(selectedSupplier, {silent: true});
   }, [action, mergedList, supplierId]);
 
   return (

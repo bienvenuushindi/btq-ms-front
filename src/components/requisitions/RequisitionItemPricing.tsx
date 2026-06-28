@@ -1,5 +1,5 @@
 'use client';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {API_ENDPOINTS, send} from '@/lib/api';
 import Form from '@/components/forms/Form';
 import SuppliersSection from '@/components/requisitions/SuppliersSection';
@@ -10,11 +10,14 @@ import {delay} from '@/lib/async';
 import toastShow from '@/components/toast/toast-selector';
 import {RequisitionContext} from '@/components/requisitions/RequisitionContext';
 import clsx from 'clsx';
-import SwitchCurrency from '@/components/requisitions/item-page/SwitchCurrency';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {revalidateCache} from '@/lib/cache';
 import {isPurchasedStatus} from '@/lib/helper';
 import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
+import ModalContainer from '@/components/modal/ModalContainer';
+import ModalContent from '@/components/modal/ModalContent';
+import ModalHeader from '@/components/modal/ModalHeader';
+import ModalBody from '@/components/modal/ModalBody';
 
 const formatCurrencyValue = (value) => {
   const numericValue = Number(value);
@@ -27,6 +30,7 @@ const formatCurrencyValue = (value) => {
 };
 
 const hasValue = (value) => ![null, undefined, '', 'null'].includes(value);
+const sameCurrency = (first, second) => first?.toString().toLowerCase() === second?.toString().toLowerCase();
 const normalizeQuantityType = (value) => {
   const quantityTypesByIndex = {0: 'box', 1: 'dozen', 2: 'unit'};
   if (!hasValue(value)) return '';
@@ -63,13 +67,15 @@ export default function RequisitionItemPricing({productDetails}) {
   const {requisitionID, requisition} = useContext(RequisitionContext)
   const {setOpenBar, setSidebarData} = useContext(SidebarContext);
   const {data: quantityType = {}} = useFetcher(API_ENDPOINTS.QUANTITY_TYPES);
-  const {data: currencies = {}} = useFetcher( API_ENDPOINTS.CURRENCIES);
   const {currency} = useContext(RequisitionContext);
+  const requisitionCurrency = currency || productDetails.currency;
+  const storedPriceMatchesRequisition = !hasValue(productDetails.currency)
+    || sameCurrency(productDetails.currency, requisitionCurrency);
+  const editableInitialPrice = storedPriceMatchesRequisition ? productDetails.price || 0 : '';
   const isArchived = Boolean(requisition?.archived);
-  const [modalIsOpen, setIsOpen] = useState(false);
   const initial = {
-    price: productDetails.price || 0,
-    currency: productDetails.currency,
+    price: editableInitialPrice,
+    currency: requisitionCurrency,
     status: isPurchasedStatus(productDetails.status),
     quantity: productDetails.quantity || 0,
     quantity_type: productDetails.quantity_type,
@@ -80,13 +86,41 @@ export default function RequisitionItemPricing({productDetails}) {
   const [formState, setFormState] = useState({...initial});
   const [supplierId, setSupplierId] = useState(productDetails.supplier_id);
   const [selectedSupplierPricing, setSelectedSupplierPricing] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(storedPriceMatchesRequisition ? '' : `Saved item price is in ${productDetails.currency}. Enter this requisition price in ${requisitionCurrency}.`);
+  const [blockedSupplier, setBlockedSupplier] = useState(null);
+  const syncedCurrencyRef = useRef(null);
   const hasExpirationDate = Boolean(productDetails.product_expired_date);
   const quantityTypeOptions = Array.from(new Set([
     ...Object.values(quantityType).map((q: any) => normalizeQuantityType(q)),
     normalizeQuantityType(formState.quantity_type),
     normalizeQuantityType(selectedSupplierPricing?.quantity_type),
   ].filter(hasValue)));
+
+  useEffect(() => {
+    if (!hasValue(currency)) return;
+    if (syncedCurrencyRef.current === currency) return;
+
+    syncedCurrencyRef.current = currency;
+
+    const savedCurrency = productDetails.currency;
+    const priceMatchesRequisition = !hasValue(productDetails.currency)
+      || sameCurrency(productDetails.currency, currency);
+    const nextPrice = priceMatchesRequisition ? productDetails.price || 0 : '';
+    const nextState = {
+      price: nextPrice,
+      currency,
+      status: isPurchasedStatus(productDetails.status),
+      quantity: productDetails.quantity || 0,
+      quantity_type: productDetails.quantity_type,
+      note: productDetails.note || '',
+      expired_date: productDetails.expired_date || null,
+    };
+
+    setFormState(nextState);
+    if (!priceMatchesRequisition) {
+      setError(`Saved item price is in ${savedCurrency}. Enter this requisition price in ${currency}.`);
+    }
+  }, [currency, productDetails]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,17 +135,14 @@ export default function RequisitionItemPricing({productDetails}) {
       toastShow('error', marginWarning);
       return;
     }
-    if(currency != formState.currency){
-      setIsOpen(true)
-      return
-    }
     setLoading(true);
     await delay(2000);
     const formData = new FormData();
-    Object.keys(formState).forEach((key) => {
+    const requisitionItemState = {...formState, currency: requisitionCurrency};
+    Object.keys(requisitionItemState).forEach((key) => {
       if (key === 'expired_date' && !hasExpirationDate) return;
-      if (['quantity_type', 'expired_date'].includes(key) && !hasValue(formState[key])) return;
-      formData.append(`requisition_product[${key}]`, formState[key]);
+      if (['quantity_type', 'expired_date'].includes(key) && !hasValue(requisitionItemState[key])) return;
+      formData.append(`requisition_product[${key}]`, requisitionItemState[key]);
     });
     formData.append('requisition_product[supplier_id]', supplierId);
     try {
@@ -189,17 +220,17 @@ export default function RequisitionItemPricing({productDetails}) {
           const nextQuantityType = e.target.value;
           const shouldUseSupplierPrice = selectedSupplierPricing
             && sameQuantityType(nextQuantityType, selectedSupplierPricing.quantity_type);
+          const supplierPriceMatchesRequisition = shouldUseSupplierPrice
+            && sameCurrency(selectedSupplierPricing.currency, requisitionCurrency);
           const shouldResetPrice = selectedSupplierPricing
             && hasValue(nextQuantityType)
             && hasValue(selectedSupplierPricing.quantity_type)
-            && !shouldUseSupplierPrice;
-          const nextPrice = shouldUseSupplierPrice
+            && (!shouldUseSupplierPrice || !supplierPriceMatchesRequisition);
+          const nextPrice = supplierPriceMatchesRequisition
             ? selectedSupplierPricing.price
             : shouldResetPrice ? '' : formState.price;
           const nextQuantity = shouldResetPrice ? '' : formState.quantity;
-          const nextCurrency = shouldUseSupplierPrice
-            ? selectedSupplierPricing.currency || formState.currency
-            : formState.currency;
+          const nextCurrency = requisitionCurrency;
           const nextState = {
             ...formState,
             quantity_type: nextQuantityType,
@@ -264,21 +295,14 @@ export default function RequisitionItemPricing({productDetails}) {
       input_type: 'button',
       className: '',
       type: 'submit',
-      placeholder: loading ? 'Loading...' : formState.currency == currency ? 'Update' : clsx('Convert To ', currency),
+      placeholder: loading ? 'Loading...' : 'Update',
       disabled: loading
     }
   ];
 
-  const convertedPrice=async (price)=>{
-    setFormState((s) => ({
-      ...s,
-      price,
-      currency,
-    }));
-    productDetails.price = price;
-    productDetails.currency = currency;
-  };
-  const updateForm = (supplier) => {
+  const updateForm = (supplier, options = {}) => {
+    if (!supplier) return;
+
     const supplierPricing = supplier && hasValue(supplier.price) && hasValue(supplier.quantity_type)
       ? {
         supplier_id: supplier.id,
@@ -288,6 +312,18 @@ export default function RequisitionItemPricing({productDetails}) {
       }
       : null;
 
+    if (supplierPricing && !sameCurrency(supplierPricing.currency, requisitionCurrency)) {
+      if (!options?.silent) {
+        setBlockedSupplier({
+          name: supplier.shop_name,
+          supplierCurrency: supplierPricing.currency,
+          requisitionCurrency,
+        });
+      }
+
+      return false;
+    }
+
     setSelectedSupplierPricing(supplierPricing);
     setSupplierId(supplier.id);
     productDetails.supplier_name = supplier.shop_name || productDetails.supplier_name;
@@ -296,24 +332,30 @@ export default function RequisitionItemPricing({productDetails}) {
       const nextState = {
         ...formState,
         price: supplierPricing.price,
-        currency: supplierPricing.currency || formState.currency,
+        currency: requisitionCurrency,
         quantity_type: supplierPricing.quantity_type,
         quantity: '',
       };
       setError(purchaseMarginWarning(nextState, productDetails));
       setFormState(nextState);
       productDetails.price = supplierPricing.price;
-      productDetails.currency = supplierPricing.currency || productDetails.currency;
+      productDetails.currency = requisitionCurrency;
       productDetails.quantity_type = supplierPricing.quantity_type;
       productDetails.quantity = '';
-      return;
+      return true;
     }
 
     if (supplier.id == productDetails.supplier_id) {
       setFormState({...initial});
-      return;
+      return true;
     }
-    setFormState((s) => ({...s, ...supplier, quantity: 0}));
+    setError('');
+    setFormState((s) => ({...s, price: 0, quantity_type: '', quantity: 0, currency: requisitionCurrency}));
+    productDetails.price = 0;
+    productDetails.currency = requisitionCurrency;
+    productDetails.quantity_type = '';
+    productDetails.quantity = 0;
+    return true;
   };
 
   if (isArchived) {
@@ -365,16 +407,37 @@ export default function RequisitionItemPricing({productDetails}) {
           fields={pricingForm}
         />
       </div>
-      <SwitchCurrency
-        setIsOpen={setIsOpen}
-        modalIsOpen={modalIsOpen}
-        currencies={currencies}
-        productCurrency={formState.currency}
-        requisitionCurrency={currency}
-        priceToConvert={formState.price}
-        convertFunc={convertedPrice}
+      <SupplierCurrencyMismatchModal
+        blockedSupplier={blockedSupplier}
+        closeModal={() => setBlockedSupplier(null)}
       />
     </Card>
+  );
+}
+
+function SupplierCurrencyMismatchModal({blockedSupplier, closeModal}) {
+  const isOpen = Boolean(blockedSupplier);
+
+  return (
+    <ModalContainer isOpen={isOpen} onRequestClose={closeModal}>
+      <ModalContent>
+        <ModalHeader
+          closeModal={closeModal}
+          title="Supplier currency does not match"
+          titleClassName="text-center px-2"
+        />
+        <ModalBody>
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            <p className="font-semibold">
+              {blockedSupplier?.name || 'This supplier'} uses {blockedSupplier?.supplierCurrency || 'another currency'}.
+            </p>
+            <p className="mt-2">
+              This requisition uses {blockedSupplier?.requisitionCurrency || 'a different currency'}, so this supplier cannot be added here. Create another requisition with the supplier currency to proceed with this supplier.
+            </p>
+          </div>
+        </ModalBody>
+      </ModalContent>
+    </ModalContainer>
   );
 }
 

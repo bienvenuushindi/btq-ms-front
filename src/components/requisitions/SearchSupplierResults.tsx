@@ -8,9 +8,11 @@ export default function SearchSupplierResults({url, action, supplierId}) {
   const {data: suppliers=[], meta,  error, isLoading} = useFetcher(url);
   const [selected, setSelected] = useState(supplierId);
   const updateSelected = (id) => {
+    const previousSelected = selected;
     setSelected(id);
     const supplier = suppliers.find((item) => item.id === id);
-    action(supplier ? {...supplier, price: 0, quantity_type: ''} : {id: id, price: 0, quantity_type: ''});
+    const accepted = action(supplier ? {...supplier, price: 0, quantity_type: ''} : {id: id, price: 0, quantity_type: ''});
+    if (accepted === false) setSelected(previousSelected);
   };
 
   useEffect(() => {
