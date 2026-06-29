@@ -3,8 +3,8 @@ import EntityHeader from '@/components/EntityHeader';
 import {DownloadCloud} from 'react-feather';
 
 
-const SuppliersHeader = () => {
-  const  linkUrl= '/suppliers/create';
+const SuppliersHeader = ({onAddSupplier}: { onAddSupplier?: () => void }) => {
+  const linkUrl = onAddSupplier || '/suppliers/create';
   const actions = [
     {
       icon: (

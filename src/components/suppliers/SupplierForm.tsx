@@ -9,8 +9,13 @@ import CategoryTreeMultipleSelection from "@/components/categories/CategoryTreeM
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 import {revalidateCache} from '@/lib/cache';
 import {getEditableImageUrls, isPlaceholderImage} from '@/lib/helper';
+import clsx from 'clsx';
 
-export const SupplierForm = ({supplier}: { supplier?: any }) => {
+export const SupplierForm = ({supplier, onSuccess, embedded = false}: {
+    supplier?: any,
+    onSuccess?: (supplier?: any) => void | Promise<void>,
+    embedded?: boolean
+}) => {
     const isAddMode = !supplier;
     const router = useRouter();
     const {startNavigation} = useRouteTransition();
@@ -29,20 +34,21 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
 
     if (!isAddMode) {
         const {
-            shop_name,
-            tags,
-            address: supplierAddress,
+            shop_name = '',
+            tags = [],
+            address: supplierAddress = {},
         } = supplier;
 
         const {
-            city,
-            country,
-            code,
-            address1,
-            address2,
-            tel1,
-            tel2
+            city = '',
+            country = '',
+            code = '',
+            address1 = '',
+            address2 = '',
+            tel1 = '',
+            tel2 = ''
         } = supplierAddress
+        const tagList = Array.isArray(tags) ? tags.join(',') : tags || '';
         initial = {
             shop_name: shop_name,
             address1: address1,
@@ -51,7 +57,7 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
             tel1: tel1,
             tel2: tel2,
             country_id: code,
-            tags: tags.join(','),
+            tags: tagList,
             country_name: country,
             categories: supplier?.categories ? supplier.categories.map(item => item.id) : []
         };
@@ -84,23 +90,32 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
         }
         try {
             if (isAddMode) {
-                await send('/suppliers', formData);
+                const createdSupplier = await send('/suppliers', formData);
                 await revalidateCache({
                     prefixes: [API_ENDPOINTS.SUPPLIERS],
                 });
                 toastShow('success', 'Supplier created successfully')
+                if (onSuccess) {
+                    await onSuccess(createdSupplier);
+                } else {
+                    startNavigation('Returning to suppliers...');
+                    router.push('/suppliers');
+                }
   
             } else {
-                await send(`/suppliers/${supplier.id}`, formData, 'PUT');
+                const updatedSupplier = await send(`/suppliers/${supplier.id}`, formData, 'PUT');
                 await revalidateCache({
                     keys: [API_ENDPOINTS.SUPPLIER_BY_ID(supplier.id)],
                     prefixes: [API_ENDPOINTS.SUPPLIERS],
                 });
                 toastShow('success', 'Supplier updated successfully')
-              
+                if (onSuccess) {
+                    await onSuccess(updatedSupplier);
+                } else {
+                    startNavigation('Returning to suppliers...');
+                    router.push('/suppliers');
+                }
             }
-            startNavigation('Returning to suppliers...');
-            router.push('/suppliers');
 
         } catch (e) {
             const message = e instanceof Error ? e.message : `Could not ${isAddMode ? 'create' : 'update'} supplier`;
@@ -263,11 +278,10 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
         right: supplierFormCategory
     }
 
-    return (
-        <ContainerOne>
-            <div className="w-full mx-auto">
+    const innerContent = (
+        <div className="w-full mx-auto">
                 <div className="mx-auto max-w-7xl">
-                    <div className="mb-4">
+                    <div className={clsx("mb-4", embedded && "sr-only")}>
                         <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Suppliers</p>
                         <h2 className="mt-2 font-display text-4xl font-bold text-slate-900">{content.header}</h2>
                         <p className="mt-3 max-w-2xl text-base text-slate-500">
@@ -282,6 +296,15 @@ export const SupplierForm = ({supplier}: { supplier?: any }) => {
                     <Form handleSubmit={handleSubmit} fields={fields}/>
                 </div>
             </div>
+    );
+
+    if (embedded) {
+        return innerContent;
+    }
+
+    return (
+        <ContainerOne>
+            {innerContent}
         </ContainerOne>
     );
 };

@@ -1,6 +1,7 @@
 'use client';
 
 import { useContext, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { API_ENDPOINTS } from '@/lib/api';
 import { SidebarContext } from '@/components/sections/sidebar/SidebarContainer';
 import SidebarContentSelector from '@/components/sections/sidebar/SidebarContentSelector';
@@ -12,13 +13,19 @@ import EntityTable from '@/components/table/EntityTable';
 import { Edit, Trash2 } from 'react-feather';
 import { useFetcher } from '@/app/hooks/useFetcher';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
+
+const SupplierModal = dynamic(() => import('@/components/suppliers/SupplierModal'), {
+  ssr: false,
+});
 
 export default function SuppliersPage() {
   const [url, setUrl] = useState(API_ENDPOINTS.SUPPLIERS);
+  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
+  const [editingSupplier, setEditingSupplier] = useState(null);
   const { openBar, setOpenBar, setSidebarData } = useContext(SidebarContext);
   const { data: suppliers = [], meta, links, error, isLoading } = useFetcher(url);
-  const {startNavigation} = useRouteTransition();
+  const closeCreateModal = () => setCreateModalOpen(false);
+  const closeEditModal = () => setEditingSupplier(null);
   const columns = [
     {
       key: 'image_urls',
@@ -47,9 +54,8 @@ export default function SuppliersPage() {
       label: 'Edit',
       className: 'text-lightBlue-100',
       icon: <Edit size={15} color="#2962FF" />,
-      href: (row: any) => `/suppliers/update/${row.id}`,
       onClick: (row: any) => {
-        startNavigation('Opening supplier editor...');
+        setEditingSupplier(row);
       }
     },
     {
@@ -65,7 +71,7 @@ export default function SuppliersPage() {
   return (
     <ProtectedRoute>
       <Container>
-        <SuppliersHeader />
+        <SuppliersHeader onAddSupplier={() => setCreateModalOpen(true)} />
         <ContainerOne>
           <ErrorBoundary error={error}>
             <EntityTable
@@ -79,6 +85,8 @@ export default function SuppliersPage() {
               actions={actions}
             />
             <SidebarContentSelector target={openBar.target} />
+            <SupplierModal isOpen={isCreateModalOpen} onClose={closeCreateModal} />
+            <SupplierModal isOpen={Boolean(editingSupplier)} onClose={closeEditModal} supplier={editingSupplier} />
           </ErrorBoundary>
         </ContainerOne>
       </Container>
