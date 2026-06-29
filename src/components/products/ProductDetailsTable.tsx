@@ -1,20 +1,32 @@
 'use client'
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
+import dynamic from 'next/dynamic';
 import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
 import {Edit, Trash2} from 'react-feather';
 import {useParams} from 'next/navigation';
 import Image from 'next/image';
 import EntityTable from '@/components/table/EntityTable';
 import DateDisplay from "@/components/DateDisplay";
-import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
-import StatusIndicator from '@/components/utils/StatusIndicator';
 import {getImageUrls} from '@/lib/helper';
+import Badge from '@/components/utils/Badge';
+
+const ProductVariantCreateModal = dynamic(() => import('@/components/products/ProductVariantCreateModal'), {
+  ssr: false,
+});
+
+const approvalBadgeVariant = (status) => {
+  if (status === 'approved') return 'success';
+  if (status === 'rejected') return 'danger';
+  return 'warning';
+};
 
 export const ProductDetailsTable = ({product, isLoading}) => {
   const {setOpenBar, setSidebarData} = useContext(SidebarContext);
-  const {startNavigation} = useRouteTransition();
   const params = useParams();
   const productID = params.id;
+  const [editingVariant, setEditingVariant] = useState(null);
+  const closeEditModal = () => setEditingVariant(null);
+
   const actions = [
     {
       label: 'Edit',
@@ -22,9 +34,8 @@ export const ProductDetailsTable = ({product, isLoading}) => {
       icon: (
         <Edit size={15} color="#2962FF"/>
       ),
-      href: (row) => `/products/${productID}/details/update/${row.id}`,
       onClick: (row) => {
-        startNavigation('Opening update form...');
+        setEditingVariant(row);
       },
     },
     {
@@ -64,24 +75,6 @@ export const ProductDetailsTable = ({product, isLoading}) => {
       },
     },
     {
-      key: 'unit_price',
-      type: 'text',
-      label: 'Selling Unit Prices',
-      appendTransformation: (val1: any, val2: any) => isNaN(val1)? val1 : val1 +" "+ val2['currency']
-    },
-    {
-      key: 'box_price',
-      type: 'text',
-      label: 'Selling Box Prices',
-      appendTransformation: (val1: any, val2: any) => isNaN(val1)? val1 : val1 +" "+  val2['currency']
-    },
-    {
-      key: 'dozen_price',
-      type: 'text',
-      label: 'Selling Group Prices',
-      appendTransformation: (val1: any, val2: any) => isNaN(val1)? val1 : val1 +" "+  val2['currency']
-    },
-    {
       key: 'box_units',
       type: 'text',
       label: 'Box Units',
@@ -99,10 +92,17 @@ export const ProductDetailsTable = ({product, isLoading}) => {
       dataTransformation: (value: any) => <DateDisplay date={value} />
     },
     {
-      key: 'status',
+      key: 'approval_status',
       type: 'text',
-      label: ' Status',
-      dataTransformation: (value: any) => <StatusIndicator active={value} />,
+      label: 'Approval',
+      dataTransformation: (value: any, row: any) => {
+        const status = value || (row.status ? 'approved' : 'pending_review');
+        return (
+          <Badge variant={approvalBadgeVariant(status)} size="small" className="capitalize">
+            {status.replace('_', ' ')}
+          </Badge>
+        );
+      },
     },
     {
       key: 'button',
@@ -123,6 +123,12 @@ export const ProductDetailsTable = ({product, isLoading}) => {
         data={product.product_details}
         actions={actions}
         searchable={false}
+      />
+      <ProductVariantCreateModal
+        isOpen={Boolean(editingVariant)}
+        onClose={closeEditModal}
+        productId={productID}
+        variant={editingVariant}
       />
     </>
   );

@@ -31,6 +31,7 @@ export const PriceDetailForm = ({
   ];
 
   const initialPrices = buildInitialPrices(initialDetails);
+  const isEditMode = Boolean(initialSupplier && initialDetails.length > 0);
 
   const initialFormState = {
     prices: initialPrices,
@@ -51,6 +52,25 @@ export const PriceDetailForm = ({
     if (isSubmitting) return;
 
     setError('');
+    if (!formState.supplier_id) {
+      const message = 'Select a supplier before saving pricing';
+      setError(message);
+      toastShow('error', message);
+      return;
+    }
+
+    const activePrices = sizes
+      .filter((_, index) => activeSizes[index])
+      .map((size) => formState.prices[size.code])
+      .filter((price) => Number(price) > 0);
+
+    if (activePrices.length === 0) {
+      const message = 'Activate at least one pricing size and enter a positive price';
+      setError(message);
+      toastShow('error', message);
+      return;
+    }
+
     setIsSubmitting(true);
     const formData = new FormData();
 
@@ -77,7 +97,7 @@ export const PriceDetailForm = ({
         prefixes: [API_ENDPOINTS.PRODUCTS],
       });
       setError('');
-      toastShow('success', initialSupplier ? 'Supplier pricing updated successfully' : 'Supplier pricing saved successfully');
+      toastShow('success', isEditMode ? 'Supplier pricing updated successfully' : 'Supplier pricing saved successfully');
       if (!initialSupplier) {
         setFormState({ ...initialFormState, prices: {}, supplier_id: null, currency: 'usd' });
         setActiveSizes([false, false, false]);
@@ -115,9 +135,9 @@ export const PriceDetailForm = ({
   };
 
   const content = {
-    header: initialSupplier ? 'Edit Price' : 'Add Price',
+    header: isEditMode ? 'Edit Price' : 'Add Price',
     subheader: '',
-    buttonText: initialSupplier ? 'Save Changes' : 'Create',
+    buttonText: isEditMode ? 'Save Changes' : 'Create',
   };
 
   const forms = [
@@ -148,7 +168,7 @@ export const PriceDetailForm = ({
       input_type: 'radio',
       value: formState.currency,
       className: '',
-      options: ['fc', 'ugx', 'usd'],
+      options: ['fc', 'rw', 'ugx', 'usd'],
       action: (e) => setFormState((prevState) => ({ ...prevState, currency: e.target.value })),
     },
     sizes.map((size, index) =>[
@@ -188,7 +208,9 @@ export const PriceDetailForm = ({
           <h2 className="mt-2 font-display text-4xl font-bold text-slate-900">{content.header}</h2>
           <p className="mt-3 max-w-2xl text-base text-slate-500">
             {initialSupplier
-              ? 'Adjust the currency or pack prices for this supplier and save your changes.'
+              ? isEditMode
+                ? 'Adjust the currency or pack prices for this supplier and save your changes.'
+                : 'Set the prices your supplier account offers for this product variant.'
               : 'Assign a supplier, set the currency, and activate the pack sizes that should have pricing.'}
           </p>
         </div>

@@ -13,35 +13,25 @@ export default function RequisitionDetails(){
         <h4>{sidebarData.name} - {sidebarData.size}</h4>
         <ul>
           <li>Expiration Date: {sidebarData.expired_date || 'not applied'}</li>
-          <li>Your Selling Prices</li>
           <li>
             <h4>Box</h4>
             <ul>
-              <li>Selling Box Price:{sidebarData.box_price} </li>
               <li>Quantity In Box: {sidebarData.box_units}</li>
             </ul>
           </li>
           <li>
             <h4>Group</h4>
             <ul>
-              <li>Selling Group Price:{sidebarData.dozen_price} </li>
               <li>Quantity In Group: {sidebarData.dozen_units}</li>
             </ul>
           </li>
-          <li>
-            <h4>Unit</h4>
-            <ul>
-              <li>Selling Unit Price: {sidebarData.unit_price}</li>
-              <li>Unit Qty: 1</li>
-            </ul>
-          </li>
-          <li>Currency: {sidebarData.currency || '-'}</li>
           <li>Purchase Status: {isPurchasedStatus(sidebarData['status']) ? 'Purchased' : 'Not yet purchased'}</li>
           <li>Quantity to Buy: {sidebarData.quantity}</li>
           <li>Buying Unit: {sidebarData.quantity_type || '-'}</li>
-          <li>Today&apos;s Purchase Price: {sidebarData.price}</li>
+          <li>Today&apos;s Purchase Price: {sidebarData.price} {sidebarData.currency || ''}</li>
           <li>Note: {sidebarData.note}</li>
-          <li>Supplier : {sidebarData.supplier_id || 'Select Supplier'}</li>
+          <li>Buyer Supplier: {sidebarData.buyer_supplier_name || sidebarData.buyer_supplier_id || 'Account owner'}</li>
+          <li>Vendor Supplier: {sidebarData.supplier_name || sidebarData.supplier_id || 'Select Supplier'}</li>
         </ul>
         {/*created_at: "2023-08-14T17:04:37.278Z"*/}
         {/*image_urls: ["/images/no-img.png"]*/}

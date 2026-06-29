@@ -27,11 +27,10 @@ export default function RequisitionProduct({product}) {
 
                 </div>
                 <div className="mt-4">
-                    <Text intent="primary" size="medium" className="font-extrabold">Your Selling Prices</Text>
-                    <div className="grid gap-3 md:grid-cols-3">
-                        {renderCard('Your Box Price', product.box_price, product.currency, 'Quantity', product.box_units)}
-                        {renderCard('Your Group Price', product.dozen_price, product.currency, 'Quantity', product.dozen_units)}
-                        {renderCard('Your Unit Price', product.unit_price, product.currency, 'Quantity', 1)}
+                    <Text intent="primary" size="medium" className="font-extrabold">Pack Units</Text>
+                    <div className="grid gap-3 md:grid-cols-2">
+                        {renderCard('Box Quantity', product.box_units)}
+                        {renderCard('Group Quantity', product.dozen_units)}
                     </div>
                 </div>
             </div>
@@ -39,18 +38,10 @@ export default function RequisitionProduct({product}) {
     )
 }
 
-const renderCard = (label1, value1, currency, label2, value2) => {
+const renderCard = (label, value) => {
     return (
         <Card className="flex min-w-0 items-start justify-between gap-2 rounded-[16px] border border-slate-200 bg-white p-3 shadow-none">
-            <InfoItem label={label1} value={`${value1} ${currency || ''}`.trim()}/>
-            <InfoItem label={label2}>
-                <div className="flex gap-1">
-                    <Text size="large" intent="tertiary" className="font-bold">{value2}</Text>
-                    <span className="flex gap-2 items-center w-fit text-gray-700 text-sm">
-                    pcs
-                </span>
-                </div>
-            </InfoItem>
+            <InfoItem label={label} value={value ? `${value} pcs` : 'Not set'}/>
         </Card>
     );
 }

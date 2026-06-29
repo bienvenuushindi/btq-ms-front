@@ -1,11 +1,12 @@
 'use client';
 import {useParams} from 'next/navigation';
+import dynamic from 'next/dynamic';
 import ProductItem from '@/components/products/ProductItem';
 import Card from '@/components/utils/wrappers/Card';
 import {ProductDetailsTable} from '@/components/products/ProductDetailsTable';
 import {SidebarContext} from '@/components/sections/sidebar/SidebarContainer';
 import SidebarContentSelector from '@/components/sections/sidebar/SidebarContentSelector';
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
 import Container from '@/components/utils/wrappers/Container';
 import ContainerOne from '@/components/utils/wrappers/ContainerOne';
 import ProductDetailsHeader from '@/components/products/ProductDetailsHeader';
@@ -15,32 +16,41 @@ import {useFetcher} from "@/app/hooks/useFetcher";
 import {API_ENDPOINTS} from "@/lib/api";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
+const ProductVariantCreateModal = dynamic(() => import('@/components/products/ProductVariantCreateModal'), {
+  ssr: false,
+});
 
 export default function Product() {
   const {openBar} = useContext(SidebarContext);
   const params = useParams();
   const productId = params.id;
   const {data: product={}, error, isLoading} = useFetcher(API_ENDPOINTS.PRODUCT_BY_ID(productId));
-  return <ProtectedRoute>
-    <Container>
-      <ProductDetailsHeader product={product}/>
-      <ContainerOne>
-        {isLoading ? <Card className="w-full"><ProductItemLoader/></Card> :(
-            <ErrorBoundary error={error}>
-              {product && (
-                  <ProductItem key={product.id} product={product}/>
-              )}
-            </ErrorBoundary>
-        )}
-      </ContainerOne>
-      <ContainerOne>
-        <Card className="w-full">
-          {product && (
-              <ProductDetailsTable product={product} isLoading={isLoading}/>
+  const [isCreateVariantOpen, setCreateVariantOpen] = useState(false);
+  const closeCreateVariant = () => setCreateVariantOpen(false);
+
+  return (
+    <ProtectedRoute>
+      <Container>
+        <ProductDetailsHeader product={product} onAddVariant={() => setCreateVariantOpen(true)}/>
+        <ContainerOne>
+          {isLoading ? <Card className="w-full"><ProductItemLoader/></Card> :(
+              <ErrorBoundary error={error}>
+                {product && (
+                    <ProductItem key={product.id} product={product}/>
+                )}
+              </ErrorBoundary>
           )}
-        </Card>
-        <SidebarContentSelector target={openBar.target}/>
-      </ContainerOne>
-    </Container>;
-  </ProtectedRoute>;
+        </ContainerOne>
+        <ContainerOne>
+          <Card className="w-full">
+            {product && (
+                <ProductDetailsTable product={product} isLoading={isLoading}/>
+            )}
+          </Card>
+          <SidebarContentSelector target={openBar.target}/>
+        </ContainerOne>
+      </Container>
+      <ProductVariantCreateModal isOpen={isCreateVariantOpen} onClose={closeCreateVariant}/>
+    </ProtectedRoute>
+  );
 }

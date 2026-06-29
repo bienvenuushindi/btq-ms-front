@@ -2,20 +2,24 @@
 import {API_ENDPOINTS} from '@/lib/api';
 import {useRouter, useSearchParams} from 'next/navigation';
 import React, {useState} from 'react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import ProductsTableLoader from '@/components/banners/ProductsTableLoader';
 import EntityTable from '@/components/table/EntityTable';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import {Archive, Edit, RotateCcw} from 'react-feather';
+import {CheckCircle, Edit, XCircle} from 'react-feather';
 import FilterCheckbox from '@/components/table/filter/FilterCheckbox';
 import {getImageUrls, updateUrl} from '@/lib/helper';
 import {useFetcher} from "@/app/hooks/useFetcher";
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 import {send} from '@/lib/api';
 import toastShow from '@/components/toast/toast-selector';
-import StatusIndicator from '@/components/utils/StatusIndicator';
 import Badge from '@/components/utils/Badge';
 import {revalidateCache} from '@/lib/cache';
+
+const ProductCreateModal = dynamic(() => import('@/components/products/ProductCreateModal'), {
+    ssr: false,
+});
 
 export default function ProductsTable() {
     const searchParams = useSearchParams();
@@ -23,9 +27,12 @@ export default function ProductsTable() {
     const initialStatusValue = statusParam === 'active' ? 'true' : statusParam === 'inactive' ? 'false' : null;
     const [url, setUrl] = useState(() => updateUrl(API_ENDPOINTS.PRODUCTS, {status: initialStatusValue}));
     const {data: products = [], meta, links, error, isLoading, mutate} = useFetcher(url)
+    const {data: currentUser} = useFetcher(API_ENDPOINTS.CURRENT_USER);
+    const isAdmin = currentUser?.role?.toString().toLowerCase() === 'admin';
     const [selectedFilter, setSelectedFilter] = React.useState(
         statusParam === 'active' || statusParam === 'inactive' ? statusParam : 'all'
     );
+    const [editingProduct, setEditingProduct] = useState(null);
 
     const router = useRouter();
     const {startNavigation} = useRouteTransition();
@@ -45,17 +52,20 @@ export default function ProductsTable() {
         return 'success';
     };
 
-    const formatUnitPrice = (detail: any) => {
-        if (detail.unit_price === null || detail.unit_price === undefined || detail.unit_price === '') {
-            return 'No unit price';
-        }
-
-        return `${detail.unit_price} ${detail.currency || ''}`.trim();
+    const approvalBadgeVariant = (status) => {
+        if (status === 'approved') return 'success';
+        if (status === 'rejected') return 'danger';
+        return 'warning';
     };
 
-    const toggleArchiveStatus = async (row) => {
+    const updateApprovalStatus = async (row) => {
+        if (!isAdmin) {
+            toastShow('error', 'Only admins can validate catalog products');
+            return;
+        }
+        const nextStatus = row.approval_status === 'approved' ? 'rejected' : 'approved';
         const formData = new FormData();
-        formData.append('product[active]', String(!row.active));
+        formData.append('product[approval_status]', nextStatus);
 
         try {
             await send(`/products/${row.id}`, formData, 'PUT');
@@ -64,11 +74,13 @@ export default function ProductsTable() {
                 prefixes: [API_ENDPOINTS.PRODUCTS, API_ENDPOINTS.PRODUCT_STATS],
             });
             await mutate();
-            toastShow('success', row.active ? 'Product archived successfully' : 'Product restored successfully');
+            toastShow('success', nextStatus === 'approved' ? 'Product approved successfully' : 'Product rejected successfully');
         } catch (error) {
-            toastShow('error', 'Could not update product status');
+            toastShow('error', 'Could not update product approval status');
         }
     };
+
+    const closeEditModal = () => setEditingProduct(null);
 
     const columns = [
         {
@@ -117,7 +129,7 @@ export default function ProductsTable() {
                                 </Badge>
                             </div>
                             <p className="mt-1 text-xs font-medium text-slate-600">
-                                Unit price: <span className="text-slate-900">{formatUnitPrice(detail)}</span>
+                                Supplier prices: <span className="text-slate-900">{detail.suppliers?.length || 0}</span>
                             </p>
                         </div>
                     ))}
@@ -134,12 +146,17 @@ export default function ProductsTable() {
             }
         },
         {
-            key: 'active',
+            key: 'approval_status',
             sortable: true,
-            label: 'Status',
-            dataTransformation: (value: any) => (
-                <StatusIndicator active={value}/>
-            )
+            label: 'Approval',
+            dataTransformation: (value: any, row: any) => {
+                const status = value || (row.active ? 'approved' : 'pending_review');
+                return (
+                    <Badge variant={approvalBadgeVariant(status)} size="small" className="capitalize">
+                        {status.replace('_', ' ')}
+                    </Badge>
+                );
+            }
         },
     ];
 
@@ -150,18 +167,17 @@ export default function ProductsTable() {
             icon: (
                 <Edit size={15} color="#0369a1"/>
             ),
-            href: (row) => `/products/update/${row.id}`,
             onClick: (row) => {
-                startNavigation('Opening product editor...');
+                setEditingProduct(row);
             },
         },
         {
-            label: (row) => row.active ? 'Archive' : 'Restore',
-            className: (row) => row.active ? 'text-amber-700' : 'text-emerald-700',
+            label: (row) => row.approval_status === 'approved' ? 'Reject' : 'Approve',
+            className: (row) => row.approval_status === 'approved' ? 'text-rose-700' : 'text-emerald-700',
             icon: (row) => (
-                row.active ? <Archive size={15} color="#b45309"/> : <RotateCcw size={15} color="#15803d"/>
+                row.approval_status === 'approved' ? <XCircle size={15} color="#be123c"/> : <CheckCircle size={15} color="#15803d"/>
             ),
-            onClick: toggleArchiveStatus,
+            onClick: updateApprovalStatus,
         },
     ];
 
@@ -212,6 +228,11 @@ export default function ProductsTable() {
                 updateList={setUrl}
                 actions={actions}
                 filters={<Filters/>}
+            />
+            <ProductCreateModal
+                isOpen={Boolean(editingProduct)}
+                onClose={closeEditModal}
+                product={editingProduct}
             />
         </ErrorBoundary>
     );

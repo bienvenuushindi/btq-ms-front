@@ -3,7 +3,9 @@ import {PlusCircle} from 'react-feather';
 import ButtonLink from '@/components/utils/ButtonLink';
 import {Button} from '@/components/ui/button';
 
-const EntityHeader = ({title, actions, addAction,children}:any) => {
+const EntityHeader = ({title, actions, addAction, addLabel = 'Add', children}:any) => {
+  const hasAddClick = typeof addAction === 'function';
+
   return (
     <div className="container mx-auto">
       <div className="space-y-4 rounded-[24px] border border-slate-200/90 bg-white px-5 py-5 shadow-[0_10px_20px_rgba(15,23,42,0.04)]">
@@ -27,15 +29,24 @@ const EntityHeader = ({title, actions, addAction,children}:any) => {
             </div>
           </div>
           <div>
-            {addAction ? ( <ButtonLink
+            {addAction ? (hasAddClick ? (
+              <Button
+                size="sm"
+                onClick={addAction}
+                className="oasis-button flex items-center space-x-1 rounded-2xl px-4 py-2 text-xs md:text-sm"
+              >
+                <PlusCircle color="#FFFFFF" size={20}/>
+                <span className="px-1 text-neutral-50">{addLabel}</span>
+              </Button>
+            ) : ( <ButtonLink
               href={addAction}
               size="small"
               intent={'primary'}
               className="oasis-button flex items-center space-x-1 rounded-2xl px-4 py-2 text-xs md:text-sm"
             >
               <PlusCircle color="#FFFFFF" size={20}/>
-              <span className="px-1 text-neutral-50">Add</span>
-            </ButtonLink>): children}
+              <span className="px-1 text-neutral-50">{addLabel}</span>
+            </ButtonLink>)): children}
           </div>
         </div>
       </div>

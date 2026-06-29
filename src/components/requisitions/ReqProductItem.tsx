@@ -93,7 +93,7 @@ const Title = ({row, isArchived, purchased}) => {
         <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
           <span className="inline-flex items-center gap-1">
             {purchased ? <CheckCircle size={14} className="text-emerald-600"/> : <Circle size={14} className="text-rose-600"/>}
-            {row.supplier_name ? `Supplier: ${row.supplier_name}` : row.supplier_id ? 'Supplier selected' : 'Supplier not selected'}
+            {row.supplier_name ? `Vendor: ${row.supplier_name}` : row.supplier_id ? 'Vendor selected' : 'Vendor not selected'}
           </span>
           <span>Total: {row.price && row.quantity ? `${formatCurrencyValue(row.price * row.quantity)} ${row.currency || ''}` : 'Not set'}</span>
           <span>{isArchived ? 'View only' : 'Open drawer to edit'}</span>

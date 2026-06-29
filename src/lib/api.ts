@@ -48,7 +48,7 @@ export const signin = async (user: { user: { email: string; password: string}; }
 };
 
 
-export const register = async (user: { user: { email: string; password: string; name: string; phone_number: string; role_id: number; }; }) => {
+export const register = async (user: { user: { email: string; password: string; name?: string; phone_number?: string; role_id?: number; }; }) => {
     return fetcher({
         url: BASE_URL + '/signup',
         method: 'POST',

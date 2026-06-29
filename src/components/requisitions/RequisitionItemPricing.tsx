@@ -37,44 +37,15 @@ const normalizeQuantityType = (value) => {
   return quantityTypesByIndex[value] || value.toString().toLowerCase();
 };
 const sameQuantityType = (first, second) => normalizeQuantityType(first) === normalizeQuantityType(second);
-const quantityUnitsForType = (quantityType, productDetails) => {
-  switch (normalizeQuantityType(quantityType)) {
-    case 'box':
-      return Number(productDetails.box_units);
-    case 'dozen':
-      return Number(productDetails.dozen_units);
-    case 'unit':
-      return 1;
-    default:
-      return 0;
-  }
-};
-const purchaseMarginWarning = ({price, quantityType, quantity_type, currency}: any, productDetails) => {
-  const purchasePrice = Number(price);
-  const sellingUnitPrice = Number(productDetails.unit_price);
-  const units = quantityUnitsForType(quantityType || quantity_type, productDetails);
-  const sellingCurrency = productDetails.product_currency || productDetails.currency;
-
-  if (!purchasePrice || !sellingUnitPrice || !units || currency?.toString().toLowerCase() !== sellingCurrency?.toString().toLowerCase()) return '';
-
-  const purchaseUnitCost = purchasePrice / units;
-  if (purchaseUnitCost < sellingUnitPrice) return '';
-
-  return `Purchase cost is ${formatCurrencyValue(purchaseUnitCost)} ${currency} per unit, but your selling unit price is ${formatCurrencyValue(sellingUnitPrice)} ${sellingCurrency}. Increase your selling price or enter a lower purchase price.`;
-};
-
 export default function RequisitionItemPricing({productDetails}) {
   const {requisitionID, requisition} = useContext(RequisitionContext)
   const {setOpenBar, setSidebarData} = useContext(SidebarContext);
   const {data: quantityType = {}} = useFetcher(API_ENDPOINTS.QUANTITY_TYPES);
   const {currency} = useContext(RequisitionContext);
-  const requisitionCurrency = currency || productDetails.currency;
-  const storedPriceMatchesRequisition = !hasValue(productDetails.currency)
-    || sameCurrency(productDetails.currency, requisitionCurrency);
-  const editableInitialPrice = storedPriceMatchesRequisition ? productDetails.price || 0 : '';
+  const requisitionCurrency = currency || productDetails.currency || '';
   const isArchived = Boolean(requisition?.archived);
   const initial = {
-    price: editableInitialPrice,
+    price: productDetails.price || 0,
     currency: requisitionCurrency,
     status: isPurchasedStatus(productDetails.status),
     quantity: productDetails.quantity || 0,
@@ -86,7 +57,7 @@ export default function RequisitionItemPricing({productDetails}) {
   const [formState, setFormState] = useState({...initial});
   const [supplierId, setSupplierId] = useState(productDetails.supplier_id);
   const [selectedSupplierPricing, setSelectedSupplierPricing] = useState(null);
-  const [error, setError] = useState(storedPriceMatchesRequisition ? '' : `Saved item price is in ${productDetails.currency}. Enter this requisition price in ${requisitionCurrency}.`);
+  const [error, setError] = useState('');
   const [blockedSupplier, setBlockedSupplier] = useState(null);
   const syncedCurrencyRef = useRef(null);
   const hasExpirationDate = Boolean(productDetails.product_expired_date);
@@ -102,12 +73,8 @@ export default function RequisitionItemPricing({productDetails}) {
 
     syncedCurrencyRef.current = currency;
 
-    const savedCurrency = productDetails.currency;
-    const priceMatchesRequisition = !hasValue(productDetails.currency)
-      || sameCurrency(productDetails.currency, currency);
-    const nextPrice = priceMatchesRequisition ? productDetails.price || 0 : '';
     const nextState = {
-      price: nextPrice,
+      price: productDetails.price || 0,
       currency,
       status: isPurchasedStatus(productDetails.status),
       quantity: productDetails.quantity || 0,
@@ -117,9 +84,6 @@ export default function RequisitionItemPricing({productDetails}) {
     };
 
     setFormState(nextState);
-    if (!priceMatchesRequisition) {
-      setError(`Saved item price is in ${savedCurrency}. Enter this requisition price in ${currency}.`);
-    }
   }, [currency, productDetails]);
 
   const handleSubmit = async (e) => {
@@ -127,12 +91,6 @@ export default function RequisitionItemPricing({productDetails}) {
     setError('');
     if (!supplierId) {
       setError('Please select a supplier');
-      return;
-    }
-    const marginWarning = purchaseMarginWarning(formState, productDetails);
-    if (marginWarning) {
-      setError(marginWarning);
-      toastShow('error', marginWarning);
       return;
     }
     setLoading(true);
@@ -188,11 +146,11 @@ export default function RequisitionItemPricing({productDetails}) {
       type: 'number',
       input_type: 'text',
       className: '',
-      action: (e) => {
-        const nextState = {...formState, price: e.target.value};
-        setError(purchaseMarginWarning(nextState, productDetails));
-        setFormState((s) => ({...s, price: e.target.value}));
-        productDetails.price = e.target.value;
+        action: (e) => {
+          const nextState = {...formState, price: e.target.value};
+          setError('');
+          setFormState((s) => ({...s, price: e.target.value}));
+          productDetails.price = e.target.value;
       },
     },
       {
@@ -243,7 +201,7 @@ export default function RequisitionItemPricing({productDetails}) {
           productDetails.price = nextPrice;
           productDetails.quantity = nextQuantity;
           productDetails.currency = nextCurrency;
-          setError(purchaseMarginWarning(nextState, productDetails));
+          setError('');
         }
       }],
     [{
@@ -300,7 +258,7 @@ export default function RequisitionItemPricing({productDetails}) {
     }
   ];
 
-  const updateForm = (supplier, options = {}) => {
+  const updateForm = (supplier, options: any = {}) => {
     if (!supplier) return;
 
     const supplierPricing = supplier && hasValue(supplier.price) && hasValue(supplier.quantity_type)
@@ -336,7 +294,7 @@ export default function RequisitionItemPricing({productDetails}) {
         quantity_type: supplierPricing.quantity_type,
         quantity: '',
       };
-      setError(purchaseMarginWarning(nextState, productDetails));
+      setError('');
       setFormState(nextState);
       productDetails.price = supplierPricing.price;
       productDetails.currency = requisitionCurrency;

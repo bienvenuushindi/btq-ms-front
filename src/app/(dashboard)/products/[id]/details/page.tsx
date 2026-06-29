@@ -18,7 +18,6 @@ export default function Products() {
                         {productDetails && productDetails.map(productDetail =>
                             <li key={productDetail.id}>
                                 {productDetail.expired_date}, {productDetail['size']}
-                                {productDetail.unit_price},
                             </li>)}
                     </ul>
                 </div>

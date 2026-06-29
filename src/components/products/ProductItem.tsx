@@ -30,6 +30,8 @@ export default function ProductItem({product}) {
     };
     const countryCode = product.country_origin.toUpperCase();
     const flagUrl = `https://flagsapi.com/${countryCode}/flat/32.png`;
+    const approvalStatus = product.approval_status || (product.active ? 'approved' : 'pending_review');
+    const approvalVariant = approvalStatus === 'approved' ? 'success' : approvalStatus === 'rejected' ? 'danger' : 'warning';
     return (
         <Card className="w-full">
             <div className="flex  justify-items-center gap-3">
@@ -52,6 +54,7 @@ export default function ProductItem({product}) {
                             <div className="flex gap-1 ml-3">
                                 <Image src={flagUrl} alt={`Flag of ${countryCode}`} width={32} height={32} priority/>
                                 <Badge variant="primary" size="small">{countryCode}</Badge>
+                                <Badge variant={approvalVariant} size="small" className="capitalize">{approvalStatus.replace('_', ' ')}</Badge>
                             </div>
 
 

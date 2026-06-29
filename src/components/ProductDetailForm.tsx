@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useParams, useRouter} from 'next/navigation';
 import {API_ENDPOINTS, send} from '@/lib/api';
 import Form from '@/components/forms/Form';
@@ -9,9 +9,15 @@ import {useRouteTransition} from '@/components/navigation/RouteTransitionProvide
 import {useFetcher} from '@/app/hooks/useFetcher';
 import {revalidateCache} from '@/lib/cache';
 import {getEditableImageUrls, isPlaceholderImage} from '@/lib/helper';
+import Badge from '@/components/utils/Badge';
+import clsx from 'clsx';
 
-const numericValue = (value) => Number(value || 0);
-const numericFields = new Set(['unit_price', 'dozen_price', 'box_price', 'dozen_units', 'box_units']);
+const numericFields = new Set(['dozen_units', 'box_units']);
+const supplierPriceTypes = [
+    {code: 'unit', label: 'Unit price'},
+    {code: 'dozen', label: 'Group price'},
+    {code: 'box', label: 'Box price'},
+];
 
 const SectionHeader = ({title, description}: { title: string; description: string }) => (
     <div className="pt-2">
@@ -20,53 +26,31 @@ const SectionHeader = ({title, description}: { title: string; description: strin
     </div>
 );
 
-const priceHierarchyMessage = (state) => {
-    const unitPrice = numericValue(state.unit_price);
-    const groupPrice = numericValue(state.dozen_price);
-    const groupUnits = numericValue(state.dozen_units);
-    const boxPrice = numericValue(state.box_price);
-    const boxUnits = numericValue(state.box_units);
-
-    if (groupPrice > 0 && groupUnits <= 0) {
-        return 'Group quantity must be greater than 0 when group price is set.';
-    }
-
-    if (boxPrice > 0 && boxUnits <= 0) {
-        return 'Box quantity must be greater than 0 when box price is set.';
-    }
-
-    const groupUnitPrice = groupUnits > 0 ? groupPrice / groupUnits : 0;
-    const boxUnitPrice = boxUnits > 0 ? boxPrice / boxUnits : 0;
-
-    if (groupPrice > 0 && unitPrice < groupUnitPrice) {
-        return `Unit price must be at least the group unit price (${groupUnitPrice.toFixed(2)} ${state.currency}).`;
-    }
-
-    if (boxPrice > 0 && groupPrice > 0 && groupUnitPrice < boxUnitPrice) {
-        return `Group unit price must be at least the box unit price (${boxUnitPrice.toFixed(2)} ${state.currency}).`;
-    }
-
-    return '';
-};
-
-export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
+export const ProductDetailForm = ({variant = null, productId, variantId, onSuccess, embedded = false}: {
+    variant?: any,
+    productId?: any,
+    variantId?: any,
+    onSuccess?: (variant?: any) => void | Promise<void>,
+    embedded?: boolean
+}) => {
     const router = useRouter();
     const {startNavigation} = useRouteTransition();
     const path = useParams();
+    const targetProductId = productId || path.id;
+    const targetVariantId = variantId || path.variant || variant?.id;
     const {data: currentUser} = useFetcher(API_ENDPOINTS.CURRENT_USER);
+    const isAdmin = currentUser?.role?.toString().toLowerCase() === 'admin';
     const isAddMode = !variant
+    const currentSupplier = currentUser?.supplier || null;
+    const canAttachSupplierPrice = isAddMode && currentSupplier;
     let initial = {
         size: '',
         expired_date: '',
-        unit_price: 0.0,
-        dozen_price: 0.0,
-        box_price: 0.0,
         dozen_units: 12,
         box_units: '',
         tags: '',
-        supplier_id: null,
-        currency: currentUser?.default_currency || 'usd',
-        status: false,
+        approval_status: 'pending_review',
+        rejection_reason: '',
     };
     let content = {
         header: 'Create a product variant',
@@ -77,15 +61,11 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
         initial = {
             size: variant.size,
             expired_date: variant.expired_date,
-            unit_price: variant.unit_price,
-            dozen_price: variant.dozen_price,
-            box_price: variant.box_price,
             dozen_units: variant.dozen_units,
             box_units: variant.box_units,
-            currency: variant.currency,
-            status: variant.status,
             tags: variant.tags.join(','),
-            supplier_id: null,
+            approval_status: variant.approval_status || (variant.status ? 'approved' : 'pending_review'),
+            rejection_reason: variant.rejection_reason || '',
         };
 
         content = {
@@ -103,25 +83,12 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
     const [error, setError] = useState('');
     const [photos, setPhotos] = useState(getImageUrls());
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [supplierPricing, setSupplierPricing] = useState({
+        currency: currentUser?.default_currency || 'usd',
+        prices: {},
+    });
 
-    useEffect(() => {
-        if (!isAddMode) return;
-        if (!currentUser?.default_currency) return;
-
-        setFormState((prevState) => (
-            prevState.currency && prevState.currency !== 'usd'
-                ? prevState
-                : {...prevState, currency: currentUser.default_currency}
-        ));
-    }, [currentUser?.default_currency, isAddMode]);
-
-    const updateFormField = (key, value, shouldValidatePrice = false) => {
-        const nextState = {...formState, [key]: value};
-
-        if (shouldValidatePrice) {
-            setError(priceHierarchyMessage(nextState));
-        }
-
+    const updateFormField = (key, value) => {
         setFormState((s) => ({...s, [key]: value}));
     };
 
@@ -129,16 +96,12 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
         e.preventDefault();
         if (isSubmitting) return;
 
-        const priceError = priceHierarchyMessage(formState);
-        setError(priceError);
-        if (priceError) {
-            toastShow('error', priceError);
-            return;
-        }
-
+        setError('');
         setIsSubmitting(true);
         const formData = new FormData();
         Object.keys(formState).forEach((key) => {
+            if (['approval_status', 'rejection_reason'].includes(key) && !isAdmin) return;
+            if (key === 'rejection_reason' && formState.approval_status !== 'rejected') return;
             const value = numericFields.has(key) && formState[key] === '' ? 0 : formState[key];
             formData.append(`product_detail[${key}]`, value);
         });
@@ -152,28 +115,51 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
 
             if (isAddMode) {
                 //submit promise
-                await send('/products/' + path.id + '/product_details', formData);
+                const createdDetail = await send('/products/' + targetProductId + '/product_details', formData);
+                const prices = Object.entries(supplierPricing.prices)
+                    .filter(([, value]) => Number(value) > 0)
+                    .reduce((acc, [key, value]) => ({...acc, [key]: value}), {});
+
+                if (canAttachSupplierPrice && Object.keys(prices).length > 0) {
+                    const priceFormData = new FormData();
+                    priceFormData.append('price_detail[supplier_id]', currentSupplier.id);
+                    priceFormData.append('price_detail[product_detail_id]', createdDetail.id);
+                    priceFormData.append('price_detail[currency]', supplierPricing.currency);
+                    Object.keys(prices).forEach((priceType) => {
+                        priceFormData.append(`price_detail[prices][${priceType}]`, prices[priceType]);
+                    });
+                    await send(`/product_details/${createdDetail.id}/price_details`, priceFormData);
+                }
+
                 await revalidateCache({
                     keys: [
-                        API_ENDPOINTS.PRODUCT_BY_ID(path.id),
-                        API_ENDPOINTS.PRODUCT_DETAILS(path.id),
+                        API_ENDPOINTS.PRODUCT_BY_ID(targetProductId),
+                        API_ENDPOINTS.PRODUCT_DETAILS(targetProductId),
                     ],
                 });
                 toastShow('success', 'Product created successfully')
-                startNavigation('Opening product details...');
-                router.push('/products/' + path.id);
+                if (onSuccess) {
+                    await onSuccess(createdDetail);
+                } else {
+                    startNavigation('Opening product details...');
+                    router.push('/products/' + targetProductId);
+                }
             } else {
-                await send('/products/' + path.id + '/product_details/' + path.variant, formData, "PUT");
+                const updatedDetail = await send('/products/' + targetProductId + '/product_details/' + targetVariantId, formData, "PUT");
                 await revalidateCache({
                     keys: [
-                        API_ENDPOINTS.PRODUCT_BY_ID(path.id),
-                        API_ENDPOINTS.PRODUCT_DETAILS(path.id),
-                        API_ENDPOINTS.PRODUCT_DETAIL_BY_ID(path.id, path.variant),
+                        API_ENDPOINTS.PRODUCT_BY_ID(targetProductId),
+                        API_ENDPOINTS.PRODUCT_DETAILS(targetProductId),
+                        API_ENDPOINTS.PRODUCT_DETAIL_BY_ID(targetProductId, targetVariantId),
                     ],
                 });
                 toastShow('success', 'Product updated successfully')
-                startNavigation('Opening product details...');
-                router.push('/products/' + path.id);
+                if (onSuccess) {
+                    await onSuccess(updatedDetail);
+                } else {
+                    startNavigation('Opening product details...');
+                    router.push('/products/' + targetProductId);
+                }
             }
         } catch (e) {
             const message = e instanceof Error ? e.message : `Could not ${isAddMode ? 'create' : 'update'} product variant`;
@@ -222,64 +208,16 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
                 },
             }
         ],
-        [{
-            input_type: 'checkbox',
-            className: '',
-            checked: Boolean(formState.status),
-            labelClassName: 'sr-only',
-            action: () => {
-                updateFormField('status', !formState.status);
-            },
-            label: 'Available for sales'
-        }],
         {
             input_type: 'custom',
             component: (
                 <SectionHeader
-                    title="Selling Prices"
-                    description="Set the prices your customers pay for single units, groups, and boxes."
+                    title="Pack Units"
+                    description="Define reusable pack quantities. Supplier-specific prices are added separately from this catalog detail."
                 />
             ),
         },
-        {
-            label: 'Choose currency',
-            placeholder: 'Select Currency',
-            name: 'currency',
-            input_type: 'radio',
-            className: '',
-            value: formState.currency,
-            options: ['fc', 'rw', 'ugx', 'usd'],
-            action: (e) => {
-                updateFormField('currency', e.target.value, true);
-            }
-        },
-        [{
-            label: 'Selling Unit Price',
-            required: true,
-            placeholder: 'Selling unit price',
-            value: formState.unit_price,
-            name: 'unit-price',
-            input_type: 'number',
-            type: 'number',
-            className: '',
-            action: (e) => {
-                updateFormField('unit_price', e.target.value, true);
-            },
-        }],
         [
-            {
-                label: 'Selling Group Price',
-                required: false,
-                placeholder: 'Selling group price',
-                value: formState.dozen_price,
-                name: 'dozen-price',
-                input_type: 'number',
-                type: 'number',
-                className: '',
-                action: (e) => {
-                    updateFormField('dozen_price', e.target.value, true);
-                },
-            },
             {
                 label: 'Unit Qty in Group',
                 required: false,
@@ -290,37 +228,99 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
                 type: 'number',
                 className: '',
                 action: (e) => {
-                    updateFormField('dozen_units', e.target.value, true);
+                    updateFormField('dozen_units', e.target.value);
                 },
             },
-        ],
-        [
             {
-                label: 'Selling Box Price',
+                label: 'Unit Qty in Box',
                 required: false,
-                placeholder: 'Selling box price',
-                value: formState.box_price,
-                name: 'box-price',
+                placeholder: 'Box units',
+                value: formState.box_units,
+                name: 'box-units',
                 input_type: 'number',
                 type: 'number',
                 className: '',
                 action: (e) => {
-                    updateFormField('box_price', e.target.value, true);
+                    updateFormField('box_units', e.target.value);
                 },
-            }, {
-            label: 'Unit Qty in Box',
-            required: false,
-            placeholder: 'Box units',
-            value: formState.box_units,
-            name: 'box-units',
-            input_type: 'number',
-            type: 'number',
-            className: '',
-            action: (e) => {
-                updateFormField('box_units', e.target.value, true);
             },
-        },
         ],
+        ...(canAttachSupplierPrice ? [
+            {
+                input_type: 'custom',
+                component: (
+                    <SectionHeader
+                        title="My Supplier Prices"
+                        description="Optionally attach prices for your supplier account while submitting this catalog detail for review."
+                    />
+                ),
+            },
+            {
+                label: 'Choose currency',
+                placeholder: 'Select Currency',
+                name: 'supplier_price_currency',
+                input_type: 'radio',
+                value: supplierPricing.currency,
+                options: ['fc', 'rw', 'ugx', 'usd'],
+                action: (e) => {
+                    setSupplierPricing((state) => ({...state, currency: e.target.value}));
+                },
+            },
+            supplierPriceTypes.map((priceType) => ({
+                label: priceType.label,
+                placeholder: priceType.label,
+                value: supplierPricing.prices[priceType.code] || '',
+                name: `${priceType.code}_supplier_price`,
+                input_type: 'number',
+                type: 'number',
+                action: (e) => {
+                    setSupplierPricing((state) => ({
+                        ...state,
+                        prices: {
+                            ...state.prices,
+                            [priceType.code]: e.target.value,
+                        },
+                    }));
+                },
+            })),
+        ] : []),
+        ...(isAdmin ? [
+            {
+                input_type: 'custom',
+                component: (
+                    <SectionHeader
+                        title="Review"
+                        description="Approve this catalog detail when it is ready for suppliers and requisitions."
+                    />
+                ),
+            },
+            {
+                label: 'Approval status',
+                name: 'approval_status',
+                input_type: 'radio',
+                value: formState.approval_status,
+                options: isAddMode ? ['pending_review', 'approved'] : ['pending_review', 'approved', 'rejected'],
+                action: (e) => updateFormField('approval_status', e.target.value),
+            },
+            ...(formState.approval_status === 'rejected' ? [{
+                label: 'Rejection reason',
+                placeholder: 'Explain why this variant is rejected',
+                value: formState.rejection_reason,
+                name: 'rejection_reason',
+                input_type: 'text-area',
+                action: (e) => updateFormField('rejection_reason', e.target.value),
+            }] : []),
+        ] : [{
+            input_type: 'custom',
+            component: (
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
+                    <span className="mr-2 font-semibold text-slate-700">Approval:</span>
+                    <Badge variant={formState.approval_status === 'approved' ? 'success' : formState.approval_status === 'rejected' ? 'danger' : 'warning'} size="small">
+                        {formState.approval_status?.replace('_', ' ') || 'pending review'}
+                    </Badge>
+                </div>
+            ),
+        }]),
         {
             input_type: 'custom',
             component: (
@@ -361,14 +361,13 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
     ];
 
 
-    return (
-        <ContainerOne>
-            <div className="mx-auto w-full max-w-5xl">
-                <div className="mb-4">
+    const innerContent = (
+        <div className="mx-auto w-full max-w-5xl">
+                <div className={clsx("mb-4", embedded && "sr-only")}>
                     <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Product Variants</p>
                     <h2 className="mt-2 font-display text-4xl font-bold text-slate-900">{content.header}</h2>
                     <p className="mt-3 max-w-2xl text-base text-slate-500">
-                        Set pricing packs, shelf-life details, and media for this specific variant.
+                        Set shelf-life, pack quantities, tags, and media for this catalog variant. Supplier prices are managed separately.
                     </p>
                 </div>
                 {error && (
@@ -380,6 +379,15 @@ export const ProductDetailForm = ({variant = null}: { variant?: any }) => {
                     <Form fields={productDetailForm} handleSubmit={handleSubmit}/>
                 </div>
             </div>
+    );
+
+    if (embedded) {
+        return innerContent;
+    }
+
+    return (
+        <ContainerOne>
+            {innerContent}
         </ContainerOne>
     );
 };

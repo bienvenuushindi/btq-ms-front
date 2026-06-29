@@ -134,7 +134,7 @@ export const renderCell = (column, value: any) => {
           </span>
       )
     default:
-      return <span className={clsx(['size', 'date' ,'total_price', 'shop_name', 'name', 'unit_price', 'box_price', 'dozen_price'].includes(column.key)? 'font-semibold text-slate-900' : 'text-slate-500')}>{transformedValue}</span>;
+      return <span className={clsx(['size', 'date' ,'total_price', 'shop_name', 'name'].includes(column.key)? 'font-semibold text-slate-900' : 'text-slate-500')}>{transformedValue}</span>;
   }
 };
 export const RenderTableHead = ({ columns, onSorting, tHeadProps }) => {

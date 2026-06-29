@@ -11,11 +11,13 @@ const resolveActionValue = (value, row) => (
   typeof value === 'function' ? value(row) : value
 );
 
-const renderActionIcon = (icon) => {
+const renderActionIcon = (icon: React.ReactNode) => {
   if (!React.isValidElement(icon)) return icon;
 
-  return React.cloneElement(icon as React.ReactElement<any>, {
-    size: Math.min(Number(icon.props?.size) || 15, 15),
+  const iconElement = icon as React.ReactElement<any>;
+
+  return React.cloneElement(iconElement, {
+    size: Math.min(Number(iconElement.props?.size) || 15, 15),
     width: 15,
     height: 15,
   });
