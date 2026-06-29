@@ -1,6 +1,6 @@
 'use client';
 import {useFetcher} from '@/app/hooks/useFetcher';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {API_ENDPOINTS} from "@/lib/api";
 import {FolderMinus, FolderPlus} from 'react-feather';
 import {toggle} from "@/lib/helper"; // Import icons
@@ -9,6 +9,21 @@ export default function CategoryTree({action}) {
     const {data: categories = [], mutate, error, isLoading} = useFetcher(API_ENDPOINTS.CATEGORY_TREE_STRUCTURE);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
     const [collapsedItems, setCollapsedItems] = useState([]);
+    const [hasInitializedCollapse, setHasInitializedCollapse] = useState(false);
+
+    const collectExpandableIds = useCallback((items) => (
+        items.flatMap((category) => [
+            ...(category.children?.length ? [category.id] : []),
+            ...collectExpandableIds(category.children || []),
+        ])
+    ), []);
+
+    useEffect(() => {
+        if (hasInitializedCollapse || categories.length === 0) return;
+
+        setCollapsedItems(collectExpandableIds(categories));
+        setHasInitializedCollapse(true);
+    }, [categories, collectExpandableIds, hasInitializedCollapse]);
 
     const handleRadioChange = (categoryId: null) => {
         setSelectedCategoryId(categoryId);
