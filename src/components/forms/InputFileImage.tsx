@@ -64,7 +64,7 @@ const InputFileImage = () => {
     e.target.value = '';
   };
   return (
-    <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-start">
+    <div className="mb-4 flex min-w-0 flex-col gap-3 md:flex-row md:items-start">
       <div className="flex min-w-0 flex-col">
         <input
           id="photosUpload"
@@ -77,14 +77,14 @@ const InputFileImage = () => {
         />
         <label htmlFor="photosUpload">
           <a type="button"
-             className={clsx('flex min-h-[126px] min-w-[126px] flex-col items-center justify-center rounded-[24px] border border-dashed text-sm font-medium transition',
-               photos.length !== MAX_AMOUNT && 'border-slate-300 bg-slate-50 px-4 py-5 text-slate-500 hover:border-primary hover:bg-orange-50 hover:text-primary',
+             className={clsx('flex min-h-24 w-full min-w-0 flex-col items-center justify-center rounded-2xl border border-dashed text-xs font-medium transition sm:min-h-[126px] sm:min-w-[126px] sm:rounded-[24px] sm:text-sm',
+               photos.length !== MAX_AMOUNT && 'border-slate-300 bg-slate-50 px-3 py-4 text-slate-500 hover:border-primary hover:bg-orange-50 hover:text-primary sm:px-4 sm:py-5',
                photos.length === MAX_AMOUNT && 'bip-animation bg-red-100 px-2.5 py-0.5'
              )}>
             {photos.length === MAX_AMOUNT ? <span className=" text-red-800">Limit Reached</span> :
               <>
-                <Camera size={42} color="#94a3b8"/>
-                <span className="mt-3 text-center text-sm font-semibold">Upload photos</span>
+                <Camera size={32} color="#94a3b8"/>
+                <span className="mt-2 text-center text-xs font-semibold sm:mt-3 sm:text-sm">Upload photos</span>
                 <span className="mt-1 text-center text-xs text-slate-400">PNG, JPG, WEBP up to 5 files</span>
               </>}
           </a>

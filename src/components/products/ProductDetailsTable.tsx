@@ -9,6 +9,8 @@ import EntityTable from '@/components/table/EntityTable';
 import DateDisplay from "@/components/DateDisplay";
 import {getImageUrls} from '@/lib/helper';
 import Badge from '@/components/utils/Badge';
+import {useFetcher} from '@/app/hooks/useFetcher';
+import {API_ENDPOINTS} from '@/lib/api';
 
 const ProductVariantCreateModal = dynamic(() => import('@/components/products/ProductVariantCreateModal'), {
   ssr: false,
@@ -24,6 +26,10 @@ export const ProductDetailsTable = ({product, isLoading}) => {
   const {setOpenBar, setSidebarData} = useContext(SidebarContext);
   const params = useParams();
   const productID = params.id;
+  const {data: currentUser} = useFetcher(API_ENDPOINTS.CURRENT_USER);
+  const role = currentUser?.role?.toString().toLowerCase();
+  const isAdmin = role === 'admin';
+  const isSupplier = role === 'supplier';
   const [editingVariant, setEditingVariant] = useState(null);
   const closeEditModal = () => setEditingVariant(null);
 
@@ -70,6 +76,15 @@ export const ProductDetailsTable = ({product, isLoading}) => {
             <span className="min-w-0 font-semibold text-slate-900">
               {product.name}<br/>{value.toUpperCase()}
             </span>
+            {isSupplier && row.supplier_status !== undefined && row.supplier_status !== null ? (
+              <Badge variant={row.supplier_status ? 'success' : 'danger'} size="small">
+                Shop {row.supplier_status ? 'active' : 'inactive'}
+              </Badge>
+            ) : isSupplier ? (
+              <Badge variant="warning" size="small">
+                Not selected
+              </Badge>
+            ) : null}
           </div>
         );
       },
@@ -104,10 +119,20 @@ export const ProductDetailsTable = ({product, isLoading}) => {
         );
       },
     },
+    ...(isAdmin ? [{
+      key: 'status',
+      type: 'text',
+      label: 'Status',
+      dataTransformation: (value: any) => (
+        <Badge variant={value ? 'success' : 'danger'} size="small">
+          {value ? 'Active' : 'Inactive'}
+        </Badge>
+      ),
+    }] : []),
     {
       key: 'button',
       type: 'details',
-      label: (row) => `Suppliers (${row.suppliers?.length || 0})`,
+      label: (row) => isSupplier ? `Prices (${row.shop_prices?.length || 0})` : `Suppliers (${row.suppliers?.length || 0})`,
       action: (data) => {
         setOpenBar({state: true, target: 'price_details',title:  product.name + ' (' + data.size+ ')'});
         setSidebarData(data);

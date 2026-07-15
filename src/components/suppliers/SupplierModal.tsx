@@ -22,7 +22,7 @@ export default function SupplierModal({
   return (
     <ModalContainer isOpen={isOpen} onRequestClose={onClose}>
       <ModalContent className="max-w-6xl">
-        <ModalHeader title={isEditMode ? 'Edit supplier' : 'Create supplier'} closeModal={onClose} titleClassName="text-2xl md:text-3xl"/>
+        <ModalHeader title={isEditMode ? 'Edit supplier' : 'Create supplier'} closeModal={onClose} titleClassName="sm:text-2xl md:text-3xl"/>
         <ModalBody>
           <SupplierForm
             embedded

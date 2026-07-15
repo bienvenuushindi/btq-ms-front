@@ -3,7 +3,7 @@ import EntityHeader from '@/components/EntityHeader';
 import {DownloadCloud} from 'react-feather';
 
 
-const ProductsHeader = ({onAddProduct}: { onAddProduct?: () => void }) => {
+const ProductsHeader = ({onAddProduct, addLabel = 'Add'}: { onAddProduct?: () => void, addLabel?: string }) => {
   const linkUrl = onAddProduct || '/products/create';
   const actions = [
     {
@@ -20,7 +20,7 @@ const ProductsHeader = ({onAddProduct}: { onAddProduct?: () => void }) => {
 
 
   return (
-    <EntityHeader title="Products" actions={actions} addAction={linkUrl}/>
+    <EntityHeader title="Products" actions={actions} addAction={linkUrl} addLabel={addLabel}/>
   );
 };
 

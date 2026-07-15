@@ -38,6 +38,7 @@ export const PriceDetailForm = ({
     supplier_id: initialSupplier?.id || null,
     product_detail_id: productDetailID,
     currency: initialDetails[0]?.currency || 'usd',
+    supplier_status: initialDetails[0]?.supplier_status ?? true,
   };
 
   const [formState, setFormState] = useState({ ...initialFormState });
@@ -99,7 +100,7 @@ export const PriceDetailForm = ({
       setError('');
       toastShow('success', isEditMode ? 'Supplier pricing updated successfully' : 'Supplier pricing saved successfully');
       if (!initialSupplier) {
-        setFormState({ ...initialFormState, prices: {}, supplier_id: null, currency: 'usd' });
+        setFormState({ ...initialFormState, prices: {}, supplier_id: null, currency: 'usd', supplier_status: true });
         setActiveSizes([false, false, false]);
       }
       if (onSuccess) {
@@ -171,6 +172,12 @@ export const PriceDetailForm = ({
       options: ['fc', 'rw', 'ugx', 'usd'],
       action: (e) => setFormState((prevState) => ({ ...prevState, currency: e.target.value })),
     },
+    {
+      label: 'Supplier visibility',
+      input_type: 'toggle',
+      checked: formState.supplier_status,
+      action: (enabled) => setFormState((prevState) => ({...prevState, supplier_status: enabled})),
+    },
     sizes.map((size, index) =>[
         {
         label: <Toggle enabled={activeSizes[index]} setEnabled={()=>handleToggle(index)} label={size.name}/>,
@@ -204,9 +211,9 @@ export const PriceDetailForm = ({
     <ContainerOne>
       <div className="w-full">
         <div className="mb-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Pricing</p>
-          <h2 className="mt-2 font-display text-4xl font-bold text-slate-900">{content.header}</h2>
-          <p className="mt-3 max-w-2xl text-base text-slate-500">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 sm:text-xs sm:tracking-[0.32em]">Pricing</p>
+          <h2 className="mt-1.5 break-words font-display text-2xl font-bold text-slate-900 sm:mt-2 sm:text-4xl">{content.header}</h2>
+          <p className="mt-2 max-w-2xl text-sm text-slate-500 sm:mt-3 sm:text-base">
             {initialSupplier
               ? isEditMode
                 ? 'Adjust the currency or pack prices for this supplier and save your changes.'
@@ -214,7 +221,7 @@ export const PriceDetailForm = ({
               : 'Assign a supplier, set the currency, and activate the pack sizes that should have pricing.'}
           </p>
         </div>
-        <div className="oasis-panel p-6 lg:p-8">
+        <div className="oasis-panel p-3 sm:p-6 lg:p-8">
           {error ? (
             <div className="mb-4 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
               {error}

@@ -18,7 +18,8 @@ const EntityTable = ({
                          links,
                          actions,
                          filters,
-                         searchable = true
+                         searchable = true,
+                         metaLabels = {}
                      }: any) => {
 
     const updateParams = (newFilters) => {
@@ -30,8 +31,8 @@ const EntityTable = ({
     return (
         <>
             {(searchable || filters) && (
-                <Card className="relative my-2 w-full justify-start rounded-[24px] border border-slate-200/70 bg-white/95 p-3 sm:p-4">
-                    <div className="flex flex-col gap-2.5 sm:gap-3 lg:flex-row lg:items-center">
+                <Card className="relative my-2 w-full min-w-0 justify-start rounded-2xl border border-slate-200/70 bg-white/95 p-2.5 sm:rounded-[24px] sm:p-4">
+                    <div className="flex min-w-0 flex-col gap-2.5 sm:gap-3 lg:flex-row lg:items-center">
                         {searchable ? <SearchBar onSearch={updateParams} containerClassName="w-full lg:flex-1"/> : <div className="hidden lg:block lg:flex-1" />}
                         <ShowRow updateCount={updateParams}/>
                         <div className="w-full lg:w-auto">
@@ -40,9 +41,9 @@ const EntityTable = ({
                     </div>
                 </Card>
             )}
-            <Card className="relative w-full justify-start rounded-[28px] border border-slate-200/70 bg-white/95 p-3 sm:p-4">
-                <div className="mb-3 flex w-full justify-start overflow-x-auto sm:justify-end">
-                    {links && meta && <TableMetaData meta={meta}/>}
+            <Card className="relative w-full min-w-0 justify-start rounded-2xl border border-slate-200/70 bg-white/95 p-2.5 sm:rounded-[28px] sm:p-4">
+                <div className="mb-2.5 flex w-full min-w-0 justify-start overflow-x-auto sm:mb-3 sm:justify-end">
+                    {links && meta && <TableMetaData meta={meta} labels={metaLabels}/>}
                 </div>
                 {actions ?
                     <DataGridWithActions
@@ -62,10 +63,10 @@ const EntityTable = ({
                         loader={loader}
                         onSorting={updateParams}
                     />}
-                <div className="mt-4 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="mt-3 flex w-full min-w-0 flex-col gap-2.5 sm:mt-4 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
                     {links && meta && (
                         <>
-                            <TableMetaData meta={meta}/>
+                            <TableMetaData meta={meta} labels={metaLabels}/>
                             <Paginate meta={meta} links={links} setUrl={updateList}/>
                         </>
                     )}

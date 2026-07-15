@@ -1,9 +1,9 @@
 import React from 'react';
 
-const ErrorBoundary = ({ error, children }: any) => {
+const ErrorBoundary = ({ error, children, fallback = <div>Something went wrong</div> }: any) => {
   return (
     <>
-      {error ? <div>Something went wrong</div> : children}
+      {error ? fallback : children}
     </>
   );
 };

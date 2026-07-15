@@ -364,9 +364,9 @@ export const ProductDetailForm = ({variant = null, productId, variantId, onSucce
     const innerContent = (
         <div className="mx-auto w-full max-w-5xl">
                 <div className={clsx("mb-4", embedded && "sr-only")}>
-                    <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Product Variants</p>
-                    <h2 className="mt-2 font-display text-4xl font-bold text-slate-900">{content.header}</h2>
-                    <p className="mt-3 max-w-2xl text-base text-slate-500">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 sm:text-xs sm:tracking-[0.32em]">Product Variants</p>
+                    <h2 className="mt-1.5 break-words font-display text-2xl font-bold text-slate-900 sm:mt-2 sm:text-4xl">{content.header}</h2>
+                    <p className="mt-2 max-w-2xl text-sm text-slate-500 sm:mt-3 sm:text-base">
                         Set shelf-life, pack quantities, tags, and media for this catalog variant. Supplier prices are managed separately.
                     </p>
                 </div>
@@ -375,7 +375,7 @@ export const ProductDetailForm = ({variant = null, productId, variantId, onSucce
                         {error}
                     </div>
                 )}
-                <div className="oasis-panel p-6 lg:p-8">
+                <div className="oasis-panel p-3 sm:p-6 lg:p-8">
                     <Form fields={productDetailForm} handleSubmit={handleSubmit}/>
                 </div>
             </div>

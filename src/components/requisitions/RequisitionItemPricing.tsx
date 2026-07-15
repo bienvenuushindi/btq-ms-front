@@ -345,10 +345,6 @@ export default function RequisitionItemPricing({productDetails}) {
         action={updateForm}
         productId={productDetails.product_detail_id}
         supplierId={supplierId}
-        currentSupplier={productDetails.supplier_id ? {
-          id: productDetails.supplier_id,
-          shop_name: productDetails.supplier_name,
-        } : null}
     />
       <div className="flex grow flex-col rounded-[18px] border border-slate-200 bg-slate-50 p-3">
         <div className="mb-3 flex justify-end">

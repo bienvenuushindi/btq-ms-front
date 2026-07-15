@@ -188,10 +188,10 @@ export default function UserForm({user}: {user: any}) {
       {
         input_type: 'custom',
         component: (
-          <div className="rounded-[24px] border border-slate-200 bg-slate-50 p-5">
+          <div className="rounded-[20px] border border-slate-200 bg-slate-50 p-4 sm:rounded-[24px] sm:p-5">
             <div className="mb-4">
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Profile Media</p>
-              <h4 className="mt-2 font-display text-2xl font-bold text-slate-900">Photo</h4>
+              <h4 className="mt-2 font-display text-xl font-bold text-slate-900 sm:text-2xl">Photo</h4>
               <p className="mt-2 text-sm text-slate-500">Keep a recognizable profile image for the account.</p>
             </div>
             <InputImageContext.Provider value={{photos, setPhotos}}>
@@ -206,10 +206,10 @@ export default function UserForm({user}: {user: any}) {
   return (
     <ContainerOne>
       <div className="mx-auto w-full max-w-7xl">
-        <div className="mb-4">
+        <div className="mb-4 px-1 sm:px-0">
           <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Account</p>
-          <h2 className="mt-2 font-display text-4xl font-bold text-slate-900">Profile</h2>
-          <p className="mt-3 max-w-2xl text-base text-slate-500">
+          <h2 className="mt-2 font-display text-2xl font-bold text-slate-900 sm:text-4xl">Profile</h2>
+          <p className="mt-3 max-w-2xl text-sm text-slate-500 sm:text-base">
             Keep personal details, contact information, and profile media aligned with the rest of the dashboard experience.
           </p>
         </div>

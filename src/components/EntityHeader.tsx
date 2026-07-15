@@ -7,12 +7,12 @@ const EntityHeader = ({title, actions, addAction, addLabel = 'Add', children}:an
   const hasAddClick = typeof addAction === 'function';
 
   return (
-    <div className="container mx-auto">
-      <div className="space-y-4 rounded-[24px] border border-slate-200/90 bg-white px-5 py-5 shadow-[0_10px_20px_rgba(15,23,42,0.04)]">
+    <div className="mx-auto w-full max-w-screen-2xl">
+      <div className="space-y-4 rounded-[20px] border border-slate-200/90 bg-white px-4 py-4 shadow-[0_10px_20px_rgba(15,23,42,0.04)] sm:rounded-[24px] sm:px-5 sm:py-5">
         <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
-          <div className="space-y-2">
+          <div className="min-w-0 space-y-2">
             <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Workspace</p>
-            <h4 className="font-display text-xl font-bold text-slate-900 md:text-[1.55rem]">{title}</h4>
+            <h4 className="truncate font-display text-xl font-bold text-slate-900 md:text-[1.55rem]">{title}</h4>
             <div className="flex flex-wrap items-center gap-2">
               {actions.map((action, index) => (
                 <Button
@@ -28,12 +28,12 @@ const EntityHeader = ({title, actions, addAction, addLabel = 'Add', children}:an
               ))}
             </div>
           </div>
-          <div>
+          <div className="flex w-full sm:w-auto">
             {addAction ? (hasAddClick ? (
               <Button
                 size="sm"
                 onClick={addAction}
-                className="oasis-button flex items-center space-x-1 rounded-2xl px-4 py-2 text-xs md:text-sm"
+                className="oasis-button flex w-full items-center justify-center space-x-1 rounded-2xl px-4 py-2 text-xs sm:w-auto md:text-sm"
               >
                 <PlusCircle color="#FFFFFF" size={20}/>
                 <span className="px-1 text-neutral-50">{addLabel}</span>
@@ -42,7 +42,7 @@ const EntityHeader = ({title, actions, addAction, addLabel = 'Add', children}:an
               href={addAction}
               size="small"
               intent={'primary'}
-              className="oasis-button flex items-center space-x-1 rounded-2xl px-4 py-2 text-xs md:text-sm"
+              className="oasis-button flex w-full items-center justify-center space-x-1 rounded-2xl px-4 py-2 text-xs sm:w-auto md:text-sm"
             >
               <PlusCircle color="#FFFFFF" size={20}/>
               <span className="px-1 text-neutral-50">{addLabel}</span>

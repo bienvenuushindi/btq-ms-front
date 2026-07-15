@@ -24,7 +24,7 @@ export default function ProductVariantCreateModal({
   return (
     <ModalContainer isOpen={isOpen} onRequestClose={onClose}>
       <ModalContent className="max-w-4xl">
-        <ModalHeader title={isEditMode ? 'Edit product variant' : 'Create product variant'} closeModal={onClose} titleClassName="text-2xl md:text-3xl"/>
+        <ModalHeader title={isEditMode ? 'Edit product variant' : 'Create product variant'} closeModal={onClose} titleClassName="sm:text-2xl md:text-3xl"/>
         <ModalBody>
           <ProductDetailForm
             embedded

@@ -33,8 +33,8 @@ const buildProductLabel = (item: any) => {
 const ProductImage = ({src, alt}: {src?: string; alt: string}) => {
   if (!src) {
     return (
-      <div className="flex h-[74px] w-[74px] shrink-0 items-center justify-center rounded-[20px] border border-dashed border-slate-300 bg-slate-100 text-slate-400">
-        <Package size={24}/>
+      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-100 text-slate-400 sm:h-[74px] sm:w-[74px] sm:rounded-[20px]">
+        <Package size={20}/>
       </div>
     );
   }
@@ -45,7 +45,7 @@ const ProductImage = ({src, alt}: {src?: string; alt: string}) => {
       alt={alt}
       width={74}
       height={74}
-      className="h-[74px] w-[74px] shrink-0 rounded-[20px] border border-slate-200 bg-slate-100 object-cover"
+      className="h-14 w-14 shrink-0 rounded-2xl border border-slate-200 bg-slate-100 object-cover sm:h-[74px] sm:w-[74px] sm:rounded-[20px]"
     />
   );
 };
@@ -55,9 +55,9 @@ const LoadingCards = () => (
     {Array.from({length: 3}).map((_, index) => (
       <div
         key={`loading-card-${index}`}
-        className="flex items-center gap-3 rounded-[24px] border border-slate-200 bg-white px-3 py-3"
+        className="flex items-center gap-2.5 rounded-2xl border border-slate-200 bg-white px-2.5 py-2.5 sm:gap-3 sm:rounded-[24px] sm:px-3 sm:py-3"
       >
-        <div className="h-[74px] w-[74px] animate-pulse rounded-[20px] bg-slate-200"/>
+        <div className="h-14 w-14 animate-pulse rounded-2xl bg-slate-200 sm:h-[74px] sm:w-[74px] sm:rounded-[20px]"/>
         <div className="flex-1 space-y-2">
           <div className="h-4 w-2/3 animate-pulse rounded-full bg-slate-200"/>
           <div className="h-3 w-1/2 animate-pulse rounded-full bg-slate-100"/>
@@ -136,15 +136,15 @@ export default function ExpiredProductContainer({title, type, limit}: {title: an
 
   if (!isHomePreview) {
     return (
-      <Card className="flex flex-col rounded-[30px] border-slate-200/80 bg-white p-4 shadow-sm">
+      <Card className="flex min-w-0 flex-col rounded-2xl border-slate-200/80 bg-white p-3 shadow-sm sm:rounded-[30px] sm:p-4">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Shelf Life</p>
-            <h3 className="mt-1 font-display text-[1.45rem] font-bold text-slate-900">{title}</h3>
+            <p className="text-[10px] uppercase tracking-[0.22em] text-slate-400 sm:text-xs sm:tracking-[0.28em]">Shelf Life</p>
+            <h3 className="mt-1 font-display text-lg font-bold text-slate-900 sm:text-[1.45rem]">{title}</h3>
           </div>
           <span
             className={clsx(
-              'inline-flex min-w-[42px] items-center justify-center rounded-full px-3 py-1 text-sm font-bold ring-1 ring-inset',
+              'inline-flex min-w-9 items-center justify-center rounded-full px-2.5 py-0.5 text-xs font-bold ring-1 ring-inset sm:min-w-[42px] sm:px-3 sm:py-1 sm:text-sm',
               type === 'expired'
                 ? 'bg-rose-50 text-rose-700 ring-rose-200'
                 : 'bg-amber-50 text-amber-700 ring-amber-200'
@@ -154,7 +154,7 @@ export default function ExpiredProductContainer({title, type, limit}: {title: an
           </span>
         </div>
 
-        <div className="mt-4 overflow-hidden rounded-[24px] border border-slate-200 bg-white">
+        <div className="mt-3 min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white sm:mt-4 sm:rounded-[24px]">
           <EntityTable
             columns={columns}
             data={expiredProducts}
@@ -172,15 +172,15 @@ export default function ExpiredProductContainer({title, type, limit}: {title: an
   }
 
   return (
-    <Card className="flex min-h-[420px] flex-col rounded-[30px] border-slate-200/80 bg-white p-3 sm:p-4 shadow-sm">
+    <Card className="flex min-h-0 min-w-0 flex-col rounded-2xl border-slate-200/80 bg-white p-2.5 shadow-sm sm:min-h-[420px] sm:rounded-[30px] sm:p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Shelf Life</p>
-          <h3 className="mt-1 font-display text-[1.45rem] font-bold text-slate-900">{title}</h3>
+          <p className="text-[10px] uppercase tracking-[0.22em] text-slate-400 sm:text-xs sm:tracking-[0.28em]">Shelf Life</p>
+          <h3 className="mt-1 font-display text-lg font-bold text-slate-900 sm:text-[1.45rem]">{title}</h3>
         </div>
         <span
           className={clsx(
-            'inline-flex min-w-[42px] items-center justify-center rounded-full px-3 py-1 text-sm font-bold ring-1 ring-inset',
+            'inline-flex min-w-9 items-center justify-center rounded-full px-2.5 py-0.5 text-xs font-bold ring-1 ring-inset sm:min-w-[42px] sm:px-3 sm:py-1 sm:text-sm',
             type === 'expired'
               ? 'bg-rose-50 text-rose-700 ring-rose-200'
               : 'bg-amber-50 text-amber-700 ring-amber-200'
@@ -190,7 +190,7 @@ export default function ExpiredProductContainer({title, type, limit}: {title: an
         </span>
       </div>
 
-      <div className="mt-3 rounded-[28px] border border-slate-200 bg-slate-50/85 p-2.5 sm:p-3">
+      <div className="mt-3 min-w-0 rounded-2xl border border-slate-200 bg-slate-50/85 p-2 sm:rounded-[28px] sm:p-3">
         <div className="mb-3 flex flex-col gap-1 px-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
           <p className="text-sm font-semibold text-slate-700">{title}</p>
           <span className="text-xs text-slate-400">
@@ -198,11 +198,11 @@ export default function ExpiredProductContainer({title, type, limit}: {title: an
           </span>
         </div>
 
-        <div className="max-h-[540px] space-y-3 overflow-y-auto pr-1">
+        <div className="max-h-[420px] space-y-2 overflow-y-auto pr-0.5 sm:max-h-[540px] sm:space-y-3 sm:pr-1">
           {isLoading ? (
             <LoadingCards/>
           ) : expiredProducts.length === 0 ? (
-            <div className="rounded-[24px] border border-dashed border-slate-300 bg-white px-5 py-10 text-center text-sm text-slate-500">
+            <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-3 py-8 text-center text-sm text-slate-500 sm:rounded-[24px] sm:px-5 sm:py-10">
               No shelf-life items found in this section.
             </div>
           ) : (
@@ -213,17 +213,17 @@ export default function ExpiredProductContainer({title, type, limit}: {title: an
               return (
                 <div
                   key={item.id}
-                  className="flex items-start gap-3 rounded-[24px] border border-slate-200 bg-white px-3 py-3 shadow-[0_8px_20px_rgba(15,23,42,0.05)]"
+                  className="flex min-w-0 items-start gap-2.5 rounded-2xl border border-slate-200 bg-white px-2.5 py-2.5 shadow-[0_8px_20px_rgba(15,23,42,0.05)] sm:gap-3 sm:rounded-[24px] sm:px-3 sm:py-3"
                 >
                   <ProductImage src={imageSrc} alt={productLabel}/>
 
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold text-slate-900 md:text-[15px]">{productLabel}</p>
+                    <p className="truncate text-[13px] font-semibold text-slate-900 sm:text-sm md:text-[15px]">{productLabel}</p>
                     <div className="mt-2">
                       <Badge
                         size="small"
                         variant={type === 'expired' ? 'danger' : 'warning'}
-                        className="px-2.5 py-1 text-[11px] normal-case tracking-normal"
+                        className="max-w-full whitespace-normal px-2 py-0.5 text-[10px] normal-case tracking-normal sm:px-2.5 sm:py-1 sm:text-[11px]"
                       >
                         {type === 'expired' ? 'Expired on' : 'Expires on'} {formatExpiryDate(item.expired_date)}
                       </Badge>
@@ -233,8 +233,8 @@ export default function ExpiredProductContainer({title, type, limit}: {title: an
                   <div className="shrink-0 self-center sm:self-start">
                     <CustomPopover
                       title={
-                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition hover:border-slate-300 hover:text-slate-700">
-                          <MoreVertical size={18}/>
+                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition hover:border-slate-300 hover:text-slate-700 sm:h-10 sm:w-10">
+                          <MoreVertical size={16}/>
                         </span>
                       }
                     >
@@ -271,10 +271,10 @@ export default function ExpiredProductContainer({title, type, limit}: {title: an
                 await router.push(`/products/filters?status=${type}`);
               }}
               intent="none"
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 hover:border-primary/30 hover:bg-sky-50"
+              className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 hover:border-primary/30 hover:bg-sky-50 sm:gap-2 sm:px-4 sm:py-2"
             >
-              <span className="text-sm font-semibold text-primary">View All</span>
-              <ArrowRight size={18}/>
+              <span className="text-xs font-semibold text-primary sm:text-sm">View All</span>
+              <ArrowRight size={16}/>
             </Button>
           </div>
         )}

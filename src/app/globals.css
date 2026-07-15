@@ -24,6 +24,18 @@ body {
     font-family: var(--font-sans), sans-serif;
 }
 
+html,
+body {
+    max-width: 100%;
+}
+
+img,
+svg,
+video,
+canvas {
+    max-width: 100%;
+}
+
 @keyframes headShake {
     0%,
     100% {
@@ -178,5 +190,37 @@ body {
         border: 1px solid rgba(207, 216, 226, 0.9);
         border-radius: 1.75rem;
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+    }
+}
+
+@media (max-width: 640px) {
+    .dashboard-mobile-shell {
+        font-size: 12px;
+        background: #ffffff;
+    }
+
+    .dashboard-mobile-shell .rounded-\[20px\],
+    .dashboard-mobile-shell .rounded-\[22px\],
+    .dashboard-mobile-shell .rounded-\[24px\],
+    .dashboard-mobile-shell .rounded-\[26px\],
+    .dashboard-mobile-shell .rounded-\[28px\],
+    .dashboard-mobile-shell .rounded-\[30px\] {
+        border-radius: 0.875rem;
+    }
+
+    .surface-panel {
+        border-radius: 1rem;
+        box-shadow: 0 7px 16px rgba(15, 23, 42, 0.045);
+    }
+
+    .oasis-panel {
+        border-radius: 1rem;
+        box-shadow: 0 7px 16px rgba(15, 23, 42, 0.045);
+    }
+
+    .oasis-field {
+        border-radius: 0.875rem;
+        padding: 0.68rem 0.78rem;
+        font-size: 0.8125rem;
     }
 }

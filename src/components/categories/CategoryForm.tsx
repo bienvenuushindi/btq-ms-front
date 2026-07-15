@@ -139,13 +139,13 @@ export default function CategoryForm({category = null, onSaved}: { category?: an
     <ContainerOne>
       <div className="mx-auto w-full max-w-4xl">
         <div className="mb-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Categories</p>
-          <h2 className="mt-2 font-display text-4xl font-bold text-slate-900">{content.header}</h2>
-          <p className="mt-3 max-w-2xl text-base text-slate-500">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 sm:text-xs sm:tracking-[0.32em]">Categories</p>
+          <h2 className="mt-1.5 break-words font-display text-2xl font-bold text-slate-900 sm:mt-2 sm:text-4xl">{content.header}</h2>
+          <p className="mt-2 max-w-2xl text-sm text-slate-500 sm:mt-3 sm:text-base">
             Define the category label, add context, and place it correctly in the category tree.
           </p>
         </div>
-        <div className="oasis-panel p-6 lg:p-8">
+        <div className="oasis-panel p-3 sm:p-6 lg:p-8">
           {error && (
             <div className="mb-4 rounded-[22px] border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium leading-6 text-rose-700">
               {error}

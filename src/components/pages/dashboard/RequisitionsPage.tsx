@@ -5,7 +5,7 @@ import Container from '@/components/utils/wrappers/Container';
 import RequisitionsHeader from '@/components/requisitions/RequisitionsHeader';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import EntityTable from '@/components/table/EntityTable';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Badge from '@/components/utils/Badge';
 import { useState } from 'react';
 import { useFetcher } from '@/app/hooks/useFetcher';
@@ -14,9 +14,12 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import {useRouteTransition} from '@/components/navigation/RouteTransitionProvider';
 import FilterCheckbox from '@/components/table/filter/FilterCheckbox';
 import {updateUrl} from '@/lib/helper';
+import NotFound from '@/components/state/NotFound';
 
 export default function RequisitionsPage() {
-  const [url, setUrl] = useState(() => updateUrl(API_ENDPOINTS.REQUISITIONS, {status: null}));
+  const searchParams = useSearchParams();
+  const initialDate = searchParams.get('date');
+  const [url, setUrl] = useState(() => updateUrl(API_ENDPOINTS.REQUISITIONS, {status: null, date: initialDate}));
   const { data, meta, links, error, isLoading } = useFetcher(url);
   const router = useRouter();
   const {startNavigation} = useRouteTransition();
@@ -97,7 +100,15 @@ export default function RequisitionsPage() {
       <Container>
         <RequisitionsHeader />
         <ContainerOne>
-          <ErrorBoundary error={error}>
+          <ErrorBoundary
+            error={error}
+            fallback={(
+              <NotFound
+                title="No requisitions available"
+                message="There are no requisitions available for your account right now."
+              />
+            )}
+          >
             <EntityTable
               isLoading={isLoading}
               searchable={false}

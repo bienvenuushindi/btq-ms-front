@@ -16,16 +16,16 @@ export default function Form({fields, handleSubmit}: {
     handleSubmit?: any
 }) {
     return (
-        <form onSubmit={handleSubmit} className="w-full py-4">
+        <form onSubmit={handleSubmit} className="w-full min-w-0 py-3 sm:py-4">
             {Array.isArray(fields) ? renderFields(fields) :
-                <div className="grid gap-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.9fr)]">
+                <div className="grid min-w-0 gap-3 sm:gap-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.9fr)]">
                     {Object.keys(fields).map((key, index) => (
-                        <section key={key} className="oasis-panel w-full p-4 lg:p-6">
-                            <div className="mb-5">
-                                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+                        <section key={key} className="oasis-panel w-full min-w-0 p-3 sm:p-4 lg:p-6">
+                            <div className="mb-4 sm:mb-5">
+                                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 sm:text-xs sm:tracking-[0.28em]">
                                     {index === 0 ? 'Details' : 'Classification'}
                                 </p>
-                                <h3 className="mt-2 font-display text-xl font-bold text-slate-900 md:text-[1.35rem]">
+                                <h3 className="mt-1.5 font-display text-base font-bold text-slate-900 sm:mt-2 sm:text-xl md:text-[1.35rem]">
                                     {index === 0 ? 'Core Information' : 'Categories & Metadata'}
                                 </h3>
                             </div>
@@ -40,7 +40,7 @@ export default function Form({fields, handleSubmit}: {
 
 const renderFields = (fields: any[], insidePanel = false) => (
     fields.map((field, index) => (
-        <div key={`form-group-${index}`} className={clsx('flex justify-between', insidePanel ? 'mb-4' : 'mb-3')}>
+        <div key={`form-group-${index}`} className={clsx('flex min-w-0 justify-between', insidePanel ? 'mb-3 sm:mb-4' : 'mb-3')}>
             <div className="w-full text-start">
                 {renderGroup(field)}
             </div>
@@ -52,7 +52,7 @@ const renderGroup = (field) => {
     return (
         <>
             {Array.isArray(field) ?
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid min-w-0 gap-3 sm:gap-4 md:grid-cols-2">
                     {field.map((child, index) => (
                         <div key={`form-field-${field.length}-${index}`} className="flex min-w-0 flex-col">
                             {renderGroup(child)}

@@ -22,7 +22,7 @@ export default function ProductCreateModal({
   return (
     <ModalContainer isOpen={isOpen} onRequestClose={onClose}>
       <ModalContent className="max-w-6xl">
-        <ModalHeader title={isEditMode ? 'Edit product' : 'Create product'} closeModal={onClose} titleClassName="text-2xl md:text-3xl"/>
+        <ModalHeader title={isEditMode ? 'Edit product' : 'Create product'} closeModal={onClose} titleClassName="sm:text-2xl md:text-3xl"/>
         <ModalBody>
           <ProductForm
             embedded

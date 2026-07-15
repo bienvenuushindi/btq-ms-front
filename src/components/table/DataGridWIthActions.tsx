@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import TableLoader from '@/components/banners/TableLoader';
 import clsx from 'clsx';
-import {renderCell, RenderTableHead} from '@/components/table/DataGrid';
+import {MobileDataCards, renderCell, RenderTableHead} from '@/components/table/DataGrid';
 import {MoreVertical} from 'react-feather';
 import Button from '@/components/utils/Button';
 import CustomPopover from '@/components/popover/CustomPopover';
 import Link from 'next/link';
+import DeleteAlert from '@/components/DeleteAlert';
 
 const resolveActionValue = (value, row) => (
   typeof value === 'function' ? value(row) : value
@@ -23,11 +24,50 @@ const renderActionIcon = (icon: React.ReactNode) => {
   });
 };
 
+const isDangerAction = (action, actionLabel) => {
+  if (action.confirm) return true;
+
+  const normalizedLabel = String(actionLabel || '').toLowerCase();
+  return normalizedLabel.includes('delete') || normalizedLabel.includes('remove');
+};
+
 const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, actions, onSorting}) => {
   const rows = Array.isArray(data) ? data : [];
+  const [pendingDangerAction, setPendingDangerAction] = useState(null);
+
+  const closeDangerAction = () => setPendingDangerAction(null);
+
+  const confirmDangerAction = async () => {
+    if (!pendingDangerAction) return;
+
+    await pendingDangerAction.action.onClick?.(pendingDangerAction.row);
+    closeDangerAction();
+  };
+
+  const dangerMessage = pendingDangerAction
+    ? resolveActionValue(pendingDangerAction.action.confirmMessage, pendingDangerAction.row)
+      || `Are you sure you want to ${String(resolveActionValue(pendingDangerAction.action.label, pendingDangerAction.row)).toLowerCase()}?`
+    : '';
+  const handleActionClick = (action, row, actionLabel) => {
+    if (isDangerAction(action, actionLabel)) {
+      setPendingDangerAction({action, row});
+      return;
+    }
+
+    action.onClick?.(row);
+  };
 
   return (
-    <div className="relative w-full overflow-x-auto">
+    <>
+    <MobileDataCards
+      columns={columns}
+      rows={rows}
+      isLoading={isLoading}
+      loader={loader}
+      actions={actions}
+      onActionClick={handleActionClick}
+    />
+    <div className="relative hidden w-full overflow-x-auto md:block">
       <table className="min-w-[780px] w-full border-separate border-spacing-0 text-left text-sm">
         <thead className="sticky top-0 z-[1] bg-white text-xs">
         <tr>
@@ -82,6 +122,15 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
                             </>
                           );
                           const renderedAction = action.render?.(row, actionContent);
+                          const shouldConfirm = isDangerAction(action, actionLabel);
+                          const handleMenuActionClick = () => {
+                            if (shouldConfirm) {
+                              setPendingDangerAction({action, row});
+                              return;
+                            }
+
+                            action.onClick?.(row);
+                          };
 
                           return (
                             <li key={`action-${actionIndex}`} className="border-t border-slate-100 first:border-t-0">
@@ -102,7 +151,7 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
                                   size="small"
                                   intent="text"
                                   className="mt-1 flex w-full items-center rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                                  onClick={() => action.onClick(row)}
+                                  onClick={handleMenuActionClick}
                                 >
                                   {actionContent}
                                 </Button>
@@ -121,6 +170,15 @@ const DataGridWithActions = ({data, columns, tHeadProps, isLoading, loader, acti
         </tbody>
       </table>
     </div>
+    {pendingDangerAction ? (
+      <DeleteAlert
+        onCancel={closeDangerAction}
+        onDelete={confirmDangerAction}
+        show={Boolean(pendingDangerAction)}
+        message={dangerMessage}
+      />
+    ) : null}
+    </>
   );
 };
 

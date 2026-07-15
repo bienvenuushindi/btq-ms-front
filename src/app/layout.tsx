@@ -1,6 +1,7 @@
 import './globals.css'
 import RouteTransitionProvider from '@/components/navigation/RouteTransitionProvider';
 import {BRAND_NAME, BRAND_TAGLINE} from '@/lib/brand';
+import {Suspense} from 'react';
 
 export const metadata = {
   title: BRAND_NAME,
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <RouteTransitionProvider>{children}</RouteTransitionProvider>
+        <Suspense fallback={null}>
+          <RouteTransitionProvider>{children}</RouteTransitionProvider>
+        </Suspense>
       </body>
     </html>
   )

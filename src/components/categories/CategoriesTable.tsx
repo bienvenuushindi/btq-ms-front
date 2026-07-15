@@ -12,6 +12,10 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import EntityTable from "@/components/table/EntityTable";
 import StatusIndicator from '@/components/utils/StatusIndicator';
 import CreateCategory from '@/components/categories/CreateCategory';
+import TransitionLink from '@/components/navigation/TransitionLink';
+
+const categoryProductsHref = (categoryId: any) => `/categories/${categoryId}/products`;
+const metricValue = (value: any) => value ?? 0;
 
 export default function CategoriesTable(){
     const [url, setUrl] = useState(API_ENDPOINTS.CATEGORIES);
@@ -22,21 +26,33 @@ export default function CategoriesTable(){
             type: 'text',
             label: 'Name',
             sortable: true,
+            dataTransformation: (value: any, row: any) => (
+                <TransitionLink
+                    href={categoryProductsHref(row.id)}
+                    loadingMessage={`Opening ${value} variants...`}
+                    className="font-semibold text-sky-700 underline-offset-4 transition hover:text-sky-900 hover:underline"
+                >
+                    {value}
+                </TransitionLink>
+            ),
         }, {
             key: 'description',
             type: 'text',
             label: 'Description',
         }, {
-            key: 'created_at',
-            type: 'text',
-            label: 'Created',
-            sortable: true,
-
-        }, {
             key: 'count_products',
             type: 'text',
-            label: 'Numb of Products',
+            label: 'Selected / Market',
             sortable: true,
+            dataTransformation: (value: any, row: any) => (
+                <TransitionLink
+                    href={categoryProductsHref(row.id)}
+                    loadingMessage={`Opening ${row.name} variants...`}
+                    className="inline-flex min-w-[4.25rem] justify-center rounded-full border border-sky-200 bg-sky-100 px-2.5 py-1 text-xs font-bold text-sky-700 transition hover:bg-sky-200"
+                >
+                    {metricValue(row.selected_variants_count)} / {metricValue(row.market_variants_count)}
+                </TransitionLink>
+            ),
         }, {
             key: 'active',
             type: 'text',

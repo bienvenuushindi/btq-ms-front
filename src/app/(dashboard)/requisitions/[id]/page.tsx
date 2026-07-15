@@ -64,20 +64,20 @@ export default function Requisition() {
                         <DataWrapper error={error} loadingComponent={<RequisitionLoader/>} isLoading={isLoading}>
                             {requisition && (
                                 <>
-                                    <div className="grid w-full gap-4 xl:grid-cols-[minmax(0,1.1fr)_minmax(260px,0.45fr)]">
-                                        <Card className="w-full rounded-[26px] border-slate-200/90 bg-white p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
-                                            <div className="flex flex-col gap-4">
+                                    <div className="grid w-full min-w-0 gap-3 sm:gap-4 xl:grid-cols-[minmax(0,1.1fr)_minmax(260px,0.45fr)]">
+                                        <Card className="w-full min-w-0 rounded-2xl border-slate-200/90 bg-white p-3 shadow-[0_10px_24px_rgba(15,23,42,0.04)] sm:rounded-[26px] sm:p-5">
+                                            <div className="flex min-w-0 flex-col gap-3 sm:gap-4">
                                                 <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                                                     <div>
-                                                        <p className="text-[11px] uppercase tracking-[0.28em] text-slate-400">Requisition overview</p>
-                                                        <h2 className="mt-2 font-display text-xl font-bold text-slate-900 md:text-[1.45rem]">
+                                                        <p className="text-[10px] uppercase tracking-[0.22em] text-slate-400 sm:text-[11px] sm:tracking-[0.28em]">Requisition overview</p>
+                                                        <h2 className="mt-1.5 font-display text-lg font-bold text-slate-900 sm:mt-2 sm:text-xl md:text-[1.45rem]">
                                                             Requisition #{requisition.id}
                                                         </h2>
                                                         <p className="mt-2 max-w-2xl text-xs text-slate-500 md:text-sm">
                                                             Review schedule, item progress, and pricing status before updating the products below.
                                                         </p>
                                                     </div>
-                                                    <div className="flex items-center gap-2">
+                                                    <div className="flex flex-wrap items-center gap-2">
                                                         <StatusIndicator
                                                             active={!requisition.archived}
                                                             activeLabel="Active"
@@ -99,15 +99,15 @@ export default function Requisition() {
                                                 <RequisitionInfoWithContext requisition={requisition}/>
                                             </div>
                                         </Card>
-                                        <Card className="w-full rounded-[26px] border-slate-200/90 bg-white p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
-                                            <div className="space-y-4">
+                                        <Card className="w-full min-w-0 rounded-2xl border-slate-200/90 bg-white p-3 shadow-[0_10px_24px_rgba(15,23,42,0.04)] sm:rounded-[26px] sm:p-5">
+                                            <div className="space-y-3 sm:space-y-4">
                                                 <div>
-                                                    <p className="text-[11px] uppercase tracking-[0.28em] text-slate-400">Quick summary</p>
-                                                    <h3 className="mt-2 font-display text-lg font-bold text-slate-900 md:text-[1.25rem]">At a glance</h3>
+                                                    <p className="text-[10px] uppercase tracking-[0.22em] text-slate-400 sm:text-[11px] sm:tracking-[0.28em]">Quick summary</p>
+                                                    <h3 className="mt-1.5 font-display text-base font-bold text-slate-900 sm:mt-2 sm:text-lg md:text-[1.25rem]">At a glance</h3>
                                                 </div>
                                                 <div className="grid gap-3">
-                                                    <div className="rounded-[20px] border border-slate-200 bg-slate-50 p-4">
-                                                        <div className="flex items-center gap-3">
+                                                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:rounded-[20px] sm:p-4">
+                                                        <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
                                                             <span className="rounded-full bg-white p-2 text-slate-600 ring-1 ring-inset ring-slate-200">
                                                                 <Package size={18}/>
                                                             </span>
@@ -117,8 +117,8 @@ export default function Requisition() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="rounded-[20px] border border-slate-200 bg-slate-50 p-4">
-                                                        <div className="flex items-center gap-3">
+                                                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:rounded-[20px] sm:p-4">
+                                                        <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
                                                             <span className="rounded-full bg-white p-2 text-slate-600 ring-1 ring-inset ring-slate-200">
                                                                 <ShoppingCart size={18}/>
                                                             </span>
@@ -128,8 +128,8 @@ export default function Requisition() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="rounded-[20px] border border-slate-200 bg-slate-50 p-4">
-                                                        <div className="flex items-center gap-3">
+                                                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:rounded-[20px] sm:p-4">
+                                                        <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
                                                             <span className="rounded-full bg-white p-2 text-slate-600 ring-1 ring-inset ring-slate-200">
                                                                 <Calendar size={18}/>
                                                             </span>

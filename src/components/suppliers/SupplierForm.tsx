@@ -282,9 +282,9 @@ export const SupplierForm = ({supplier, onSuccess, embedded = false}: {
         <div className="w-full mx-auto">
                 <div className="mx-auto max-w-7xl">
                     <div className={clsx("mb-4", embedded && "sr-only")}>
-                        <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Suppliers</p>
-                        <h2 className="mt-2 font-display text-4xl font-bold text-slate-900">{content.header}</h2>
-                        <p className="mt-3 max-w-2xl text-base text-slate-500">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 sm:text-xs sm:tracking-[0.32em]">Suppliers</p>
+                        <h2 className="mt-1.5 break-words font-display text-2xl font-bold text-slate-900 sm:mt-2 sm:text-4xl">{content.header}</h2>
+                        <p className="mt-2 max-w-2xl text-sm text-slate-500 sm:mt-3 sm:text-base">
                             Capture the supplier profile, contact details, category coverage, and supporting media in one place.
                         </p>
                     </div>

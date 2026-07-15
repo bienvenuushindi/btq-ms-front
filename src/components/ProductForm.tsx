@@ -26,7 +26,7 @@ export const ProductForm = ({product, productId, onSuccess, embedded = false}: {
     const {startNavigation} = useRouteTransition();
     const {data: currentUser} = useFetcher(API_ENDPOINTS.CURRENT_USER);
     const isAdmin = currentUser?.role?.toString().toLowerCase() === 'admin';
-    let initial = {name: '', short_description: '', description: '', country_origin: '', tags: '', categories: [], approval_status: 'pending_review', rejection_reason: ''};
+    let initial = {name: '', short_description: '', description: '', country_origin: '', tags: '', categories: [], approval_status: 'pending_review', rejection_reason: '', catalog_scope: 'public_catalog'};
     if (!isAddMode) {
         initial = {
             name: product.name, short_description: product.short_description,
@@ -35,7 +35,8 @@ export const ProductForm = ({product, productId, onSuccess, embedded = false}: {
             tags: product.tags.join(','),
             categories: product?.categories ? product.categories.map(item => item.id) : [],
             approval_status: product.approval_status || (product.active ? 'approved' : 'pending_review'),
-            rejection_reason: product.rejection_reason || ''
+            rejection_reason: product.rejection_reason || '',
+            catalog_scope: product.catalog_scope || 'public_catalog'
         };
     }
     const getImageUrls = () => {
@@ -184,6 +185,16 @@ export const ProductForm = ({product, productId, onSuccess, embedded = false}: {
             name: 'photos',
             image_props: {photos, setPhotos}
         },
+        ...(!isAdmin ? [{
+            label: 'Catalog scope',
+            name: 'catalog_scope',
+            input_type: 'radio',
+            value: formState.catalog_scope,
+            options: ['public_catalog', 'private_catalog'],
+            action: (e) => {
+                setFormState((s) => ({...s, catalog_scope: e.target.value}));
+            }
+        }] : []),
         ...(isAdmin ? [
             {
                 label: 'Approval status',
@@ -243,9 +254,9 @@ export const ProductForm = ({product, productId, onSuccess, embedded = false}: {
         <div className="w-full mx-auto">
                 <div className="mx-auto max-w-7xl">
                     <div className={clsx("mb-4", embedded && "sr-only")}>
-                        <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-400">Products</p>
-                        <h2 className="mt-2 font-display text-4xl font-bold text-slate-900">{content.header}</h2>
-                        <p className="mt-3 max-w-2xl text-base text-slate-500">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400 sm:text-xs sm:tracking-[0.32em]">Products</p>
+                        <h2 className="mt-1.5 break-words font-display text-2xl font-bold text-slate-900 sm:mt-2 sm:text-4xl">{content.header}</h2>
+                        <p className="mt-2 max-w-2xl text-sm text-slate-500 sm:mt-3 sm:text-base">
                             Build a complete product profile with clear copy, category mapping, reusable tags, and imagery.
                         </p>
                     </div>

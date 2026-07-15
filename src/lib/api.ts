@@ -127,6 +127,8 @@ export const API_ENDPOINTS = {
     SEARCH_PRODUCTS: `${API_URL}/products/search`,
     PRODUCT_STATS: `${API_URL}/products/stats`,
     PRODUCTS: `${API_URL}/products`,
+    PRODUCT_MARKET: `${API_URL}/products/market`,
+    SEARCH_PRODUCT_MARKET: `${API_URL}/products/market/search`,
     PRODUCT_BY_ID: (productId: any) => `${API_URL}/products/${productId}`,
     // Product Details (nested under Products)
     PRODUCT_DETAILS: (productId: any) => `${API_URL}/products/${productId}/product_details`,
@@ -144,10 +146,12 @@ export const API_ENDPOINTS = {
     ROLES: `${API_URL}/roles`,
     // Categories
     CATEGORIES: `${API_URL}/categories`,
+    CATEGORY_BY_ID: (categoryId: any) => `${API_URL}/categories/${categoryId}`,
     CATEGORY_TREE_STRUCTURE: `${API_URL}/categories/tree_structure`,
     // Price Details (nested under Product Details)
     PRICE_DETAILS: (productDetailId: any) =>
         `${API_URL}/product_details/${productDetailId}/price_details`,
+    SUPPLIER_PRODUCT_DETAILS_BULK: `${API_URL}/supplier_product_details/bulk`,
     REMOVE_PRICE_DETAIL_SUPPLIER: (productDetailId: any, supplierId: any) =>
         `${API_URL}/product_details/${productDetailId}/price_details/supplier/${supplierId}`,
     // Requisitions
